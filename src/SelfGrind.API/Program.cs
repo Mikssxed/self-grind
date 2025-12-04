@@ -1,7 +1,9 @@
 using SelfGrind.Extensions;
+using SelfGrind.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddInfrastructure(builder.Configuration);
 builder.AddPresentation();
 
 var app = builder.Build();
