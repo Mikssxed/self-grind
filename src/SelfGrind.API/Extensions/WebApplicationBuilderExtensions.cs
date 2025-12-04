@@ -1,4 +1,5 @@
 ﻿using Microsoft.OpenApi;
+using Serilog;
 
 namespace SelfGrind.Extensions;
 
@@ -22,6 +23,9 @@ public static class WebApplicationBuilderExtensions
             });
         });
         builder.Services.AddEndpointsApiExplorer();
-
+        builder.Host.UseSerilog((context, configuration) =>
+            configuration
+                .ReadFrom.Configuration(context.Configuration)
+        );
     }
 }
