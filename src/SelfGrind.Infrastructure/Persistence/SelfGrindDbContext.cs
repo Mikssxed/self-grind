@@ -1,20 +1,29 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SelfGrind.Domain.Entities;
-using Task = SelfGrind.Domain.Entities.Task;
 
 namespace SelfGrind.Infrastructure.Persistence;
 
 public class SelfGrindDbContext(DbContextOptions<SelfGrindDbContext> options) : DbContext(options)
 {
-    internal DbSet<Task> Tasks { get; set; }
-    internal DbSet<TaskSource> TaskSources { get; set; }
+    public DbSet<TaskItem> Tasks { get; set; }
+    public DbSet<TaskOccurrence> TaskOccurrences { get; set; }
+    public DbSet<TaskSchedule> TaskSchedules { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
         
-        modelBuilder.Entity<TaskSource>()
-            .HasMany(t => t.Tasks)
-            .WithOne(t => t.TaskSource)
-            .HasForeignKey(t => t.TaskSourceId);
+        modelBuilder.Entity<TaskItem>((task) =>
+            {
+                task.HasMany(t => t.Occurrences)
+                    .WithOne(t => t.TaskItem)
+                    .HasForeignKey(t => t.TaskItemId)
+                    .OnDelete(DeleteBehavior.NoAction);
+                
+                task.HasOne(t => t.Schedule)
+                    .WithOne(s => s.TaskItem)
+                    .HasForeignKey<TaskSchedule>(s => s.TaskItemId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
     }
 }

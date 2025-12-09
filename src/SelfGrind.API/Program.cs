@@ -1,3 +1,4 @@
+using SelfGrind.Application.Extensions;
 using SelfGrind.Extensions;
 using SelfGrind.Infrastructure.Extensions;
 
@@ -5,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.AddPresentation();
+builder.Services.AddApplication();
 
 var app = builder.Build();
 
@@ -21,3 +23,4 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+

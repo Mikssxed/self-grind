@@ -1,8 +1,8 @@
 ﻿namespace SelfGrind.Domain.Constants;
 
-public enum TaskType
+public enum TaskRepetitionType
 {
+    Once,
     Daily,
     Weekly,
-    Once,
 }

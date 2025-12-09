@@ -11,7 +11,7 @@ public static class WebApplicationBuilderExtensions
         builder.Services.AddControllers();
         builder.Services.AddSwaggerGen(c =>
         {
-            c.AddSecurityDefinition("bearerAuth", new OpenApiSecurityScheme
+            c.AddSecurityDefinition("bearerAuth", new OpenApiSecurityScheme()
             {
                 Type = SecuritySchemeType.Http,
                 Scheme = "Bearer"
