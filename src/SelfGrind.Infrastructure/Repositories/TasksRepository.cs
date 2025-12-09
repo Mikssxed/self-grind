@@ -21,11 +21,10 @@ public class TasksRepository(SelfGrindDbContext dbContext) : ITasksRepository
         var schedule = taskItem.Schedule;
         var occurrences = new List<TaskOccurrence>();
         var startDate = schedule.StartDate;
-        
-        var intervalDays = schedule.RepeatInterval * (schedule.RepetitionType switch
+        var repetitionInterval = schedule.RepeatInterval == 0 ? 1 : schedule.RepeatInterval;
+
+        var intervalDays = repetitionInterval * (schedule.RepetitionType switch
         {
-            TaskRepetitionType.Once => 0,
-            TaskRepetitionType.Daily => 1,
             TaskRepetitionType.Weekly => 7,
             _ => 1
         });
@@ -40,6 +39,10 @@ public class TasksRepository(SelfGrindDbContext dbContext) : ITasksRepository
 
         while (startDate <= schedule.EndDate)
         {
+            if (schedule.StartDate.Month < startDate.Month)
+            {
+                break;
+            }
             occurrences.Add(new TaskOccurrence
             {
                 TaskItemId = taskItem.Id,
@@ -48,6 +51,7 @@ public class TasksRepository(SelfGrindDbContext dbContext) : ITasksRepository
             });
             startDate = startDate.AddDays(intervalDays);
         }
+        
         dbContext.TaskOccurrences.AddRange(occurrences);
     }
 }
