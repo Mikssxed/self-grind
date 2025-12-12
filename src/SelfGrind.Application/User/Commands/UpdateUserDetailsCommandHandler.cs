@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using SelfGrind.Domain.Exceptions;
 
 namespace SelfGrind.Application.User.Commands;
 
@@ -14,9 +15,9 @@ public class UpdateUserDetailsCommandHandler(ILogger<UpdateUserDetailsCommandHan
 
         var dbUser = await userStore.FindByIdAsync(user!.Id, cancellationToken);
 
-        // if (dbUser == null) throw new NotFoundException(nameof(Domain.Entities.User), user!.Id); @todo uncomment when NotFoundException is available
+        if (dbUser == null) throw new NotFoundException(nameof(Domain.Entities.User), user!.Id);
 
-        dbUser.Username = request.Username;
+        dbUser.UserName = request.Username;
 
         await userStore.UpdateAsync(dbUser, cancellationToken);
     }

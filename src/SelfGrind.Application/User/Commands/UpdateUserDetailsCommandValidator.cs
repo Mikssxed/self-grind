@@ -6,6 +6,7 @@ public class UpdateUserDetailsCommandValidator : AbstractValidator<UpdateUserDet
 {
     public UpdateUserDetailsCommandValidator()
     {
-        RuleFor()
+        RuleFor(u => u.Username)
+            .MaximumLength(24);
     }
 }

@@ -1,4 +1,5 @@
 using SelfGrind.Application.Extensions;
+using SelfGrind.Domain.Entities;
 using SelfGrind.Extensions;
 using SelfGrind.Infrastructure.Extensions;
 
@@ -17,6 +18,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.MapGroup("api/identity").WithTags("Identity").MapIdentityApi<User>();
 
 app.UseAuthorization();
 

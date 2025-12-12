@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using SelfGrind.Domain.Entities;
 
 namespace SelfGrind.Infrastructure.Persistence;
 
-public class SelfGrindDbContext(DbContextOptions<SelfGrindDbContext> options) : DbContext(options)
+public class SelfGrindDbContext(DbContextOptions<SelfGrindDbContext> options) : IdentityDbContext<User>(options)
 {
     public DbSet<TaskItem> Tasks { get; set; }
     public DbSet<TaskOccurrence> TaskOccurrences { get; set; }
@@ -23,6 +24,10 @@ public class SelfGrindDbContext(DbContextOptions<SelfGrindDbContext> options) : 
                     .WithOne(s => s.TaskItem)
                     .HasForeignKey<TaskSchedule>(s => s.TaskItemId)
                     .OnDelete(DeleteBehavior.Cascade);
+
+                task.HasOne(t => t.User)
+                    .WithMany(u => u.TaskItems)
+                    .HasForeignKey(t => t.UserId);
             });
 
     }

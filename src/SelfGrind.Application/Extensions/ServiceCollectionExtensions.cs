@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
+using SelfGrind.Application.User;
 
 namespace SelfGrind.Application.Extensions;
 
@@ -14,6 +15,7 @@ public static class ServiceCollectionExtensions
         services.AddValidatorsFromAssembly(applicationAssembly)
             .AddFluentValidationAutoValidation();
 
+        services.AddScoped<IUserContext, UserContext>();
         services.AddHttpContextAccessor();
     }
 }

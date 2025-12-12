@@ -18,4 +18,7 @@ public class TaskItem
 
     public TaskSchedule Schedule { get; set; }
     public ICollection<TaskOccurrence>? Occurrences { get; set; } = new Collection<TaskOccurrence>();
+    
+    public string UserId { get; set; }
+    public User User { get; set; } = default!;
 }

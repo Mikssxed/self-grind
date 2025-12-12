@@ -10,7 +10,8 @@ namespace SelfGrind.Controllers;
 public class TasksController(IMediator mediator) : ControllerBase
 {
     [HttpPost]
-    [AllowAnonymous] // @todo Remove this line when authentication is implemented
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> CreateTask([FromBody] CreateTaskCommand command)
     {
         await mediator.Send(command);
