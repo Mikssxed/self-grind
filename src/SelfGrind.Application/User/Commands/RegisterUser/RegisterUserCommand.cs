@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace SelfGrind.Application.User.Commands.RegisterUser;
 
-public class RegisterUserCommand : IRequest<Results<Ok, ValidationProblem>>
+public class RegisterUserCommand : IRequest
 {
     public required string Email { get; set; }
     public required string Password { get; set; }

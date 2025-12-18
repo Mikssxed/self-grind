@@ -1,0 +1,86 @@
+@model SelfGrind.Infrastructure.Services.EmailModels.ConfirmEmailModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>Confirm Your Email</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            padding: 20px;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .button {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        .button:hover {
+            background: #0056b3;
+        }
+        .link-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        .link-section p {
+            margin: 5px 0;
+            font-size: 0.9em;
+            color: #666;
+        }
+        .link-section code {
+            word-break: break-all;
+            color: #007bff;
+            display: block;
+            margin-top: 10px;
+        }
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            color: #666;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <h2>Welcome @Model.UserName!</h2>
+        <p>Thank you for registering with SelfGrind. We're excited to have you on board!</p>
+        <p>Please confirm your email address by clicking the button below:</p>
+        
+        <a href='@Model.ConfirmationLink' class='button'>Confirm Email</a>
+        
+        <div class='link-section'>
+            <p><strong>Alternatively, copy and paste this link into your browser:</strong></p>
+            <code>@Model.ConfirmationLink</code>
+        </div>
+        
+        <div class='footer'>
+            <p>If you didn't create an account with SelfGrind, please ignore this email.</p>
+            <p>This link will expire in 24 hours for security reasons.</p>
+        </div>
+    </div>
+</body>
+</html>
