@@ -32,7 +32,7 @@ public static class IdentityResultExtensions
                 }
             }
 
-            throw new BadRequestException(errors);
+            throw new ValidationException(errors);
         }
     }
 
