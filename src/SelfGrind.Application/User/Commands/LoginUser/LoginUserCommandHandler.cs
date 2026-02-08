@@ -1,6 +1,8 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
+using SelfGrind.Domain.Exceptions;
 
 namespace SelfGrind.Application.User.Commands.LoginUser;
 
@@ -10,12 +12,25 @@ public class LoginUserCommandHandler(
     )
     : IRequestHandler<LoginUserCommand>
 {
-    public Task Handle(LoginUserCommand request, CancellationToken cancellationToken)
+    public async Task Handle(LoginUserCommand request, CancellationToken cancellationToken)
     {
-        logger.LogInformation("Logging in user {username}", request.Username);
+        logger.LogInformation("Logging in user {username}", request.Email);
+        
+        var user = await signInManager.UserManager.FindByEmailAsync(request.Email);
+        
+        if (user == null || user.UserName == null)
+        {
+            throw new NotFoundException("user", request.Email);
+        }
+        
+        var result = await signInManager.CheckPasswordSignInAsync(user, request.Password, false);
+        
+        if (!result.Succeeded)
+        {
+            throw new UnauthorizedAccessException("Invalid email or password.");
+        }
 
-        var result = signInManager.PasswordSignInAsync(request.Username, request.Password, isPersistent: false, lockoutOnFailure: false);
-
-        return result.ToString();
+        signInManager.AuthenticationScheme = IdentityConstants.BearerScheme;
+        await signInManager.SignInAsync(user, true);
     }
 }

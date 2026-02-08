@@ -5,6 +5,7 @@ using SelfGrind.Application.User.Commands;
 using SelfGrind.Application.User.Commands.RegisterUser;
 using SelfGrind.Application.User.Commands.ConfirmUser;
 using SelfGrind.Application.User.Commands.LoginUser;
+using SelfGrind.Models;
 
 namespace SelfGrind.Controllers;
 
@@ -14,30 +15,30 @@ public class IdentityController(IMediator mediator) : ControllerBase
 {
     [HttpPatch("user")]
     [Authorize]
-    public async Task<IActionResult> UpdateUserDetails([FromBody]UpdateUserDetailsCommand command)
+    public async Task<IActionResult> UpdateUserDetails([FromBody] UpdateUserDetailsCommand command)
     {
         await mediator.Send(command);
         return NoContent();
     }
-    
+
     [HttpPost("register")]
-    public async Task<IActionResult> RegisterUser([FromBody]RegisterUserCommand command)
+    public async Task<IActionResult> RegisterUser([FromBody] RegisterUserCommand command)
     {
         await mediator.Send(command);
         return NoContent();
     }
-    
+
     [HttpPost("confirmEmail")]
-    public async Task<IActionResult> ConfirmEmail([FromBody]ConfirmEmailCommand command)
+    public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailCommand command)
     {
         await mediator.Send(command);
         return NoContent();
     }
-    
+
     [HttpPost("login")]
-    public async Task<IActionResult> LoginUser([FromBody]LoginUserCommand command)
+    [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
+    public async Task LoginUser([FromBody] LoginUserCommand command)
     {
         await mediator.Send(command);
-        return NoContent();
     }
 }

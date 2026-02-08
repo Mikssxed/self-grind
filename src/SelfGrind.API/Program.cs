@@ -19,7 +19,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+// app.MapGroup("api/identity").WithTags("Identity").MapIdentityApi<User>();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
