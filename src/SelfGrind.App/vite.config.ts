@@ -1,11 +1,31 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import tailwindcss from "@tailwindcss/vite";
+import VueDevTools from 'vite-plugin-vue-devtools';
+import {fileURLToPath} from "node:url";
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
       vue(),
-      tailwindcss()
+      tailwindcss(),
+      VueDevTools(),
   ],
+    resolve: {
+        alias: {
+            '@': fileURLToPath(new URL('./src', import.meta.url)),
+        },
+    },
+    build: {
+        outDir: 'wwwroot',
+    },
+    server: {
+        proxy: {
+            '/api': {
+                target: 'http://localhost:5053/',
+                changeOrigin: true,
+                secure: false,
+            },
+        },
+    },
 })
