@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "build:api": "npm run build:api-file && npm run build:api-client",
+    "build:api-file": "dotnet swagger tofile --output ./src/api/api.json ./bin/Debug/net10.0/PerfoAI.App.Host.dll v1",
+    "build:api-client": "dotnet kiota --language typescript --openapi ./src/api/api.json -c apiClient -o ./src/api/apiClient --clean-output --cc"
   },
   "dependencies": {
     "@microsoft/kiota-abstractions": "^1.0.0-preview.99",
