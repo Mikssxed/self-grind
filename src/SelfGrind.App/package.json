@@ -8,25 +8,28 @@
     "build": "vue-tsc -b && vite build",
     "preview": "vite preview",
     "build:api": "npm run build:api-file && npm run build:api-client",
-    "build:api-file": "dotnet swagger tofile --output ./src/api/api.json ./bin/Debug/net10.0/PerfoAI.App.Host.dll v1",
-    "build:api-client": "dotnet kiota --language typescript --openapi ./src/api/api.json -c apiClient -o ./src/api/apiClient --clean-output --cc"
+    "build:api-file": "swagger tofile --output ./src/api/api.json ../SelfGrind.API/bin/Debug/net10.0/SelfGrind.API.dll v1",
+    "build:api-client": "kiota generate --language typescript --openapi ./src/api/api.json --class-name apiClient --output ./src/api/apiClient --clean-output"
   },
   "dependencies": {
     "@microsoft/kiota-abstractions": "^1.0.0-preview.99",
-    "@microsoft/kiota-bundle": "^1.0.0-preview.99",
-    "@tailwindcss/vite": "^4.1.17",
-    "tailwindcss": "^4.1.17",
-    "vue": "^3.5.24",
     "@microsoft/kiota-authentication-azure": "^1.0.0-preview.99",
+    "@microsoft/kiota-bundle": "^1.0.0-preview.99",
     "@microsoft/kiota-http-fetchlibrary": "^1.0.0-preview.99",
     "@microsoft/kiota-serialization-form": "^1.0.0-preview.99",
     "@microsoft/kiota-serialization-json": "^1.0.0-preview.99",
-    "@microsoft/kiota-serialization-text": "^1.0.0-preview.99"
+    "@microsoft/kiota-serialization-text": "^1.0.0-preview.99",
+    "@tailwindcss/vite": "^4.1.17",
+    "pinia": "^3.0.4",
+    "tailwindcss": "^4.1.17",
+    "vue": "^3.5.24",
+    "vue-router": "^5.0.2"
   },
   "devDependencies": {
     "@types/node": "^24.10.1",
     "@vitejs/plugin-vue": "^6.0.1",
     "@vue/tsconfig": "^0.8.1",
+    "prettier": "3.8.1",
     "typescript": "~5.9.3",
     "vite": "^7.2.4",
     "vite-plugin-vue-devtools": "^8.0.6",
