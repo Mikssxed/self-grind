@@ -8,7 +8,7 @@ import {
   serializeLoginUserCommand,
   type LoginResponse,
   type LoginUserCommand,
-} from "../../../models/index.js";
+} from '../../../models/index.js';
 // @ts-ignore
 import {
   type BaseRequestBuilder,
@@ -17,7 +17,7 @@ import {
   type RequestConfiguration,
   type RequestInformation,
   type RequestsMetadata,
-} from "@microsoft/kiota-abstractions";
+} from '@microsoft/kiota-abstractions';
 
 /**
  * Builds and executes requests for operations under /api/identity/login
@@ -30,7 +30,7 @@ export interface LoginRequestBuilder extends BaseRequestBuilder<LoginRequestBuil
    */
   post(
     body: LoginUserCommand,
-    requestConfiguration?: RequestConfiguration<object> | undefined,
+    requestConfiguration?: RequestConfiguration<object> | undefined
   ): Promise<LoginResponse | undefined>;
   /**
    * @param body The request body
@@ -39,25 +39,25 @@ export interface LoginRequestBuilder extends BaseRequestBuilder<LoginRequestBuil
    */
   toPostRequestInformation(
     body: LoginUserCommand,
-    requestConfiguration?: RequestConfiguration<object> | undefined,
+    requestConfiguration?: RequestConfiguration<object> | undefined
   ): RequestInformation;
 }
 /**
  * Uri template for the request builder.
  */
-export const LoginRequestBuilderUriTemplate = "{+baseurl}/api/identity/login";
+export const LoginRequestBuilderUriTemplate = '{+baseurl}/api/identity/login';
 /**
  * Metadata for all the requests in the request builder.
  */
 export const LoginRequestBuilderRequestsMetadata: RequestsMetadata = {
   post: {
     uriTemplate: LoginRequestBuilderUriTemplate,
-    responseBodyContentType: "application/json, text/plain;q=0.9",
-    adapterMethodName: "send",
+    responseBodyContentType: 'application/json, text/plain;q=0.9',
+    adapterMethodName: 'send',
     responseBodyFactory: createLoginResponseFromDiscriminatorValue,
-    requestBodyContentType: "application/json",
+    requestBodyContentType: 'application/json',
     requestBodySerializer: serializeLoginUserCommand,
-    requestInformationContentSetMethod: "setContentFromParsable",
+    requestInformationContentSetMethod: 'setContentFromParsable',
   },
 };
 /* tslint:enable */

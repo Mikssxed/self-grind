@@ -1,9 +1,9 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
   --font-sans:
-    Inter, ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    Inter, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    'Segoe UI Symbol', 'Noto Color Emoji';
 }
 /* Project Color Palette */
 :root {
@@ -19,12 +19,7 @@
   --color-white: #ffffff;
 
   /* Gradients */
-  --gradient-dark: linear-gradient(
-    20deg,
-    #111827 0%,
-    #0f172a 50%,
-    #111827 100%
-  );
+  --gradient-dark: linear-gradient(20deg, #111827 0%, #0f172a 50%, #111827 100%);
   --gradient-midnight: linear-gradient(29deg, #1a1a2e 0%, #252538 100%);
   --gradient-purple: linear-gradient(90deg, #6366f1 0%, #9333ea 100%);
   --gradient-purple-alt: linear-gradient(35deg, #6366f1 0%, #9333ea 100%);

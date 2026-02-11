@@ -5,28 +5,22 @@
 import {
   ConfirmEmailRequestBuilderRequestsMetadata,
   type ConfirmEmailRequestBuilder,
-} from "./confirmEmail/index.js";
+} from './confirmEmail/index.js';
 // @ts-ignore
-import {
-  LoginRequestBuilderRequestsMetadata,
-  type LoginRequestBuilder,
-} from "./login/index.js";
+import { LoginRequestBuilderRequestsMetadata, type LoginRequestBuilder } from './login/index.js';
 // @ts-ignore
 import {
   RegisterRequestBuilderRequestsMetadata,
   type RegisterRequestBuilder,
-} from "./register/index.js";
+} from './register/index.js';
 // @ts-ignore
-import {
-  type UserRequestBuilder,
-  UserRequestBuilderRequestsMetadata,
-} from "./user/index.js";
+import { type UserRequestBuilder, UserRequestBuilderRequestsMetadata } from './user/index.js';
 // @ts-ignore
 import {
   type BaseRequestBuilder,
   type KeysToExcludeForNavigationMetadata,
   type NavigationMetadata,
-} from "@microsoft/kiota-abstractions";
+} from '@microsoft/kiota-abstractions';
 
 /**
  * Builds and executes requests for operations under /api/identity
@@ -52,7 +46,7 @@ export interface IdentityRequestBuilder extends BaseRequestBuilder<IdentityReque
 /**
  * Uri template for the request builder.
  */
-export const IdentityRequestBuilderUriTemplate = "{+baseurl}/api/identity";
+export const IdentityRequestBuilderUriTemplate = '{+baseurl}/api/identity';
 /**
  * Metadata for all the navigation properties in the request builder.
  */

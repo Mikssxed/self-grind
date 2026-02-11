@@ -5,7 +5,7 @@
 import {
   serializeUpdateUserDetailsCommand,
   type UpdateUserDetailsCommand,
-} from "../../../models/index.js";
+} from '../../../models/index.js';
 // @ts-ignore
 import {
   type BaseRequestBuilder,
@@ -14,7 +14,7 @@ import {
   type RequestConfiguration,
   type RequestInformation,
   type RequestsMetadata,
-} from "@microsoft/kiota-abstractions";
+} from '@microsoft/kiota-abstractions';
 
 /**
  * Builds and executes requests for operations under /api/identity/user
@@ -27,7 +27,7 @@ export interface UserRequestBuilder extends BaseRequestBuilder<UserRequestBuilde
    */
   patch(
     body: UpdateUserDetailsCommand,
-    requestConfiguration?: RequestConfiguration<object> | undefined,
+    requestConfiguration?: RequestConfiguration<object> | undefined
   ): Promise<ArrayBuffer | undefined>;
   /**
    * @param body The request body
@@ -36,24 +36,24 @@ export interface UserRequestBuilder extends BaseRequestBuilder<UserRequestBuilde
    */
   toPatchRequestInformation(
     body: UpdateUserDetailsCommand,
-    requestConfiguration?: RequestConfiguration<object> | undefined,
+    requestConfiguration?: RequestConfiguration<object> | undefined
   ): RequestInformation;
 }
 /**
  * Uri template for the request builder.
  */
-export const UserRequestBuilderUriTemplate = "{+baseurl}/api/identity/user";
+export const UserRequestBuilderUriTemplate = '{+baseurl}/api/identity/user';
 /**
  * Metadata for all the requests in the request builder.
  */
 export const UserRequestBuilderRequestsMetadata: RequestsMetadata = {
   patch: {
     uriTemplate: UserRequestBuilderUriTemplate,
-    adapterMethodName: "sendPrimitive",
-    responseBodyFactory: "ArrayBuffer",
-    requestBodyContentType: "application/json",
+    adapterMethodName: 'sendPrimitive',
+    responseBodyFactory: 'ArrayBuffer',
+    requestBodyContentType: 'application/json',
     requestBodySerializer: serializeUpdateUserDetailsCommand,
-    requestInformationContentSetMethod: "setContentFromParsable",
+    requestInformationContentSetMethod: 'setContentFromParsable',
   },
 };
 /* tslint:enable */

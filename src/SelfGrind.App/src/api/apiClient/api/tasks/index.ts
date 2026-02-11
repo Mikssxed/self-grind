@@ -7,7 +7,7 @@ import {
   serializeCreateTaskCommand,
   type CreateTaskCommand,
   type ProblemDetails,
-} from "../../models/index.js";
+} from '../../models/index.js';
 // @ts-ignore
 import {
   type BaseRequestBuilder,
@@ -16,7 +16,7 @@ import {
   type RequestConfiguration,
   type RequestInformation,
   type RequestsMetadata,
-} from "@microsoft/kiota-abstractions";
+} from '@microsoft/kiota-abstractions';
 
 /**
  * Builds and executes requests for operations under /api/tasks
@@ -29,7 +29,7 @@ export interface TasksRequestBuilder extends BaseRequestBuilder<TasksRequestBuil
    */
   post(
     body: CreateTaskCommand,
-    requestConfiguration?: RequestConfiguration<object> | undefined,
+    requestConfiguration?: RequestConfiguration<object> | undefined
   ): Promise<void>;
   /**
    * @param body The request body
@@ -38,27 +38,27 @@ export interface TasksRequestBuilder extends BaseRequestBuilder<TasksRequestBuil
    */
   toPostRequestInformation(
     body: CreateTaskCommand,
-    requestConfiguration?: RequestConfiguration<object> | undefined,
+    requestConfiguration?: RequestConfiguration<object> | undefined
   ): RequestInformation;
 }
 /**
  * Uri template for the request builder.
  */
-export const TasksRequestBuilderUriTemplate = "{+baseurl}/api/tasks";
+export const TasksRequestBuilderUriTemplate = '{+baseurl}/api/tasks';
 /**
  * Metadata for all the requests in the request builder.
  */
 export const TasksRequestBuilderRequestsMetadata: RequestsMetadata = {
   post: {
     uriTemplate: TasksRequestBuilderUriTemplate,
-    responseBodyContentType: "application/json, text/plain;q=0.9",
+    responseBodyContentType: 'application/json, text/plain;q=0.9',
     errorMappings: {
       404: createProblemDetailsFromDiscriminatorValue as ParsableFactory<Parsable>,
     },
-    adapterMethodName: "sendNoResponseContent",
-    requestBodyContentType: "application/json",
+    adapterMethodName: 'sendNoResponseContent',
+    requestBodyContentType: 'application/json',
     requestBodySerializer: serializeCreateTaskCommand,
-    requestInformationContentSetMethod: "setContentFromParsable",
+    requestInformationContentSetMethod: 'setContentFromParsable',
   },
 };
 /* tslint:enable */

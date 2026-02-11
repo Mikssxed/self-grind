@@ -1,5 +1,5 @@
-﻿import { FetchRequestAdapter } from "@microsoft/kiota-http-fetchlibrary";
-import { createApiClient } from "@/api";
+﻿import { FetchRequestAdapter } from '@microsoft/kiota-http-fetchlibrary';
+import { createApiClient } from '@/api';
 
 const authProvider = {
   authenticateRequest() {

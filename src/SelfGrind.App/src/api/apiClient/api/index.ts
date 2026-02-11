@@ -5,18 +5,15 @@
 import {
   IdentityRequestBuilderNavigationMetadata,
   type IdentityRequestBuilder,
-} from "./identity/index.js";
+} from './identity/index.js';
 // @ts-ignore
-import {
-  TasksRequestBuilderRequestsMetadata,
-  type TasksRequestBuilder,
-} from "./tasks/index.js";
+import { TasksRequestBuilderRequestsMetadata, type TasksRequestBuilder } from './tasks/index.js';
 // @ts-ignore
 import {
   type BaseRequestBuilder,
   type KeysToExcludeForNavigationMetadata,
   type NavigationMetadata,
-} from "@microsoft/kiota-abstractions";
+} from '@microsoft/kiota-abstractions';
 
 /**
  * Builds and executes requests for operations under /api
@@ -34,7 +31,7 @@ export interface ApiRequestBuilder extends BaseRequestBuilder<ApiRequestBuilder>
 /**
  * Uri template for the request builder.
  */
-export const ApiRequestBuilderUriTemplate = "{+baseurl}/api";
+export const ApiRequestBuilderUriTemplate = '{+baseurl}/api';
 /**
  * Metadata for all the navigation properties in the request builder.
  */

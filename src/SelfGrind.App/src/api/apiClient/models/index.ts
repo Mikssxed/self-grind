@@ -9,7 +9,7 @@ import {
   type Parsable,
   type ParseNode,
   type SerializationWriter,
-} from "@microsoft/kiota-abstractions";
+} from '@microsoft/kiota-abstractions';
 
 export interface ConfirmEmailCommand extends Parsable {
   /**
@@ -28,7 +28,7 @@ export interface ConfirmEmailCommand extends Parsable {
  */
 // @ts-ignore
 export function createConfirmEmailCommandFromDiscriminatorValue(
-  parseNode: ParseNode | undefined,
+  parseNode: ParseNode | undefined
 ): (instance?: Parsable) => Record<string, (node: ParseNode) => void> {
   return deserializeIntoConfirmEmailCommand;
 }
@@ -39,7 +39,7 @@ export function createConfirmEmailCommandFromDiscriminatorValue(
  */
 // @ts-ignore
 export function createCreateTaskCommandFromDiscriminatorValue(
-  parseNode: ParseNode | undefined,
+  parseNode: ParseNode | undefined
 ): (instance?: Parsable) => Record<string, (node: ParseNode) => void> {
   return deserializeIntoCreateTaskCommand;
 }
@@ -50,7 +50,7 @@ export function createCreateTaskCommandFromDiscriminatorValue(
  */
 // @ts-ignore
 export function createLoginResponseFromDiscriminatorValue(
-  parseNode: ParseNode | undefined,
+  parseNode: ParseNode | undefined
 ): (instance?: Parsable) => Record<string, (node: ParseNode) => void> {
   return deserializeIntoLoginResponse;
 }
@@ -61,7 +61,7 @@ export function createLoginResponseFromDiscriminatorValue(
  */
 // @ts-ignore
 export function createLoginUserCommandFromDiscriminatorValue(
-  parseNode: ParseNode | undefined,
+  parseNode: ParseNode | undefined
 ): (instance?: Parsable) => Record<string, (node: ParseNode) => void> {
   return deserializeIntoLoginUserCommand;
 }
@@ -72,7 +72,7 @@ export function createLoginUserCommandFromDiscriminatorValue(
  */
 // @ts-ignore
 export function createProblemDetailsFromDiscriminatorValue(
-  parseNode: ParseNode | undefined,
+  parseNode: ParseNode | undefined
 ): (instance?: Parsable) => Record<string, (node: ParseNode) => void> {
   return deserializeIntoProblemDetails;
 }
@@ -83,7 +83,7 @@ export function createProblemDetailsFromDiscriminatorValue(
  */
 // @ts-ignore
 export function createRegisterUserCommandFromDiscriminatorValue(
-  parseNode: ParseNode | undefined,
+  parseNode: ParseNode | undefined
 ): (instance?: Parsable) => Record<string, (node: ParseNode) => void> {
   return deserializeIntoRegisterUserCommand;
 }
@@ -132,7 +132,7 @@ export interface CreateTaskCommand extends Parsable {
  */
 // @ts-ignore
 export function createUpdateUserDetailsCommandFromDiscriminatorValue(
-  parseNode: ParseNode | undefined,
+  parseNode: ParseNode | undefined
 ): (instance?: Parsable) => Record<string, (node: ParseNode) => void> {
   return deserializeIntoUpdateUserDetailsCommand;
 }
@@ -143,7 +143,7 @@ export function createUpdateUserDetailsCommandFromDiscriminatorValue(
  */
 // @ts-ignore
 export function deserializeIntoConfirmEmailCommand(
-  confirmEmailCommand: Partial<ConfirmEmailCommand> | undefined = {},
+  confirmEmailCommand: Partial<ConfirmEmailCommand> | undefined = {}
 ): Record<string, (node: ParseNode) => void> {
   return {
     confirmationCode: (n) => {
@@ -161,7 +161,7 @@ export function deserializeIntoConfirmEmailCommand(
  */
 // @ts-ignore
 export function deserializeIntoCreateTaskCommand(
-  createTaskCommand: Partial<CreateTaskCommand> | undefined = {},
+  createTaskCommand: Partial<CreateTaskCommand> | undefined = {}
 ): Record<string, (node: ParseNode) => void> {
   return {
     attribute: (n) => {
@@ -200,7 +200,7 @@ export function deserializeIntoCreateTaskCommand(
  */
 // @ts-ignore
 export function deserializeIntoLoginResponse(
-  loginResponse: Partial<LoginResponse> | undefined = {},
+  loginResponse: Partial<LoginResponse> | undefined = {}
 ): Record<string, (node: ParseNode) => void> {
   return {
     accessToken: (n) => {
@@ -224,7 +224,7 @@ export function deserializeIntoLoginResponse(
  */
 // @ts-ignore
 export function deserializeIntoLoginUserCommand(
-  loginUserCommand: Partial<LoginUserCommand> | undefined = {},
+  loginUserCommand: Partial<LoginUserCommand> | undefined = {}
 ): Record<string, (node: ParseNode) => void> {
   return {
     email: (n) => {
@@ -242,7 +242,7 @@ export function deserializeIntoLoginUserCommand(
  */
 // @ts-ignore
 export function deserializeIntoProblemDetails(
-  problemDetails: Partial<ProblemDetails> | undefined = {},
+  problemDetails: Partial<ProblemDetails> | undefined = {}
 ): Record<string, (node: ParseNode) => void> {
   return {
     detail: (n) => {
@@ -269,7 +269,7 @@ export function deserializeIntoProblemDetails(
  */
 // @ts-ignore
 export function deserializeIntoRegisterUserCommand(
-  registerUserCommand: Partial<RegisterUserCommand> | undefined = {},
+  registerUserCommand: Partial<RegisterUserCommand> | undefined = {}
 ): Record<string, (node: ParseNode) => void> {
   return {
     email: (n) => {
@@ -290,7 +290,7 @@ export function deserializeIntoRegisterUserCommand(
  */
 // @ts-ignore
 export function deserializeIntoUpdateUserDetailsCommand(
-  updateUserDetailsCommand: Partial<UpdateUserDetailsCommand> | undefined = {},
+  updateUserDetailsCommand: Partial<UpdateUserDetailsCommand> | undefined = {}
 ): Record<string, (node: ParseNode) => void> {
   return {
     username: (n) => {
@@ -326,8 +326,7 @@ export interface LoginUserCommand extends Parsable {
    */
   password?: string | null;
 }
-export interface ProblemDetails
-  extends AdditionalDataHolder, ApiError, Parsable {
+export interface ProblemDetails extends AdditionalDataHolder, ApiError, Parsable {
   /**
    * The detail property
    */
@@ -373,16 +372,13 @@ export interface RegisterUserCommand extends Parsable {
 export function serializeConfirmEmailCommand(
   writer: SerializationWriter,
   confirmEmailCommand: Partial<ConfirmEmailCommand> | undefined | null = {},
-  isSerializingDerivedType: boolean = false,
+  isSerializingDerivedType: boolean = false
 ): void {
   if (!confirmEmailCommand || isSerializingDerivedType) {
     return;
   }
-  writer.writeStringValue(
-    "confirmationCode",
-    confirmEmailCommand.confirmationCode,
-  );
-  writer.writeStringValue("userId", confirmEmailCommand.userId);
+  writer.writeStringValue('confirmationCode', confirmEmailCommand.confirmationCode);
+  writer.writeStringValue('userId', confirmEmailCommand.userId);
 }
 /**
  * Serializes information the current object
@@ -394,23 +390,20 @@ export function serializeConfirmEmailCommand(
 export function serializeCreateTaskCommand(
   writer: SerializationWriter,
   createTaskCommand: Partial<CreateTaskCommand> | undefined | null = {},
-  isSerializingDerivedType: boolean = false,
+  isSerializingDerivedType: boolean = false
 ): void {
   if (!createTaskCommand || isSerializingDerivedType) {
     return;
   }
-  writer.writeNumberValue("attribute", createTaskCommand.attribute);
-  writer.writeCollectionOfPrimitiveValues<number>(
-    "daysOfWeek",
-    createTaskCommand.daysOfWeek,
-  );
-  writer.writeStringValue("description", createTaskCommand.description);
-  writer.writeDateOnlyValue("endDate", createTaskCommand.endDate);
-  writer.writeNumberValue("exp", createTaskCommand.exp);
-  writer.writeNumberValue("repeatInterval", createTaskCommand.repeatInterval);
-  writer.writeNumberValue("repetitionType", createTaskCommand.repetitionType);
-  writer.writeDateOnlyValue("startDate", createTaskCommand.startDate);
-  writer.writeStringValue("title", createTaskCommand.title);
+  writer.writeNumberValue('attribute', createTaskCommand.attribute);
+  writer.writeCollectionOfPrimitiveValues<number>('daysOfWeek', createTaskCommand.daysOfWeek);
+  writer.writeStringValue('description', createTaskCommand.description);
+  writer.writeDateOnlyValue('endDate', createTaskCommand.endDate);
+  writer.writeNumberValue('exp', createTaskCommand.exp);
+  writer.writeNumberValue('repeatInterval', createTaskCommand.repeatInterval);
+  writer.writeNumberValue('repetitionType', createTaskCommand.repetitionType);
+  writer.writeDateOnlyValue('startDate', createTaskCommand.startDate);
+  writer.writeStringValue('title', createTaskCommand.title);
 }
 /**
  * Serializes information the current object
@@ -422,12 +415,12 @@ export function serializeCreateTaskCommand(
 export function serializeLoginResponse(
   writer: SerializationWriter,
   loginResponse: Partial<LoginResponse> | undefined | null = {},
-  isSerializingDerivedType: boolean = false,
+  isSerializingDerivedType: boolean = false
 ): void {
   if (!loginResponse || isSerializingDerivedType) {
     return;
   }
-  writer.writeStringValue("refreshToken", loginResponse.refreshToken);
+  writer.writeStringValue('refreshToken', loginResponse.refreshToken);
 }
 /**
  * Serializes information the current object
@@ -439,13 +432,13 @@ export function serializeLoginResponse(
 export function serializeLoginUserCommand(
   writer: SerializationWriter,
   loginUserCommand: Partial<LoginUserCommand> | undefined | null = {},
-  isSerializingDerivedType: boolean = false,
+  isSerializingDerivedType: boolean = false
 ): void {
   if (!loginUserCommand || isSerializingDerivedType) {
     return;
   }
-  writer.writeStringValue("email", loginUserCommand.email);
-  writer.writeStringValue("password", loginUserCommand.password);
+  writer.writeStringValue('email', loginUserCommand.email);
+  writer.writeStringValue('password', loginUserCommand.password);
 }
 /**
  * Serializes information the current object
@@ -457,16 +450,16 @@ export function serializeLoginUserCommand(
 export function serializeProblemDetails(
   writer: SerializationWriter,
   problemDetails: Partial<ProblemDetails> | undefined | null = {},
-  isSerializingDerivedType: boolean = false,
+  isSerializingDerivedType: boolean = false
 ): void {
   if (!problemDetails || isSerializingDerivedType) {
     return;
   }
-  writer.writeStringValue("detail", problemDetails.detail);
-  writer.writeStringValue("instance", problemDetails.instance);
-  writer.writeNumberValue("status", problemDetails.status);
-  writer.writeStringValue("title", problemDetails.title);
-  writer.writeStringValue("type", problemDetails.type);
+  writer.writeStringValue('detail', problemDetails.detail);
+  writer.writeStringValue('instance', problemDetails.instance);
+  writer.writeNumberValue('status', problemDetails.status);
+  writer.writeStringValue('title', problemDetails.title);
+  writer.writeStringValue('type', problemDetails.type);
   writer.writeAdditionalData(problemDetails.additionalData);
 }
 /**
@@ -479,14 +472,14 @@ export function serializeProblemDetails(
 export function serializeRegisterUserCommand(
   writer: SerializationWriter,
   registerUserCommand: Partial<RegisterUserCommand> | undefined | null = {},
-  isSerializingDerivedType: boolean = false,
+  isSerializingDerivedType: boolean = false
 ): void {
   if (!registerUserCommand || isSerializingDerivedType) {
     return;
   }
-  writer.writeStringValue("email", registerUserCommand.email);
-  writer.writeStringValue("password", registerUserCommand.password);
-  writer.writeStringValue("username", registerUserCommand.username);
+  writer.writeStringValue('email', registerUserCommand.email);
+  writer.writeStringValue('password', registerUserCommand.password);
+  writer.writeStringValue('username', registerUserCommand.username);
 }
 /**
  * Serializes information the current object
@@ -497,16 +490,13 @@ export function serializeRegisterUserCommand(
 // @ts-ignore
 export function serializeUpdateUserDetailsCommand(
   writer: SerializationWriter,
-  updateUserDetailsCommand:
-    | Partial<UpdateUserDetailsCommand>
-    | undefined
-    | null = {},
-  isSerializingDerivedType: boolean = false,
+  updateUserDetailsCommand: Partial<UpdateUserDetailsCommand> | undefined | null = {},
+  isSerializingDerivedType: boolean = false
 ): void {
   if (!updateUserDetailsCommand || isSerializingDerivedType) {
     return;
   }
-  writer.writeStringValue("username", updateUserDetailsCommand.username);
+  writer.writeStringValue('username', updateUserDetailsCommand.username);
 }
 export interface UpdateUserDetailsCommand extends Parsable {
   /**
