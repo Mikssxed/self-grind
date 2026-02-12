@@ -18,6 +18,8 @@
 
   --color-white: #ffffff;
 
+  --color-error-500: #ef4444;
+
   /* Gradients */
   --gradient-dark: linear-gradient(20deg, #111827 0%, #0f172a 50%, #111827 100%);
   --gradient-midnight: linear-gradient(29deg, #1a1a2e 0%, #252538 100%);
