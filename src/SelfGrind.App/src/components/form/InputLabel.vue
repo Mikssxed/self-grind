@@ -3,14 +3,18 @@
         :for="name"
         class="text-sm font-semibold text-primary-200"
     >
-        {{ label }}
-        <span class="text-error-500">*</span>
+        <slot />
+        <span
+            v-if="required"
+            class="text-error-500"
+            >*</span
+        >
     </label>
 </template>
 <script setup lang="ts">
     type InputLabelProps = {
         name: string;
-        label: string;
+        required?: boolean;
     };
 
     defineProps<InputLabelProps>();
