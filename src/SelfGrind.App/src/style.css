@@ -77,3 +77,7 @@ body {
 .bg-gradient-midnight {
     background: var(--gradient-midnight);
 }
+
+.input-default {
+    @apply rounded-xl border-2 border-primary-800 bg-primary-900 text-primary-400 focus:outline-none focus:ring-primary-600 focus:ring-2 relative w-full text-base;
+}

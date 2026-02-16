@@ -2,6 +2,7 @@
     import BaseBox from '@/components/base/BaseBox.vue';
     import BaseHeader from '@/components/base/BaseHeader.vue';
     import BaseText from '@/components/base/BaseText.vue';
+    import TextField from '@/components/form/TextField.vue';
     import GradientIcon from '@/components/GradientIcon.vue';
 </script>
 
@@ -20,7 +21,15 @@
                     <BaseText class="text-center">Create your account and level up!</BaseText>
                 </div>
             </div>
-            <BaseBox> </BaseBox>
+            <BaseBox>
+                <form>
+                    <TextField
+                        label="Full Name"
+                        name="username"
+                        required
+                    />
+                </form>
+            </BaseBox>
         </div>
     </div>
 </template>

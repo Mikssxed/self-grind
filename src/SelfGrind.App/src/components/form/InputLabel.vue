@@ -6,7 +6,7 @@
         <slot />
         <span
             v-if="required"
-            class="text-error-500"
+            class="text-accent-500"
             >*</span
         >
     </label>
