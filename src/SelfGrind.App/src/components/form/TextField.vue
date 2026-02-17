@@ -7,11 +7,13 @@
     >
         <TextInput
             :name="name"
-            :type="'text'"
+            type="text"
+            :iconName="iconName"
         />
     </FormField>
 </template>
 <script setup lang="ts">
+    import type { IconName } from '../icons';
     import FormField from './FormField.vue';
     import TextInput from './TextInput.vue';
 
@@ -20,6 +22,7 @@
         name: string;
         required?: boolean;
         error?: string;
+        iconName?: IconName;
     }
 
     defineProps<TextFieldProps>();

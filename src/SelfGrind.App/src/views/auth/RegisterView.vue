@@ -26,6 +26,7 @@
                     <TextField
                         label="Full Name"
                         name="username"
+                        iconName="user"
                         required
                     />
                 </form>
