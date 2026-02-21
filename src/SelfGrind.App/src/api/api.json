@@ -7,7 +7,9 @@
   "paths": {
     "/api/identity/user": {
       "patch": {
-        "tags": ["Identity"],
+        "tags": [
+          "Identity"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -36,7 +38,9 @@
     },
     "/api/identity/register": {
       "post": {
-        "tags": ["Identity"],
+        "tags": [
+          "Identity"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -58,14 +62,53 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiOperationResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiOperationResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiOperationResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiOperationResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiOperationResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiOperationResult"
+                }
+              }
+            }
           }
         }
       }
     },
     "/api/identity/confirmEmail": {
       "post": {
-        "tags": ["Identity"],
+        "tags": [
+          "Identity"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -87,14 +130,53 @@
         },
         "responses": {
           "200": {
-            "description": "OK"
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiOperationResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiOperationResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiOperationResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiOperationResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiOperationResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiOperationResult"
+                }
+              }
+            }
           }
         }
       }
     },
     "/api/identity/login": {
       "post": {
-        "tags": ["Identity"],
+        "tags": [
+          "Identity"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -120,17 +202,37 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/LoginResponse"
+                  "$ref": "#/components/schemas/LoginResponseApiOperationResult"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LoginResponse"
+                  "$ref": "#/components/schemas/LoginResponseApiOperationResult"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/LoginResponse"
+                  "$ref": "#/components/schemas/LoginResponseApiOperationResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiOperationResult"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiOperationResult"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiOperationResult"
                 }
               }
             }
@@ -140,7 +242,9 @@
     },
     "/api/tasks": {
       "post": {
-        "tags": ["Tasks"],
+        "tags": [
+          "Tasks"
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -190,13 +294,42 @@
   },
   "components": {
     "schemas": {
+      "ApiOperationResult": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "nullable": true
+          },
+          "isSuccess": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
       "BaseAttribute": {
-        "enum": [0, 1, 2, 3, 4, 5],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
         "type": "integer",
         "format": "int32"
       },
       "ConfirmEmailCommand": {
-        "required": ["confirmationCode", "userId"],
+        "required": [
+          "confirmationCode",
+          "userId"
+        ],
         "type": "object",
         "properties": {
           "userId": {
@@ -211,7 +344,10 @@
         "additionalProperties": false
       },
       "CreateTaskCommand": {
-        "required": ["description", "title"],
+        "required": [
+          "description",
+          "title"
+        ],
         "type": "object",
         "properties": {
           "title": {
@@ -255,27 +391,38 @@
         "additionalProperties": false
       },
       "DayOfWeek": {
-        "enum": [0, 1, 2, 3, 4, 5, 6],
+        "enum": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
         "type": "integer",
         "format": "int32"
       },
       "LoginResponse": {
+        "required": [
+          "accessToken",
+          "expiresIn",
+          "refreshToken",
+          "tokenType"
+        ],
         "type": "object",
         "properties": {
           "tokenType": {
             "type": "string",
-            "nullable": true,
-            "readOnly": true
+            "nullable": true
           },
           "accessToken": {
             "type": "string",
-            "nullable": true,
-            "readOnly": true
+            "nullable": true
           },
           "expiresIn": {
             "type": "integer",
-            "format": "int32",
-            "readOnly": true
+            "format": "int32"
           },
           "refreshToken": {
             "type": "string",
@@ -284,8 +431,33 @@
         },
         "additionalProperties": false
       },
+      "LoginResponseApiOperationResult": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "nullable": true
+          },
+          "isSuccess": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/LoginResponse"
+          }
+        },
+        "additionalProperties": false
+      },
       "LoginUserCommand": {
-        "required": ["email", "password"],
+        "required": [
+          "email",
+          "password"
+        ],
         "type": "object",
         "properties": {
           "email": {
@@ -324,10 +496,14 @@
             "nullable": true
           }
         },
-        "additionalProperties": {}
+        "additionalProperties": { }
       },
       "RegisterUserCommand": {
-        "required": ["email", "password", "username"],
+        "required": [
+          "email",
+          "password",
+          "username"
+        ],
         "type": "object",
         "properties": {
           "email": {
@@ -346,7 +522,11 @@
         "additionalProperties": false
       },
       "TaskRepetitionType": {
-        "enum": [0, 1, 2],
+        "enum": [
+          0,
+          1,
+          2
+        ],
         "type": "integer",
         "format": "int32"
       },
@@ -370,7 +550,7 @@
   },
   "security": [
     {
-      "bearerAuth": []
+      "bearerAuth": [ ]
     }
   ],
   "tags": [

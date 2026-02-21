@@ -215,3 +215,5 @@ AppPackages/
 
 # Development emails (testing only)
 **/DevelopmentEmails/
+
+Logs/

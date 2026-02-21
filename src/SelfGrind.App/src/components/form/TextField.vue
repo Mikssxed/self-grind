@@ -7,7 +7,7 @@
     >
         <TextInput
             :name="name"
-            type="text"
+            :type="type"
             :iconName="iconName"
         />
     </FormField>
@@ -23,7 +23,13 @@
         required?: boolean;
         error?: string;
         iconName?: IconName;
+        type?: string;
     }
 
-    defineProps<TextFieldProps>();
+    withDefaults(defineProps<TextFieldProps>(), {
+        required: false,
+        error: '',
+        iconName: undefined,
+        type: 'text',
+    });
 </script>

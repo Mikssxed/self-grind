@@ -2,28 +2,22 @@
     <div class="w-full flex justify-center items-center pt-25">
         <div class="flex flex-col gap-8">
             <div class="flex flex-col w-md gap-4 p-2">
-                <GradientIcon name="addUser" />
+                <GradientIcon name="user" />
                 <div class="flex flex-col gap-2">
                     <BaseHeader
                         variant="gradient"
                         class="text-center"
                     >
-                        Start Your Journey
+                        Welcome Back
                     </BaseHeader>
-                    <BaseText class="text-center">Create your account and level up!</BaseText>
+                    <BaseText class="text-center">Sign in to continue your journey</BaseText>
                 </div>
             </div>
             <BaseBox>
                 <form
                     @submit="onSubmit"
-                    class="flex flex-col gap-4 w-md"
+                    class="flex flex-col gap-4"
                 >
-                    <TextField
-                        label="Username"
-                        name="username"
-                        iconName="user"
-                        required
-                    />
                     <TextField
                         label="Email"
                         name="email"
@@ -37,18 +31,20 @@
                         type="password"
                         required
                     />
-                    <TextField
-                        label="Confirm Password"
-                        name="confirmPassword"
-                        iconName="lock"
-                        type="password"
-                        required
-                    />
+                    <div
+                        v-if="loginMutation.error.value"
+                        class="text-error-500 text-sm"
+                    >
+                        {{
+                            loginMutation.error.value.message ||
+                            'Login failed. Please check your credentials.'
+                        }}
+                    </div>
                     <BaseButton
                         class="mt-4"
-                        :disabled="registerMutation.isPending.value"
+                        :disabled="loginMutation.isPending.value"
                     >
-                        {{ submitButtonLabel }}
+                        {{ loginMutation.isPending.value ? 'Signing in...' : 'Sign in' }}
                     </BaseButton>
                 </form>
             </BaseBox>
@@ -62,24 +58,22 @@
     import BaseText from '@/components/base/BaseText.vue';
     import TextField from '@/components/form/TextField.vue';
     import GradientIcon from '@/components/GradientIcon.vue';
-    import { useRegisterMutation } from '@/composables/useAuth';
-    import { registerSchema } from '@/schemas';
+    import { useLoginMutation } from '@/composables/useAuth';
     import { toTypedSchema } from '@vee-validate/zod';
     import { useForm } from 'vee-validate';
-    import { computed } from 'vue';
+    import { object, string } from 'zod';
 
-    const schema = toTypedSchema(registerSchema);
+    const loginSchema = object({
+        email: string().email('Invalid email address'),
+        password: string().min(1, 'Password is required'),
+    });
 
+    const schema = toTypedSchema(loginSchema);
     const { handleSubmit } = useForm({ validationSchema: schema });
-    const registerMutation = useRegisterMutation();
-
-    const submitButtonLabel = computed(() =>
-        registerMutation.isPending.value ? 'Creating account...' : 'Create account'
-    );
+    const loginMutation = useLoginMutation();
 
     const onSubmit = handleSubmit((values) => {
-        registerMutation.mutate({
-            username: values.username,
+        loginMutation.mutate({
             email: values.email,
             password: values.password,
         });

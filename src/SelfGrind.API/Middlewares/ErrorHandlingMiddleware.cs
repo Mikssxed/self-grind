@@ -1,5 +1,7 @@
 ﻿using System.Text.Json;
 using SelfGrind.Domain.Exceptions;
+using SelfGrind.Models;
+using SelfGrind.Extensions;
 
 namespace SelfGrind.Middlewares;
 
@@ -16,31 +18,51 @@ public class ErrorHandlingMiddleware(ILogger<ErrorHandlingMiddleware> logger) : 
             context.Response.StatusCode = StatusCodes.Status400BadRequest;
             context.Response.ContentType = "application/json";
 
-            var errorResponse = new
+            var camelCaseErrors = ex.Errors.ToDictionary(
+                kvp => kvp.Key.ToCamelCase(),
+                kvp => kvp.Value
+            );
+
+            var errorResponse = new ApiOperationResult
             {
-                message = ex.Message,
-                errors = ex.Errors
+                IsSuccess = false,
+                Errors = camelCaseErrors
             };
 
             await context.Response.WriteAsJsonAsync(errorResponse);
-            logger.LogWarning(ex, "Bad request: {Message}", ex.Message);
+            logger.LogWarning(ex, "Validation error: {Message}", ex.Message);
         }
         catch (NotFoundException ex)
         {
             context.Response.StatusCode = StatusCodes.Status404NotFound;
             context.Response.ContentType = "application/json";
 
-            var errorResponse = new { message = ex.Message };
-            await context.Response.WriteAsJsonAsync(errorResponse);
+            var errorResponse = new ApiOperationResult
+            {
+                IsSuccess = false,
+                Errors = new Dictionary<string, string[]>
+                {
+                    { ApiOperationResult.GeneralErrorKey, new[] { ex.Message } }
+                }
+            };
 
+            await context.Response.WriteAsJsonAsync(errorResponse);
             logger.LogWarning(ex.Message);
         }
-        catch (ForbidException ex)
+        catch (ForbidException)
         {
             context.Response.StatusCode = StatusCodes.Status403Forbidden;
             context.Response.ContentType = "application/json";
 
-            var errorResponse = new { message = "You do not have permission to perform this action." };
+            var errorResponse = new ApiOperationResult
+            {
+                IsSuccess = false,
+                Errors = new Dictionary<string, string[]>
+                {
+                    { ApiOperationResult.GeneralErrorKey, new[] { "You do not have permission to perform this action." } }
+                }
+            };
+
             await context.Response.WriteAsJsonAsync(errorResponse);
         }
         catch (Exception ex)
@@ -50,7 +72,15 @@ public class ErrorHandlingMiddleware(ILogger<ErrorHandlingMiddleware> logger) : 
             context.Response.StatusCode = StatusCodes.Status500InternalServerError;
             context.Response.ContentType = "application/json";
 
-            var errorResponse = new { message = "Something went wrong." };
+            var errorResponse = new ApiOperationResult
+            {
+                IsSuccess = false,
+                Errors = new Dictionary<string, string[]>
+                {
+                    { ApiOperationResult.GeneralErrorKey, new[] { "Something went wrong." } }
+                }
+            };
+
             await context.Response.WriteAsJsonAsync(errorResponse);
         }
     }

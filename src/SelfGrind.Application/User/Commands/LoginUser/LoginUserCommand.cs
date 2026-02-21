@@ -2,7 +2,7 @@
 
 namespace SelfGrind.Application.User.Commands.LoginUser;
 
-public class LoginUserCommand : IRequest
+public class LoginUserCommand : IRequest<LoginResponse>
 {
     public required string Email { get; set; }
     public required string Password { get; set; }

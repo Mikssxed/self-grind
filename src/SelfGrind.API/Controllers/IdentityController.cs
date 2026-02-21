@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using SelfGrind.Application.User.Commands;
 using SelfGrind.Application.User.Commands.RegisterUser;
@@ -22,23 +23,29 @@ public class IdentityController(IMediator mediator) : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> RegisterUser([FromBody] RegisterUserCommand command)
+    [ProducesResponseType(typeof(ApiOperationResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiOperationResult), StatusCodes.Status400BadRequest)]
+    public async Task<Ok<ApiOperationResult>> RegisterUser([FromBody] RegisterUserCommand command)
     {
         await mediator.Send(command);
-        return NoContent();
+        return ApiOperationResult.Ok();
     }
 
     [HttpPost("confirmEmail")]
-    public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailCommand command)
+    [ProducesResponseType(typeof(ApiOperationResult), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiOperationResult), StatusCodes.Status400BadRequest)]
+    public async Task<Ok<ApiOperationResult>> ConfirmEmail([FromBody] ConfirmEmailCommand command)
     {
         await mediator.Send(command);
-        return NoContent();
+        return ApiOperationResult.Ok();
     }
 
     [HttpPost("login")]
-    [ProducesResponseType(typeof(LoginResponse), StatusCodes.Status200OK)]
-    public async Task LoginUser([FromBody] LoginUserCommand command)
+    [ProducesResponseType(typeof(ApiOperationResult<LoginResponse>), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ApiOperationResult), StatusCodes.Status400BadRequest)]
+    public async Task<Ok<ApiOperationResult<LoginResponse>>> LoginUser([FromBody] LoginUserCommand command)
     {
-        await mediator.Send(command);
+        var response = await mediator.Send(command);
+        return ApiOperationResult.Ok(response);
     }
 }
