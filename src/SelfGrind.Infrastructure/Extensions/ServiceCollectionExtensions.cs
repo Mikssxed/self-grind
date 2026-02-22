@@ -28,6 +28,10 @@ public static class ServiceCollectionExtensions
             options.User.RequireUniqueEmail = true;
         });
 
+        // Configure JWT Settings
+        services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
+        services.AddScoped<IJwtService, JwtService>();
+
         // FluentEmail configuration
         var smtpSettings = configuration.GetSection("SmtpSettings");
         var emailBuilder = services

@@ -3,12 +3,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using SelfGrind.Domain.Exceptions;
+using SelfGrind.Domain.Interfaces;
 
 namespace SelfGrind.Application.User.Commands.LoginUser;
 
 public class LoginUserCommandHandler(
     ILogger<LoginUserCommandHandler> logger,
-    SignInManager<Domain.Entities.User> signInManager
+    SignInManager<Domain.Entities.User> signInManager,
+    IJwtService jwtService
     )
     : IRequestHandler<LoginUserCommand, LoginResponse>
 {
@@ -30,18 +32,15 @@ public class LoginUserCommandHandler(
             throw new UnauthorizedAccessException("Invalid email or password.");
         }
 
-        signInManager.AuthenticationScheme = IdentityConstants.BearerScheme;
-        await signInManager.SignInAsync(user, true);
+        // Generate JWT tokens
+        var (accessToken, refreshToken, expiresIn) = await jwtService.GenerateTokensAsync(user);
 
-        // For now, return empty response - we'll implement JWT generation next
-        // The built-in Identity API endpoints handle token generation automatically
-        // but since we want custom control, we need to implement our own JWT service
         return new LoginResponse
         {
             TokenType = "Bearer",
-            AccessToken = "temporary_token", // TODO: Implement JWT generation
-            ExpiresIn = 3600,
-            RefreshToken = "temporary_refresh_token"
+            AccessToken = accessToken,
+            ExpiresIn = expiresIn,
+            RefreshToken = refreshToken
         };
     }
 }
