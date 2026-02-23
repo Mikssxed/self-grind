@@ -10,10 +10,9 @@ export function useRegisterMutation() {
 
     return useMutation({
         mutationFn: async (data: RegisterUserCommand) => {
-            await apiClient.api.identity.register.post(data);
+            return await apiClient.api.identity.register.post(data);
         },
         onSuccess: () => {
-            // Navigate to a confirmation page or login
             router.push({ name: 'login', query: { registered: 'true' } });
         },
     });
@@ -28,18 +27,17 @@ export function useLoginMutation() {
     return useMutation({
         mutationFn: async (data: LoginUserCommand) => {
             const response = await apiClient.api.identity.login.post(data);
-            if (!response) {
-                throw new Error('No response from login');
-            }
             return response;
         },
         onSuccess: (data) => {
-            authStore.setTokens({
-                accessToken: data.data?.accessToken ?? '',
-                refreshToken: data.data?.refreshToken ?? '',
-                tokenType: data.data?.tokenType ?? 'Bearer',
-                expiresIn: data.data?.expiresIn ?? 3600,
-            });
+            if (data?.data) {
+                authStore.setTokens({
+                    accessToken: data.data.accessToken ?? '',
+                    refreshToken: data.data.refreshToken ?? '',
+                    tokenType: data.data.tokenType ?? 'Bearer',
+                    expiresIn: data.data.expiresIn ?? 3600,
+                });
+            }
 
             const returnUrl = route.query.returnUrl as string | undefined;
             router.push(returnUrl || { name: 'home' });

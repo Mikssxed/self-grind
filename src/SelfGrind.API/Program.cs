@@ -14,11 +14,15 @@ builder.Services.AddApplication();
 
 var app = builder.Build();
 
-// Automatically apply database migrations on startup
-using (var scope = app.Services.CreateScope())
+// Automatically apply database migrations on startup (skip if no connection string)
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+if (!string.IsNullOrEmpty(connectionString))
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<SelfGrindDbContext>();
-    dbContext.Database.Migrate();
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<SelfGrindDbContext>();
+        dbContext.Database.Migrate();
+    }
 }
 
 app.UseMiddleware<ErrorHandlingMiddleware>();

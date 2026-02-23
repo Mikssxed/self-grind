@@ -14,9 +14,9 @@
                 </div>
             </div>
             <BaseBox>
-                <form
+                <BaseForm
                     @submit="onSubmit"
-                    class="flex flex-col gap-4 w-md"
+                    class="w-md"
                 >
                     <TextField
                         label="Username"
@@ -46,11 +46,11 @@
                     />
                     <BaseButton
                         class="mt-4"
-                        :disabled="registerMutation.isPending.value"
+                        :disabled="form.isProcessing.value"
                     >
                         {{ submitButtonLabel }}
                     </BaseButton>
-                </form>
+                </BaseForm>
             </BaseBox>
         </div>
     </div>
@@ -58,30 +58,27 @@
 <script setup lang="ts">
     import BaseBox from '@/components/base/BaseBox.vue';
     import BaseButton from '@/components/base/BaseButton.vue';
+    import BaseForm from '@/components/base/BaseForm.vue';
     import BaseHeader from '@/components/base/BaseHeader.vue';
     import BaseText from '@/components/base/BaseText.vue';
     import TextField from '@/components/form/TextField.vue';
     import GradientIcon from '@/components/GradientIcon.vue';
     import { useRegisterMutation } from '@/composables/useAuth';
+    import { useForm } from '@/composables/useForm';
     import { registerSchema } from '@/schemas';
     import { toTypedSchema } from '@vee-validate/zod';
-    import { useForm } from 'vee-validate';
+    import { useForm as useVeeValidateForm } from 'vee-validate';
     import { computed } from 'vue';
 
-    const schema = toTypedSchema(registerSchema);
-
-    const { handleSubmit } = useForm({ validationSchema: schema });
     const registerMutation = useRegisterMutation();
+    const form = useForm(registerMutation);
+
+    const schema = toTypedSchema(registerSchema);
+    const { handleSubmit } = useVeeValidateForm({ validationSchema: schema });
 
     const submitButtonLabel = computed(() =>
-        registerMutation.isPending.value ? 'Creating account...' : 'Create account'
+        form.isProcessing.value ? 'Creating account...' : 'Create account'
     );
 
-    const onSubmit = handleSubmit((values) => {
-        registerMutation.mutate({
-            username: values.username,
-            email: values.email,
-            password: values.password,
-        });
-    });
+    const onSubmit = handleSubmit(form.handler);
 </script>

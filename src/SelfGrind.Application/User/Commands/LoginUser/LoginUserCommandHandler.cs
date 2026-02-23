@@ -29,7 +29,7 @@ public class LoginUserCommandHandler(
 
         if (!result.Succeeded)
         {
-            throw new UnauthorizedAccessException("Invalid email or password.");
+            throw new AuthenticationException("Invalid email or password.");
         }
 
         // Generate JWT tokens

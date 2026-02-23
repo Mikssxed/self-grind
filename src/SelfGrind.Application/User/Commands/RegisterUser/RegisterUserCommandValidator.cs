@@ -17,6 +17,9 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
 
         RuleFor(x => x.Password)
             .NotEmpty().WithMessage("Password is required")
-            .MinimumLength(6).WithMessage("Password must be at least 6 characters");
+            .MinimumLength(6).WithMessage("Password must be at least 6 characters")
+            .Matches(@"[0-9]+").WithMessage("Password must contain at least one number")
+            .Matches(@"[a-zA-Z]+").WithMessage("Password must contain at least one letter")
+            .Matches(@"[!@#$%^&*(),.?"":{}|<>]+").WithMessage("Password must contain at least one special character");
     }
 }

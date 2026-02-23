@@ -43,6 +43,7 @@ public class IdentityController(IMediator mediator) : ControllerBase
     [HttpPost("login")]
     [ProducesResponseType(typeof(ApiOperationResult<LoginResponse>), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ApiOperationResult), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ApiOperationResult), StatusCodes.Status401Unauthorized)]
     public async Task<Ok<ApiOperationResult<LoginResponse>>> LoginUser([FromBody] LoginUserCommand command)
     {
         var response = await mediator.Send(command);

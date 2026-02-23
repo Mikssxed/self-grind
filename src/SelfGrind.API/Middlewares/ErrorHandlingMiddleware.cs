@@ -65,6 +65,21 @@ public class ErrorHandlingMiddleware(ILogger<ErrorHandlingMiddleware> logger) : 
 
             await context.Response.WriteAsJsonAsync(errorResponse);
         }
+        catch (AuthenticationException)
+        {
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            context.Response.ContentType = "application/json";
+            
+            var errorResponse = new ApiOperationResult
+            {
+                IsSuccess = false,
+                Errors = new Dictionary<string, string[]>
+                {
+                    { ApiOperationResult.GeneralErrorKey, new[] { "Authentication failed. Please check your credentials and try again." } }
+                }
+            };
+            await context.Response.WriteAsJsonAsync(errorResponse);
+        }
         catch (Exception ex)
         {
             logger.LogError(ex, ex.Message);

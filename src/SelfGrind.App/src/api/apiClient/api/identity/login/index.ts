@@ -15,6 +15,7 @@ export interface LoginRequestBuilder extends BaseRequestBuilder<LoginRequestBuil
      * @param requestConfiguration Configuration for the request such as headers, query parameters, and middleware options.
      * @returns {Promise<LoginResponseApiOperationResult>}
      * @throws {ApiOperationResult} error when the service returns a 400 status code
+     * @throws {ApiOperationResult} error when the service returns a 401 status code
      */
      post(body: LoginUserCommand, requestConfiguration?: RequestConfiguration<object> | undefined) : Promise<LoginResponseApiOperationResult | undefined>;
     /**
@@ -37,6 +38,7 @@ export const LoginRequestBuilderRequestsMetadata: RequestsMetadata = {
         responseBodyContentType: "application/json, text/plain;q=0.9",
         errorMappings: {
             400: createApiOperationResultFromDiscriminatorValue as ParsableFactory<Parsable>,
+            401: createApiOperationResultFromDiscriminatorValue as ParsableFactory<Parsable>,
         },
         adapterMethodName: "send",
         responseBodyFactory:  createLoginResponseApiOperationResultFromDiscriminatorValue,

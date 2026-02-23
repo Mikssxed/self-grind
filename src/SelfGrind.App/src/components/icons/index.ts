@@ -1,4 +1,5 @@
 import addUser from './AddUser.vue';
+import gamepad from './GamePad.vue';
 import lock from './Lock.vue';
 import mail from './Mail.vue';
 import user from './User.vue';
@@ -8,6 +9,7 @@ const icons = {
     user,
     mail,
     lock,
+    gamepad,
 };
 
 export type IconName = keyof typeof icons;
