@@ -44,7 +44,6 @@ router.beforeEach((to, _from, next) => {
         import.meta.env.VITE_DISABLE_AUTH !== 'true' && to.meta.requiresAuth !== false;
     const accountPage = ['register', 'login'].includes(to.name as string);
     const isAuthenticated = authStore.isAuthenticated;
-    console.log(requiresAuth);
     if (requiresAuth) {
         // needs authentication - if not authenticated, redirect to login
         if (isAuthenticated) {

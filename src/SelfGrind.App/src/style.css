@@ -22,12 +22,25 @@
 
     --color-error-500: #ef4444;
 
+    --color-info-500: #3b82f6;
+    --color-violet-500: #8b5cf6;
+    --color-warning-500: #eab308;
+    --color-success-500: #22c55e;
+
+    --color-orange-500: #f97316;
+    --color-orange-900: #7c2d12;
+    --color-blue-900: #1e3a5f;
+    --color-green-900: #14532d;
+    --color-purple-900: #3b0764;
+    --color-crimson-900: #4c0519;
+
     /* Gradients */
     --gradient-dark: linear-gradient(20deg, #111827 0%, #0f172a 50%, #111827 100%);
     --gradient-midnight: linear-gradient(29deg, #1a1a2e 0%, #252538 100%);
     --gradient-purple: linear-gradient(90deg, #6366f1 0%, #9333ea 100%);
     --gradient-purple-alt: linear-gradient(35deg, #6366f1 0%, #9333ea 100%);
     --gradient-accent: linear-gradient(90deg, #818cf8 0%, #c084fc 100%);
+    --gradient-quote: linear-gradient(90deg, #1e1b4b3d 0%, #312e813d 35%, #581c873d 100%);
 
     /* Shadows */
     --shadow-primary: 8px 8px 16px 0px #0f0f1e, -8px -8px 16px 0px #2d2d44;
@@ -80,6 +93,10 @@ body {
 
 .bg-gradient-midnight {
     background: var(--gradient-midnight);
+}
+
+.bg-gradient-quote {
+    background: var(--gradient-quote);
 }
 
 .input-default {
