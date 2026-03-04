@@ -1,31 +1,44 @@
 import type { IconName } from '@/components/icons';
 import type { AppRouteNames } from '@/router';
+import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
-type NavigationItem = {
+export type NavigationItem = {
     name: AppRouteNames;
     label: string;
     icon: IconName;
-    isActive?: boolean;
+    isActive: boolean;
 };
 
-const isRouteActive = (routeName: AppRouteNames): boolean => {
-    const route = useRoute();
-    return route.name === routeName;
-};
-const enhanceNavigationItem = (i: NavigationItem) => ({ ...i, isActive: isRouteActive(i.name) });
-
-const navigationList: NavigationItem[] = [
+const navigationItems: Omit<NavigationItem, 'isActive'>[] = [
     {
         name: 'dashboard',
         label: 'Dashboard',
         icon: 'house',
     },
+    {
+        name: 'dailyTasks',
+        label: 'Daily Tasks',
+        icon: 'dailyTasks',
+    },
 ];
 
 export default function () {
+    const route = useRoute();
+
+    const navigationList = computed<NavigationItem[]>(() =>
+        navigationItems.map((item) => ({
+            ...item,
+            isActive: route.name === item.name,
+        }))
+    );
+
+    const currentNavigationItem = computed(() =>
+        navigationList.value.filter((i) => i.isActive)
+    );
+
     return {
-        currentNavigationItem: navigationList.filter((i) => i.isActive),
-        navigationList: navigationList.map(enhanceNavigationItem),
+        currentNavigationItem,
+        navigationList,
     };
 }

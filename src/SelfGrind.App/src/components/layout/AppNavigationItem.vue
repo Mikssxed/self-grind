@@ -7,7 +7,7 @@
             :name="iconName"
             class="w-4 h-4"
         />
-        <BaseText :class="textClasses">{{ name }}</BaseText>
+        <BaseText :class="textClasses">{{ label }}</BaseText>
     </RouterLink>
 </template>
 <script setup lang="ts">
@@ -20,6 +20,7 @@
 
     interface AppNavigationItemProps {
         name: AppRouteNames;
+        label: string;
         iconName: IconName;
         isActive?: boolean;
     }

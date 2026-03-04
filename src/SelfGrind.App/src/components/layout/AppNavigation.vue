@@ -4,6 +4,7 @@
             v-for="item in navigationList"
             :key="item.name"
             :name="item.name"
+            :label="item.label"
             :iconName="item.icon"
             :isActive="item.isActive"
         />

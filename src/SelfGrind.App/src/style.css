@@ -34,6 +34,12 @@
     --color-purple-900: #3b0764;
     --color-crimson-900: #4c0519;
 
+    --color-info-900: #1e3a5f;
+    --color-success-900: #14532d;
+    --color-warning-900: #713f12;
+    --color-violet-900: #3b0764;
+    --color-error-900: #7f1d1d;
+
     /* Gradients */
     --gradient-dark: linear-gradient(20deg, #111827 0%, #0f172a 50%, #111827 100%);
     --gradient-midnight: linear-gradient(29deg, #1a1a2e 0%, #252538 100%);
