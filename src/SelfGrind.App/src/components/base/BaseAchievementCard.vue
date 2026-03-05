@@ -5,6 +5,12 @@
     >
         <span class="text-3xl">{{ emoji }}</span>
         <span class="text-xs font-bold text-white text-center">{{ label }}</span>
+        <span
+            v-if="subtitle"
+            class="text-xs text-primary-400 text-center"
+        >
+            {{ subtitle }}
+        </span>
     </div>
 </template>
 <script setup lang="ts">
@@ -12,13 +18,14 @@
 
     export type AchievementCardVariant = 'orange' | 'blue' | 'green' | 'purple' | 'crimson';
 
-    interface DashboardAchievementCardProps {
+    interface BaseAchievementCardProps {
         emoji: string;
         label: string;
         variant: AchievementCardVariant;
+        subtitle?: string;
     }
 
-    const props = defineProps<DashboardAchievementCardProps>();
+    const props = defineProps<BaseAchievementCardProps>();
 
     const variantClasses: Record<AchievementCardVariant, string> = {
         orange: 'bg-orange-900/24',

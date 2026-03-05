@@ -7,6 +7,7 @@ export type AppRouteNames = keyof typeof AppViews;
 export const AppViews = {
     dashboard: () => import('@/views/DashboardView.vue'),
     dailyTasks: () => import('@/views/DailyTasksView.vue'),
+    contributionGrid: () => import('@/views/ContributionGridView.vue'),
     register: () => import('@/views/auth/RegisterView.vue'),
     login: () => import('@/views/auth/LoginView.vue'),
 };
@@ -35,6 +36,7 @@ const router = createRouter({
     routes: [
         createRoute('/dashboard', 'dashboard', LayoutType.WITH_SIDEBAR, true),
         createRoute('/daily-tasks', 'dailyTasks', LayoutType.WITH_SIDEBAR, true),
+        createRoute('/contribution-grid', 'contributionGrid', LayoutType.WITH_SIDEBAR, true),
         createRoute('/register', 'register', LayoutType.WITHOUT_SIDEBAR, false),
         createRoute('/login', 'login', LayoutType.WITHOUT_SIDEBAR, false),
     ],
