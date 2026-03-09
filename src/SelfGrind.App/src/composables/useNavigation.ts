@@ -26,6 +26,11 @@ const navigationItems: Omit<NavigationItem, 'isActive'>[] = [
         label: 'Contribution Grid',
         icon: 'contributionGrid',
     },
+    {
+        name: 'character',
+        label: 'Character',
+        icon: 'character',
+    },
 ];
 
 export default function () {

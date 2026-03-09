@@ -1,4 +1,5 @@
 import addUser from './AddUser.vue';
+import character from './Character.vue';
 import contributionGrid from './ContributionGrid.vue';
 import dailyTasks from './DailyTasks.vue';
 import gamepad from './GamePad.vue';
@@ -9,6 +10,7 @@ import user from './User.vue';
 
 const icons = {
     addUser,
+    character,
     contributionGrid,
     dailyTasks,
     user,
