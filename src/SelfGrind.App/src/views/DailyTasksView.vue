@@ -59,7 +59,7 @@
 </script>
 
 <template>
-    <div class="flex flex-col gap-6 p-8 flex-1 max-h-screen overflow-y-auto">
+    <div class="flex flex-col gap-6 p-4 md:p-8 flex-1 max-h-screen overflow-y-auto">
         <div class="flex flex-col gap-1">
             <BaseHeader tag="h1">Daily Tasks & Habits ✅</BaseHeader>
             <BaseText>Complete tasks to earn XP and level up your character</BaseText>

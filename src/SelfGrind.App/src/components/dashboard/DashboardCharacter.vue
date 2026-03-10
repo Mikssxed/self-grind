@@ -1,10 +1,10 @@
 <template>
-    <BaseBox class="col-span-2">
-        <div class="flex gap-6 items-start">
+    <BaseBox class="md:col-span-2">
+        <div class="flex flex-col md:flex-row gap-6 items-start">
             <!-- Avatar -->
             <div class="relative shrink-0">
                 <div
-                    class="bg-gradient-purple rounded-3xl w-48 h-48 flex items-center justify-center"
+                    class="bg-gradient-purple rounded-3xl w-32 h-32 md:w-48 md:h-48 flex items-center justify-center"
                 >
                     <BaseIcon
                         name="user"

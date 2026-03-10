@@ -16,9 +16,9 @@
     import BaseStatCardBordered from '@/components/base/BaseStatCardBordered.vue';
     import type { BorderedStat } from '@/components/base/BaseStatCardBordered.vue';
 
-    interface ContributionStatsProps {
+    interface AnalyticsStatsProps {
         stats: BorderedStat[];
     }
 
-    defineProps<ContributionStatsProps>();
+    defineProps<AnalyticsStatsProps>();
 </script>

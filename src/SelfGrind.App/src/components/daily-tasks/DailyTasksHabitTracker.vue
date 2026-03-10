@@ -20,7 +20,7 @@
 <template>
     <BaseBox>
         <BaseHeader tag="h3">Habit Tracker</BaseHeader>
-        <div class="grid grid-cols-4 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <DailyTasksHabitCard
                 v-for="habit in habits"
                 :key="habit.label"

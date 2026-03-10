@@ -27,7 +27,7 @@
 
     export type StatBorderVariant = 'info' | 'accent' | 'success' | 'violet';
 
-    export interface ContributionStat {
+    export interface BorderedStat {
         label: string;
         value: string;
         unit?: string;
@@ -36,7 +36,7 @@
         borderVariant: StatBorderVariant;
     }
 
-    interface ContributionStatCardProps {
+    interface BaseStatCardBorderedProps {
         label: string;
         value: string;
         unit?: string;
@@ -45,7 +45,7 @@
         borderVariant: StatBorderVariant;
     }
 
-    const props = defineProps<ContributionStatCardProps>();
+    const props = defineProps<BaseStatCardBorderedProps>();
 
     const borderClasses: Record<StatBorderVariant, string> = {
         info: 'border-l-info-500',

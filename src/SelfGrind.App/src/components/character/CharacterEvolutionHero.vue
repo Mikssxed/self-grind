@@ -1,11 +1,11 @@
 <template>
     <BaseBox>
         <BaseHeader tag="h3">Character Evolution</BaseHeader>
-        <div class="flex gap-6 items-start">
+        <div class="flex flex-col md:flex-row gap-6 items-start">
             <!-- Avatar -->
             <div class="relative shrink-0">
                 <div
-                    class="bg-gradient-purple rounded-3xl w-44 h-44 flex items-center justify-center"
+                    class="bg-gradient-purple rounded-3xl w-32 h-32 md:w-44 md:h-44 flex items-center justify-center"
                 >
                     <BaseIcon
                         name="character"

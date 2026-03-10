@@ -31,7 +31,7 @@
 </script>
 
 <template>
-    <div class="flex flex-col gap-6 p-8 flex-1 max-h-screen overflow-y-auto">
+    <div class="flex flex-col gap-6 p-4 md:p-8 flex-1 max-h-screen overflow-y-auto">
         <!-- Page Header -->
         <div class="flex flex-col gap-1">
             <BaseHeader tag="h1">Welcome Back, Champion! 🎮</BaseHeader>
@@ -39,7 +39,7 @@
         </div>
 
         <!-- Top Row: Character + Stats -->
-        <div class="grid grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <DashboardCharacter
                 :level="42"
                 title="Productivity Warrior"

@@ -1,7 +1,7 @@
 <template>
-    <div class="w-full flex justify-center items-center pt-25">
-        <div class="flex flex-col gap-8">
-            <div class="flex flex-col w-md gap-4 p-2">
+    <div class="w-full flex justify-center items-center pt-25 px-4">
+        <div class="flex flex-col gap-8 w-full max-w-md">
+            <div class="flex flex-col gap-4 p-2">
                 <GradientIcon name="addUser" />
                 <div class="flex flex-col gap-2">
                     <BaseHeader
@@ -16,7 +16,6 @@
             <BaseBox>
                 <BaseForm
                     @submit="onSubmit"
-                    class="w-md"
                 >
                     <TextField
                         label="Username"

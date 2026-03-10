@@ -31,6 +31,11 @@ const navigationItems: Omit<NavigationItem, 'isActive'>[] = [
         label: 'Character',
         icon: 'character',
     },
+    {
+        name: 'analytics',
+        label: 'Analytics',
+        icon: 'analytics',
+    },
 ];
 
 export default function () {

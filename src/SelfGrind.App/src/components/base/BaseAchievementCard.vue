@@ -1,7 +1,7 @@
 <template>
     <div
         class="flex flex-col items-center gap-2 p-4 rounded-2xl"
-        :class="variantClass"
+        :class="[variantClass, { 'opacity-50 grayscale': locked }]"
     >
         <span class="text-3xl">{{ emoji }}</span>
         <span class="text-xs font-bold text-white text-center">{{ label }}</span>
@@ -23,9 +23,12 @@
         label: string;
         variant: AchievementCardVariant;
         subtitle?: string;
+        locked?: boolean;
     }
 
-    const props = defineProps<BaseAchievementCardProps>();
+    const props = withDefaults(defineProps<BaseAchievementCardProps>(), {
+        locked: false,
+    });
 
     const variantClasses: Record<AchievementCardVariant, string> = {
         orange: 'bg-orange-900/24',

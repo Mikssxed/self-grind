@@ -1,7 +1,7 @@
 <template>
     <BaseBox>
         <BaseHeader tag="h3">🥇 Recent Achievements</BaseHeader>
-        <div class="grid grid-cols-5 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
             <BaseAchievementCard
                 v-for="achievement in achievements"
                 :key="achievement.label"

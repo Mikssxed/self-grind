@@ -128,8 +128,15 @@
 </script>
 <style scoped>
     .contribution-grid {
-        --cell-size: 12px;
-        --grid-gap: 4px;
+        --cell-size: 8px;
+        --grid-gap: 2px;
+    }
+
+    @media (min-width: 768px) {
+        .contribution-grid {
+            --cell-size: 12px;
+            --grid-gap: 4px;
+        }
     }
 
     @media (min-width: 1280px) {

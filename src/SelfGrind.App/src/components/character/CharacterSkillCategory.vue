@@ -4,7 +4,7 @@
             <span class="text-lg">{{ emoji }}</span>
             <span class="text-sm font-bold text-white">{{ name }}</span>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="grid grid-cols-2 md:flex md:items-center gap-2">
             <template
                 v-for="(skill, index) in skills"
                 :key="skill.name"
@@ -18,7 +18,7 @@
                 />
                 <span
                     v-if="index < skills.length - 1"
-                    class="text-primary-600 text-lg font-bold"
+                    class="hidden md:inline text-primary-600 text-lg font-bold"
                 >
                     →
                 </span>

@@ -5,7 +5,7 @@
     import ContributionAchievements from '@/components/contribution-grid/ContributionAchievements.vue';
     import ContributionGrid from '@/components/contribution-grid/ContributionGrid.vue';
     import ContributionStats from '@/components/contribution-grid/ContributionStats.vue';
-    import type { ContributionStat } from '@/components/contribution-grid/ContributionStatCard.vue';
+    import type { BorderedStat } from '@/components/base/BaseStatCardBordered.vue';
     import type { ContributionDay } from '@/components/contribution-grid/ContributionGrid.vue';
     import type { ContributionAchievement } from '@/components/contribution-grid/ContributionAchievements.vue';
     import type { DayTask } from '@/components/contribution-grid/ContributionDayDetail.vue';
@@ -14,7 +14,7 @@
     const availableYears = [2024, 2025, 2026];
     const selectedYear = ref(new Date().getFullYear());
 
-    const stats: ContributionStat[] = [
+    const stats: BorderedStat[] = [
         {
             label: 'Current Streak',
             value: '15',
@@ -143,7 +143,7 @@
 </script>
 
 <template>
-    <div class="flex flex-col gap-6 p-8 flex-1 max-h-screen overflow-y-auto">
+    <div class="flex flex-col gap-6 p-4 md:p-8 flex-1 max-h-screen overflow-y-auto">
         <div class="flex flex-col gap-1">
             <BaseHeader tag="h1">Contribution Grid</BaseHeader>
             <BaseText>Track your daily progress and maintain your streak</BaseText>

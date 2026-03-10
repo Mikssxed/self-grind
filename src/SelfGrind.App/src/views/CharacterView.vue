@@ -82,7 +82,7 @@
 </script>
 
 <template>
-    <div class="flex flex-col gap-6 p-8 flex-1 max-h-screen overflow-y-auto">
+    <div class="flex flex-col gap-6 p-4 md:p-8 flex-1 max-h-screen overflow-y-auto">
         <!-- Page Header -->
         <div class="flex flex-col gap-1">
             <BaseHeader tag="h1">Character Upgrade ⚔️</BaseHeader>
@@ -90,9 +90,9 @@
         </div>
 
         <!-- Character Evolution: Hero + Tier List -->
-        <div class="grid grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <CharacterEvolutionHero
-                class="col-span-2"
+                class="md:col-span-2"
                 :level="42"
                 stage-name="Elite Warrior"
                 next-evolution="Level 50: Legendary Champion"
@@ -107,10 +107,10 @@
         <CharacterSkillTrees :categories="skillCategories" />
 
         <!-- Equipment: Equipped Items + Inventory -->
-        <div class="grid grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <CharacterEquippedItems :items="equippedItems" />
             <CharacterItemInventory
-                class="col-span-2"
+                class="md:col-span-2"
                 :items="inventoryItems"
             />
         </div>

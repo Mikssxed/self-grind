@@ -1,7 +1,7 @@
 <template>
     <BaseBox>
         <BaseHeader tag="h3">Item Inventory</BaseHeader>
-        <div class="grid grid-cols-4 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <CharacterInventoryCard
                 v-for="item in items"
                 :key="item.name"
