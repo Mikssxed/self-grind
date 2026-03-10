@@ -47,6 +47,19 @@
     --gradient-purple-alt: linear-gradient(35deg, #6366f1 0%, #9333ea 100%);
     --gradient-accent: linear-gradient(90deg, #818cf8 0%, #c084fc 100%);
     --gradient-quote: linear-gradient(90deg, #1e1b4b3d 0%, #312e813d 35%, #581c873d 100%);
+    --gradient-quest-purple-bg: linear-gradient(90deg, rgba(88, 28, 135, 0.40) 0%, rgba(131, 24, 67, 0.40) 100%);
+    --gradient-quest-blue-bg: linear-gradient(90deg, rgba(30, 58, 138, 0.40) 0%, rgba(22, 78, 99, 0.40) 100%);
+    --gradient-quest-purple-bar: linear-gradient(90deg, #a855f7 0%, #db2777 100%);
+    --gradient-quest-blue-bar: linear-gradient(90deg, #3b82f6 0%, #0891b2 100%);
+
+    --color-quest-purple-outline: rgba(126, 34, 206, 0.50);
+    --color-quest-blue-outline: rgba(29, 78, 216, 0.50);
+    --color-quest-purple-badge: #9333ea;
+    --color-quest-blue-badge: #2563eb;
+    --color-quest-purple-progress: #c084fc;
+    --color-quest-blue-progress: #60a5fa;
+    --color-quest-purple-ring: #a855f7;
+    --color-quest-blue-ring: #3b82f6;
 
     /* Shadows */
     --shadow-primary: 8px 8px 16px 0px #0f0f1e, -8px -8px 16px 0px #2d2d44;
@@ -111,4 +124,20 @@ body {
 
 .button-primary {
     @apply bg-linear-to-r from-accent-700 to-secondary-700;
+}
+
+.bg-gradient-quest-purple-bg {
+    background: var(--gradient-quest-purple-bg);
+}
+
+.bg-gradient-quest-blue-bg {
+    background: var(--gradient-quest-blue-bg);
+}
+
+.bg-gradient-quest-purple-bar {
+    background: var(--gradient-quest-purple-bar);
+}
+
+.bg-gradient-quest-blue-bar {
+    background: var(--gradient-quest-blue-bar);
 }

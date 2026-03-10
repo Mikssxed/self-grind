@@ -10,6 +10,7 @@ export const AppViews = {
     contributionGrid: () => import('@/views/ContributionGridView.vue'),
     character: () => import('@/views/CharacterView.vue'),
     analytics: () => import('@/views/AnalyticsView.vue'),
+    community: () => import('@/views/CommunityView.vue'),
     register: () => import('@/views/auth/RegisterView.vue'),
     login: () => import('@/views/auth/LoginView.vue'),
 };
@@ -41,6 +42,7 @@ const router = createRouter({
         createRoute('/contribution-grid', 'contributionGrid', LayoutType.WITH_SIDEBAR, true),
         createRoute('/character', 'character', LayoutType.WITH_SIDEBAR, true),
         createRoute('/analytics', 'analytics', LayoutType.WITH_SIDEBAR, true),
+        createRoute('/community', 'community', LayoutType.WITH_SIDEBAR, true),
         createRoute('/register', 'register', LayoutType.WITHOUT_SIDEBAR, false),
         createRoute('/login', 'login', LayoutType.WITHOUT_SIDEBAR, false),
     ],
