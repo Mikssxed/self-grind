@@ -7,7 +7,7 @@
     import { twMerge } from 'tailwind-merge';
     import { computed, useAttrs } from 'vue';
 
-    export type AvatarSize = 'sm' | 'md';
+    export type AvatarSize = 'sm' | 'md' | 'lg';
 
     interface BaseAvatarProps {
         emoji: string;
@@ -23,11 +23,13 @@
     const sizeClasses: Record<AvatarSize, string> = {
         sm: 'w-8 h-8',
         md: 'w-10 h-10',
+        lg: 'w-12 h-12',
     };
 
     const emojiSizeClasses: Record<AvatarSize, string> = {
         sm: 'text-sm',
         md: 'text-lg',
+        lg: 'text-xl',
     };
 
     const classes = computed(() =>

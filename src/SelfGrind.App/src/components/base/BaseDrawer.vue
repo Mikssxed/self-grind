@@ -6,6 +6,12 @@
         :pt="passThroughStyles"
         @update:visible="$emit('update:isOpen', $event)"
     >
+        <template
+            v-if="$slots.header"
+            #header
+        >
+            <slot name="header" />
+        </template>
         <slot />
     </Drawer>
 </template>

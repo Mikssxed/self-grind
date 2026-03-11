@@ -15,7 +15,8 @@
                 <BaseText class="text-xs">Level Up Your Life</BaseText>
             </div>
         </div>
-        <AppNavigation />
+        <AppNavigation class="flex-1" />
+        <SidebarUserProfile />
     </div>
 </template>
 <script setup lang="ts">
@@ -23,4 +24,5 @@
     import BaseText from '../base/BaseText.vue';
     import GradientIcon from '../GradientIcon.vue';
     import AppNavigation from './AppNavigation.vue';
+    import SidebarUserProfile from './SidebarUserProfile.vue';
 </script>

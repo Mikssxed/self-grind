@@ -7,6 +7,7 @@ import dailyTasks from './DailyTasks.vue';
 import gamepad from './GamePad.vue';
 import house from './House.vue';
 import lock from './Lock.vue';
+import logout from './Logout.vue';
 import mail from './Mail.vue';
 import menu from './Menu.vue';
 import user from './User.vue';
@@ -21,6 +22,7 @@ const icons = {
     user,
     mail,
     lock,
+    logout,
     gamepad,
     house,
     menu,
