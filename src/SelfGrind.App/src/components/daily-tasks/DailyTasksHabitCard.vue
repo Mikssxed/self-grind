@@ -13,6 +13,10 @@
 
     const props = defineProps<DailyTasksHabitCardProps>();
 
+    const emit = defineEmits<{
+        edit: [];
+    }>();
+
     const bgClasses: Record<HabitCardVariant, string> = {
         info: 'bg-info-900/40',
         success: 'bg-success-900/40',
@@ -44,7 +48,7 @@
 </script>
 
 <template>
-    <div :class="containerClasses">
+    <div :class="containerClasses" class="cursor-pointer transition-all hover:scale-105" @click="emit('edit')">
         <span class="text-2xl">{{ emoji }}</span>
         <span class="text-sm text-primary-400">{{ label }}</span>
         <span :class="twMerge('text-2xl font-bold', valueClasses[variant])">{{ value }}</span>

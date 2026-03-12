@@ -1,6 +1,6 @@
 <script lang="ts" setup>
     import { twMerge } from 'tailwind-merge';
-    import { computed } from 'vue';
+    import { computed, ref, watch } from 'vue';
 
     export type QuestItemVariant = 'error' | 'info' | 'violet' | 'success' | 'warning';
 
@@ -16,6 +16,15 @@
 
     const props = withDefaults(defineProps<DailyTasksQuestItemProps>(), {
         completed: false,
+    });
+
+    const isAnimating = ref(false);
+
+    watch(() => props.completed, (newVal, oldVal) => {
+        if (newVal && !oldVal) {
+            isAnimating.value = true;
+            setTimeout(() => { isAnimating.value = false; }, 700);
+        }
     });
 
     const bgClasses: Record<QuestItemVariant, string> = {
@@ -68,21 +77,32 @@
 
     const containerClasses = computed(() => {
         return twMerge(
-            'flex items-center gap-4 p-4 rounded-xl border',
+            'flex items-center gap-4 p-4 rounded-xl border transition-all duration-500',
             bgClasses[props.variant],
-            borderClasses[props.variant]
+            borderClasses[props.variant],
+            props.completed && 'opacity-60',
+            isAnimating.value && 'animate-complete'
         );
     });
 
     const checkboxClass = computed(() => {
         return twMerge(
-            'w-5 h-5 rounded border-2 flex-shrink-0',
+            'w-5 h-5 rounded-full border-2 flex-shrink-0 flex items-center justify-center transition-all duration-300',
             checkboxClasses[props.variant],
             props.completed && checkboxFilledClasses[props.variant]
         );
     });
 
+    const titleClass = computed(() => {
+        return twMerge(
+            'font-bold transition-all duration-300',
+            props.completed ? 'line-through text-primary-300' : 'text-white'
+        );
+    });
+
     const xpLabel = computed(() => `+${props.xp} XP`);
+
+    const attributeLabel = computed(() => `${props.attributeEmoji} ${props.attribute}`);
 
     const xpBadgeClass = computed(() => {
         return twMerge('text-xs font-bold px-3 py-1 rounded-full', xpBadgeClasses[props.variant]);
@@ -95,9 +115,18 @@
 
 <template>
     <div :class="containerClasses">
-        <div :class="checkboxClass" />
+        <div :class="checkboxClass">
+            <svg
+                v-if="completed"
+                class="w-3 h-3 text-white animate-check"
+                viewBox="0 0 12 10"
+                fill="none"
+            >
+                <path d="M1 5l3.5 3.5L11 1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        </div>
         <div class="flex flex-col gap-0.5 flex-1">
-            <span class="font-bold text-white">{{ title }}</span>
+            <span :class="titleClass">{{ title }}</span>
             <span class="text-sm text-primary-400">{{ description }}</span>
         </div>
         <div class="flex items-center gap-2">
@@ -105,7 +134,7 @@
                 {{ xpLabel }}
             </span>
             <span :class="attributeBadgeClass">
-                {{ attributeEmoji }} {{ attribute }}
+                {{ attributeLabel }}
             </span>
         </div>
     </div>

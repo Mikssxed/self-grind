@@ -193,3 +193,26 @@ body {
     border-radius: 9999px;
     background: var(--color-accent-500);
 }
+
+/* Quest item completion animations */
+@keyframes check-pop {
+    0%   { transform: scale(0); opacity: 0; }
+    60%  { transform: scale(1.3); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes complete-pop {
+    0%   { transform: scale(1);    box-shadow: none; }
+    25%  { transform: scale(1.05); box-shadow: 0 0 28px color-mix(in srgb, var(--color-success-500) 65%, transparent), 0 0 60px color-mix(in srgb, var(--color-info-500) 20%, transparent); }
+    55%  { transform: scale(0.97); box-shadow: 0 0 16px color-mix(in srgb, var(--color-success-500) 35%, transparent); }
+    80%  { transform: scale(1.01); box-shadow: 0 0 10px color-mix(in srgb, var(--color-success-500) 15%, transparent); }
+    100% { transform: scale(1);    box-shadow: none; }
+}
+
+.animate-check {
+    animation: check-pop 0.3s ease-out forwards;
+}
+
+.animate-complete {
+    animation: complete-pop 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}

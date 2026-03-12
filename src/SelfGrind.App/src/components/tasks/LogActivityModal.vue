@@ -9,19 +9,20 @@
             @submit.prevent="onSubmit"
         >
             <TextField
-                label="Activity Name"
+                label="What did you do?"
                 name="activityName"
                 :required="true"
             />
 
-            <ToggleButtonGroup
-                label="Category"
-                name="category"
-                :options="categoryOptions"
+            <TextAreaField
+                label="Notes (optional)"
+                name="notes"
+                placeholder="How did it go?"
+                :rows="2"
             />
 
             <TextField
-                label="Duration"
+                label="Duration (optional)"
                 name="duration"
             />
 
@@ -64,26 +65,17 @@
     import BaseModal from '@/components/base/BaseModal.vue';
     import BaseButton from '@/components/base/BaseButton.vue';
     import TextField from '@/components/form/TextField.vue';
-    import ToggleButtonGroup from '@/components/form/ToggleButtonGroup.vue';
-    import type { ToggleOption } from '@/components/form/ToggleButtonGroup.vue';
+    import TextAreaField from '@/components/form/TextAreaField.vue';
     import RangeSliderField from '@/components/form/RangeSliderField.vue';
     import AttributeSelector from '@/components/form/AttributeSelector.vue';
     import { useLogActivityModal } from '@/composables/useLogActivityModal';
 
     const { isOpen, close } = useLogActivityModal();
 
-    const categoryOptions: ToggleOption[] = [
-        { label: 'Exercise', value: 'Exercise' },
-        { label: 'Reading', value: 'Reading' },
-        { label: 'Meditation', value: 'Meditation' },
-        { label: 'Learning', value: 'Learning' },
-        { label: 'Other', value: 'Other' },
-    ];
-
     const schema = toTypedSchema(
         object({
             activityName: string().min(1, 'Activity name is required'),
-            category: zEnum(['Exercise', 'Reading', 'Meditation', 'Learning', 'Other']),
+            notes: optional(string()),
             duration: optional(string()),
             exp: number().min(5).max(50),
             attribute: optional(zEnum(['Strength', 'Knowledge', 'Health', 'Charisma', 'Focus', 'Creativity'])),
@@ -94,7 +86,7 @@
         validationSchema: schema,
         initialValues: {
             activityName: '',
-            category: 'Exercise',
+            notes: '',
             duration: '',
             exp: 10,
             attribute: undefined,
