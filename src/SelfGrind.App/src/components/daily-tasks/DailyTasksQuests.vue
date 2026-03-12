@@ -3,6 +3,9 @@
     import BaseButton from '@/components/base/BaseButton.vue';
     import BaseHeader from '@/components/base/BaseHeader.vue';
     import DailyTasksQuestItem, { type QuestItemVariant } from './DailyTasksQuestItem.vue';
+    import { useAddTaskModal } from '@/composables/useAddTaskModal';
+
+    const { open: openAddTask } = useAddTaskModal();
 
     export interface Quest {
         title: string;
@@ -25,7 +28,12 @@
     <BaseBox>
         <div class="flex items-center justify-between">
             <BaseHeader tag="h3">Today's Quests</BaseHeader>
-            <BaseButton size="sm">+ Add Task</BaseButton>
+            <BaseButton
+                size="sm"
+                @click="openAddTask"
+            >
+                + Add Task
+            </BaseButton>
         </div>
         <div class="flex flex-col gap-3">
             <DailyTasksQuestItem

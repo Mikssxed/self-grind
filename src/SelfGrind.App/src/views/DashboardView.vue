@@ -1,10 +1,19 @@
 <script setup lang="ts">
+    import { useRouter } from 'vue-router';
     import BaseHeader from '@/components/base/BaseHeader.vue';
     import BaseText from '@/components/base/BaseText.vue';
     import DashboardCharacter from '@/components/dashboard/DashboardCharacter.vue';
     import DashboardCharacterStats from '@/components/dashboard/DashboardCharacterStats.vue';
     import DashboardDailyQuest from '@/components/dashboard/DashboardDailyQuest.vue';
     import DashboardRecentAchievements from '@/components/dashboard/DashboardRecentAchievements.vue';
+    import { useAddTaskModal } from '@/composables/useAddTaskModal';
+    import { useLogActivityModal } from '@/composables/useLogActivityModal';
+    import { useDailyBoostModal } from '@/composables/useDailyBoostModal';
+
+    const router = useRouter();
+    const { open: openAddTask } = useAddTaskModal();
+    const { open: openLogActivity } = useLogActivityModal();
+    const { open: openDailyBoost } = useDailyBoostModal();
 
     const stats = [
         { label: 'Strength', emoji: '💪', value: 78, variant: 'error' as const },
@@ -23,10 +32,10 @@
     ];
 
     const questActions = [
-        { emoji: '➕', label: 'Add Task', borderVariant: 'accent' as const },
-        { emoji: '✅', label: 'Log Activity', borderVariant: 'info' as const },
-        { emoji: '📊', label: 'View Stats', borderVariant: 'violet' as const },
-        { emoji: '🎁', label: 'Daily Boost', borderVariant: 'warning' as const },
+        { emoji: '➕', label: 'Add Task', borderVariant: 'accent' as const, action: openAddTask },
+        { emoji: '✅', label: 'Log Activity', borderVariant: 'info' as const, action: openLogActivity },
+        { emoji: '📊', label: 'View Stats', borderVariant: 'violet' as const, action: () => router.push('/contribution-grid') },
+        { emoji: '🎁', label: 'Daily Boost', borderVariant: 'warning' as const, action: openDailyBoost },
     ];
 </script>
 

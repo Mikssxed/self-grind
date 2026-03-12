@@ -12,11 +12,12 @@
 
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <DashboardActionCard
-                v-for="action in actions"
-                :key="action.label"
-                :emoji="action.emoji"
-                :label="action.label"
-                :borderVariant="action.borderVariant"
+                v-for="questAction in actions"
+                :key="questAction.label"
+                :emoji="questAction.emoji"
+                :label="questAction.label"
+                :borderVariant="questAction.borderVariant"
+                :action="questAction.action"
             />
         </div>
     </BaseBox>
@@ -33,6 +34,7 @@
         emoji: string;
         label: string;
         borderVariant?: ActionCardBorderVariant;
+        action?: () => void;
     }
 
     interface DashboardDailyQuestProps {

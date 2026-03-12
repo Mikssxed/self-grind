@@ -3,6 +3,7 @@
         variant="secondary"
         class="flex flex-col items-center gap-2 px-4 py-4 bg-primary-900 text-sm rounded-2xl border"
         :class="borderClass"
+        @click="action?.()"
     >
         <span class="text-2xl">{{ emoji }}</span>
         <span class="font-bold text-white">{{ label }}</span>
@@ -18,6 +19,7 @@
         emoji: string;
         label: string;
         borderVariant?: ActionCardBorderVariant;
+        action?: () => void;
     }
 
     const props = withDefaults(defineProps<DashboardActionCardProps>(), {
