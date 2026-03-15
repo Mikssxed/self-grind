@@ -1,6 +1,5 @@
 <script setup lang="ts">
-    import BaseHeader from '@/components/base/BaseHeader.vue';
-    import BaseText from '@/components/base/BaseText.vue';
+    import PageLayout from '@/components/layout/PageLayout.vue';
     import CommunityLeaderboard from '@/components/community/CommunityLeaderboard.vue';
     import CommunityFriends from '@/components/community/CommunityFriends.vue';
     import CommunityPartyQuests from '@/components/community/CommunityPartyQuests.vue';
@@ -112,17 +111,15 @@
 </script>
 
 <template>
-    <div class="flex flex-col gap-6 p-4 md:p-8 flex-1 max-h-screen overflow-y-auto">
-        <div class="flex flex-col gap-1">
-            <BaseHeader tag="h1">Community</BaseHeader>
-            <BaseText>Connect with fellow grinders and compete together</BaseText>
-        </div>
-
+    <PageLayout
+        title="Community"
+        subtitle="Connect with fellow grinders and compete together"
+    >
         <div class="grid grid-cols-1 lg:grid-cols-[2fr_1fr] gap-6 items-stretch">
             <CommunityLeaderboard :entries="leaderboardEntries" />
             <CommunityFriends :friends="friends" />
         </div>
 
         <CommunityPartyQuests :quests="partyQuests" />
-    </div>
+    </PageLayout>
 </template>

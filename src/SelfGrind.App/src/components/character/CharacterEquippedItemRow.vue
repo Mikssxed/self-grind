@@ -20,8 +20,10 @@
 </template>
 <script setup lang="ts">
     import { computed } from 'vue';
+    import { borderLeftClasses, textClasses } from '@/composables/useColorVariant';
+    import type { ColorVariant } from '@/composables/useColorVariant';
 
-    export type EquippedItemVariant = 'error' | 'info' | 'violet' | 'warning' | 'success';
+    export type EquippedItemVariant = ColorVariant;
 
     export interface EquippedItem {
         name: string;
@@ -41,22 +43,6 @@
 
     const props = defineProps<CharacterEquippedItemRowProps>();
 
-    const borderClasses: Record<EquippedItemVariant, string> = {
-        error: 'border-l-error-500',
-        info: 'border-l-info-500',
-        violet: 'border-l-violet-500',
-        warning: 'border-l-warning-500',
-        success: 'border-l-success-500',
-    };
-
-    const bonusTextClasses: Record<EquippedItemVariant, string> = {
-        error: 'text-error-500',
-        info: 'text-info-500',
-        violet: 'text-violet-500',
-        warning: 'text-warning-500',
-        success: 'text-success-500',
-    };
-
-    const borderClass = computed(() => borderClasses[props.variant]);
-    const bonusTextClass = computed(() => bonusTextClasses[props.variant]);
+    const borderClass = computed(() => borderLeftClasses[props.variant]);
+    const bonusTextClass = computed(() => textClasses[props.variant]);
 </script>

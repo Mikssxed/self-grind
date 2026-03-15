@@ -1,6 +1,5 @@
 <script setup lang="ts">
-    import BaseHeader from '@/components/base/BaseHeader.vue';
-    import BaseText from '@/components/base/BaseText.vue';
+    import PageLayout from '@/components/layout/PageLayout.vue';
     import CharacterEvolutionHero from '@/components/character/CharacterEvolutionHero.vue';
     import CharacterEvolutionTierList from '@/components/character/CharacterEvolutionTierList.vue';
     import CharacterSkillTrees from '@/components/character/CharacterSkillTrees.vue';
@@ -82,13 +81,10 @@
 </script>
 
 <template>
-    <div class="flex flex-col gap-6 p-4 md:p-8 flex-1 max-h-screen overflow-y-auto">
-        <!-- Page Header -->
-        <div class="flex flex-col gap-1">
-            <BaseHeader tag="h1">Character Upgrade ⚔️</BaseHeader>
-            <BaseText>Evolve your character, unlock skills, and equip powerful items</BaseText>
-        </div>
-
+    <PageLayout
+        title="Character Upgrade ⚔️"
+        subtitle="Evolve your character, unlock skills, and equip powerful items"
+    >
         <!-- Character Evolution: Hero + Tier List -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <CharacterEvolutionHero
@@ -114,5 +110,5 @@
                 :items="inventoryItems"
             />
         </div>
-    </div>
+    </PageLayout>
 </template>

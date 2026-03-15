@@ -1,13 +1,12 @@
 <script setup lang="ts">
     import { ref, computed } from 'vue';
-    import BaseHeader from '@/components/base/BaseHeader.vue';
-    import BaseText from '@/components/base/BaseText.vue';
-    import ContributionAchievements from '@/components/contribution-grid/ContributionAchievements.vue';
+    import PageLayout from '@/components/layout/PageLayout.vue';
+    import BaseAchievementGrid from '@/components/base/BaseAchievementGrid.vue';
     import ContributionGrid from '@/components/contribution-grid/ContributionGrid.vue';
-    import ContributionStats from '@/components/contribution-grid/ContributionStats.vue';
+    import BaseStatGrid from '@/components/base/BaseStatGrid.vue';
+    import type { Achievement } from '@/components/base/BaseAchievementGrid.vue';
     import type { BorderedStat } from '@/components/base/BaseStatCardBordered.vue';
     import type { ContributionDay } from '@/components/contribution-grid/ContributionGrid.vue';
-    import type { ContributionAchievement } from '@/components/contribution-grid/ContributionAchievements.vue';
     import type { DayTask } from '@/components/contribution-grid/ContributionDayDetail.vue';
     import type { ActivityLevel } from '@/components/contribution-grid/ContributionGridCell.vue';
 
@@ -114,7 +113,7 @@
 
     const days = computed(() => generateDays(selectedYear.value));
 
-    const achievements: ContributionAchievement[] = [
+    const achievements: Achievement[] = [
         {
             emoji: '🔥',
             label: 'Streak Master',
@@ -143,13 +142,11 @@
 </script>
 
 <template>
-    <div class="flex flex-col gap-6 p-4 md:p-8 flex-1 max-h-screen overflow-y-auto">
-        <div class="flex flex-col gap-1">
-            <BaseHeader tag="h1">Contribution Grid</BaseHeader>
-            <BaseText>Track your daily progress and maintain your streak</BaseText>
-        </div>
-
-        <ContributionStats :stats="stats" />
+    <PageLayout
+        title="Contribution Grid"
+        subtitle="Track your daily progress and maintain your streak"
+    >
+        <BaseStatGrid :stats="stats" />
 
         <ContributionGrid
             :days="days"
@@ -158,6 +155,9 @@
             @update:selected-year="selectedYear = $event"
         />
 
-        <ContributionAchievements :achievements="achievements" />
-    </div>
+        <BaseAchievementGrid
+            title="Streak Achievements"
+            :achievements="achievements"
+        />
+    </PageLayout>
 </template>

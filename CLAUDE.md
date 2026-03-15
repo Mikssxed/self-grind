@@ -80,3 +80,118 @@ Four layers with strict dependency direction (API → Application → Domain ←
 After changing any backend endpoint signature:
 1. Build the backend: `dotnet build`
 2. Run `npm run build:api` from `src/SelfGrind.App` — this exports swagger from the DLL then runs Kiota to regenerate `src/api/apiClient/`
+
+---
+
+## Claude Workflow
+
+**Always follow this two-phase approach for any non-trivial task:**
+
+### Phase 1 — Plan
+Before writing code, produce a plan that includes:
+- Files to create (with full paths)
+- Files to modify (with full paths)
+- Layers affected (Domain / Application / Infrastructure / API / Frontend)
+- CQRS operations needed (commands, queries)
+- API changes (new/modified endpoints)
+- Frontend changes (new views, components, route updates)
+- EF Core migration needed (yes/no)
+- API client regeneration needed (yes/no)
+
+Wait for user approval before implementing.
+
+### Phase 2 — Implement
+After approval, implement in this order:
+1. Domain entity + repository interface (if new)
+2. Application command/query + handler + validator
+3. AutoMapper profile (if mapping needed)
+4. Infrastructure repository implementation + DI registration
+5. API controller action
+6. EF Core migration (if schema changed)
+7. Frontend view + component(s) + route registration
+8. Kiota client regeneration (if endpoint changed)
+
+---
+
+## CQRS Rules
+
+| Rule | Detail |
+|------|--------|
+| Commands modify state | Create, update, delete operations |
+| Queries are read-only | No side effects, no state changes |
+| Commands return minimal data | ID (`Guid`) or void (`IRequest`) |
+| Queries return DTOs | Never return raw domain entities |
+| All requests go through MediatR | Controllers call `mediator.Send()` only |
+| Handlers live in Application | Never in Domain, Infrastructure, or API |
+| Validation runs before handler | FluentValidation via MediatR pipeline |
+
+---
+
+## Layer Rules (strict — do not violate)
+
+```
+Domain      → no dependencies on any other layer
+Application → depends on Domain only
+Infrastructure → depends on Domain only (implements Domain interfaces)
+API         → depends on Application + Infrastructure
+Frontend    → calls HTTP API endpoints only
+```
+
+**Application handlers must not:**
+- Reference `DbContext`, `SignInManager`, or any EF Core type directly
+- Import from `SelfGrind.Infrastructure` namespace
+- Contain SQL queries or persistence logic
+
+**Domain entities must not:**
+- Import from Application, Infrastructure, or API namespaces
+- Call any services
+
+---
+
+## Naming Quick Reference
+
+| Thing | Pattern | Example |
+|-------|---------|---------|
+| Command | `{Verb}{Feature}Command` | `CreateTaskCommand` |
+| Handler | `{Verb}{Feature}CommandHandler` | `CreateTaskCommandHandler` |
+| Query | `{Verb}{Feature}Query` | `GetTasksQuery` |
+| Validator | `{Verb}{Feature}CommandValidator` | `CreateTaskCommandValidator` |
+| Repository interface | `I{Feature}Repository` | `ITasksRepository` |
+| Repository impl | `{Feature}Repository` | `TasksRepository` |
+| AutoMapper profile | `{Feature}Profile` | `TasksProfile` |
+| Vue view | `{Feature}View.vue` | `DashboardView.vue` |
+| Base component | `Base{Name}.vue` | `BaseButton.vue` |
+| Feature component | `{Feature}{Name}.vue` | `DashboardCharacter.vue` |
+
+---
+
+## .claude/ Reference Files
+
+Detailed context, skills, and code templates are in `.claude/`:
+
+```
+.claude/
+├── context/
+│   ├── architecture.md       — layer diagram, request flow, dependency rules
+│   ├── backend-rules.md      — CQRS, MediatR, FluentValidation, AutoMapper patterns
+│   ├── frontend-rules.md     — Vue conventions, routing, Pinia, Tailwind rules
+│   └── project-overview.md   — tech stack, repo layout, key files
+├── skills/
+│   ├── create-backend-feature.md    — full feature walkthrough (entity→API)
+│   ├── create-cqrs-command.md       — Command + Handler + Validator
+│   ├── create-cqrs-query.md         — Query + Handler
+│   ├── create-api-endpoint.md       — Controller action patterns
+│   ├── create-domain-entity.md      — Entity + repository interface
+│   ├── create-frontend-view.md      — Vue view + route registration
+│   ├── create-frontend-component.md — Variant-based Vue component
+│   ├── refactor-backend-feature.md  — Fix layer violations, enforce CQRS
+│   └── refactor-frontend-component.md — Fix styling, extract components
+└── templates/
+    ├── domain-entity.cs      — entity class template
+    ├── cqrs-command.cs       — command request template
+    ├── cqrs-query.cs         — query request + DTO template
+    ├── cqrs-handler.cs       — handler template (command or query)
+    ├── api-endpoint.cs       — controller template
+    ├── vue-component.vue     — Vue component with variant props
+    └── frontend-view.vue     — Vue view template
+```

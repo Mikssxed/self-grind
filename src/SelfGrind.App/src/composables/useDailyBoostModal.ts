@@ -1,14 +1,7 @@
-import { ref, readonly } from 'vue';
+import { useModal } from './useModal';
 
-const isOpen = ref(false);
+const modal = useModal();
 
 export function useDailyBoostModal() {
-    const open = () => {
-        isOpen.value = true;
-    };
-    const close = () => {
-        isOpen.value = false;
-    };
-
-    return { isOpen: readonly(isOpen), open, close };
+    return modal;
 }

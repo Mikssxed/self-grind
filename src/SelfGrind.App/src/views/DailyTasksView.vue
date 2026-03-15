@@ -1,6 +1,5 @@
 <script setup lang="ts">
-    import BaseHeader from '@/components/base/BaseHeader.vue';
-    import BaseText from '@/components/base/BaseText.vue';
+    import PageLayout from '@/components/layout/PageLayout.vue';
     import DailyTasksHabitTracker from '@/components/daily-tasks/DailyTasksHabitTracker.vue';
     import DailyTasksQuests from '@/components/daily-tasks/DailyTasksQuests.vue';
     import DailyTasksStats from '@/components/daily-tasks/DailyTasksStats.vue';
@@ -59,16 +58,14 @@
 </script>
 
 <template>
-    <div class="flex flex-col gap-6 p-4 md:p-8 flex-1 max-h-screen overflow-y-auto">
-        <div class="flex flex-col gap-1">
-            <BaseHeader tag="h1">Daily Tasks & Habits ✅</BaseHeader>
-            <BaseText>Complete tasks to earn XP and level up your character</BaseText>
-        </div>
-
+    <PageLayout
+        title="Daily Tasks & Habits ✅"
+        subtitle="Complete tasks to earn XP and level up your character"
+    >
         <DailyTasksStats :stats="stats" />
 
         <DailyTasksQuests :quests="quests" />
 
         <DailyTasksHabitTracker :habits="habits" />
-    </div>
+    </PageLayout>
 </template>

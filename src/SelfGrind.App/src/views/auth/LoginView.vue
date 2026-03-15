@@ -1,52 +1,40 @@
 <template>
-    <div class="w-full flex justify-center items-center pt-25 px-4">
-        <div class="flex flex-col gap-8 w-full max-w-md">
-            <div class="flex flex-col gap-4 p-2">
-                <GradientIcon name="gamepad" />
-                <div class="flex flex-col gap-2">
-                    <BaseHeader
-                        variant="gradient"
-                        class="text-center"
-                    >
-                        Welcome Back!
-                    </BaseHeader>
-                    <BaseText class="text-center">Ready to continue your journey?</BaseText>
-                </div>
-            </div>
-            <BaseBox>
-                <BaseForm @submit="onSubmit">
-                    <TextField
-                        label="Email"
-                        name="email"
-                        iconName="mail"
-                        required
-                    />
-                    <TextField
-                        label="Password"
-                        name="password"
-                        iconName="lock"
-                        type="password"
-                        required
-                    />
-                    <BaseButton
-                        class="mt-4"
-                        :disabled="form.isProcessing.value"
-                    >
-                        {{ submitButtonLabel }}
-                    </BaseButton>
-                </BaseForm>
-            </BaseBox>
-        </div>
-    </div>
+    <AuthLayout
+        icon="gamepad"
+        title="Welcome Back!"
+        subtitle="Ready to continue your journey?"
+    >
+        <BaseBox>
+            <BaseForm @submit="onSubmit">
+                <TextField
+                    label="Email"
+                    name="email"
+                    iconName="mail"
+                    required
+                />
+                <TextField
+                    label="Password"
+                    name="password"
+                    iconName="lock"
+                    type="password"
+                    required
+                />
+                <BaseButton
+                    class="mt-4"
+                    :disabled="form.isProcessing.value"
+                >
+                    {{ submitButtonLabel }}
+                </BaseButton>
+            </BaseForm>
+        </BaseBox>
+    </AuthLayout>
 </template>
 <script setup lang="ts">
+    import AuthLayout from '@/components/layout/AuthLayout.vue';
     import BaseBox from '@/components/base/BaseBox.vue';
     import BaseButton from '@/components/base/BaseButton.vue';
     import BaseForm from '@/components/base/BaseForm.vue';
-    import BaseHeader from '@/components/base/BaseHeader.vue';
-    import BaseText from '@/components/base/BaseText.vue';
     import TextField from '@/components/form/TextField.vue';
-    import GradientIcon from '@/components/GradientIcon.vue';
     import { useLoginMutation } from '@/composables/useAuth';
     import { useForm } from '@/composables/useForm';
     import { toTypedSchema } from '@vee-validate/zod';

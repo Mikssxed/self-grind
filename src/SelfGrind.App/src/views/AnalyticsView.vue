@@ -1,15 +1,17 @@
 <script setup lang="ts">
-    import BaseHeader from '@/components/base/BaseHeader.vue';
-    import BaseText from '@/components/base/BaseText.vue';
-    import AnalyticsStats from '@/components/analytics/AnalyticsStats.vue';
+    import PageLayout from '@/components/layout/PageLayout.vue';
+    import BaseStatGrid from '@/components/base/BaseStatGrid.vue';
     import AnalyticsWeeklyActivity from '@/components/analytics/AnalyticsWeeklyActivity.vue';
     import AnalyticsLifeBalance from '@/components/analytics/AnalyticsLifeBalance.vue';
     import AnalyticsStatGrowth from '@/components/analytics/AnalyticsStatGrowth.vue';
     import AnalyticsXpPerWeek from '@/components/analytics/AnalyticsXpPerWeek.vue';
-    import AnalyticsAchievements from '@/components/analytics/AnalyticsAchievements.vue';
+    import BaseAchievementGrid from '@/components/base/BaseAchievementGrid.vue';
+    import type { Achievement } from '@/components/base/BaseAchievementGrid.vue';
+    import { useChartColors } from '@/composables/useChartColors';
     import type { BorderedStat } from '@/components/base/BaseStatCardBordered.vue';
-    import type { AnalyticsAchievement } from '@/components/analytics/AnalyticsAchievements.vue';
     import type { ChartData } from 'chart.js';
+
+    const colors = useChartColors();
 
     const stats: BorderedStat[] = [
         {
@@ -49,29 +51,31 @@
             {
                 label: 'Learning',
                 data: [4, 6, 5, 8, 7, 10, 6],
-                backgroundColor: '#22c55e',
+                backgroundColor: colors.success,
                 borderRadius: 4,
             },
             {
                 label: 'Mental',
                 data: [6, 5, 7, 4, 6, 5, 8],
-                backgroundColor: '#3b82f6',
+                backgroundColor: colors.info,
                 borderRadius: 4,
             },
             {
                 label: 'Physical',
                 data: [8, 10, 6, 8, 5, 8, 6],
-                backgroundColor: '#ef4444',
+                backgroundColor: colors.error,
                 borderRadius: 4,
             },
             {
                 label: 'Wellness',
                 data: [6, 5, 8, 6, 8, 4, 5],
-                backgroundColor: '#eab308',
+                backgroundColor: colors.warning,
                 borderRadius: 4,
             },
         ],
     };
+
+    const accentWithAlpha = `${colors.accent}33`;
 
     const lifeBalanceData: ChartData<'radar'> = {
         labels: ['Physical', 'Mental', 'Learning', 'Wellness', 'Productivity'],
@@ -79,11 +83,11 @@
             {
                 label: 'Balance',
                 data: [78, 65, 82, 55, 70],
-                backgroundColor: 'rgba(129, 140, 248, 0.2)',
-                borderColor: '#818cf8',
+                backgroundColor: accentWithAlpha,
+                borderColor: colors.accent,
                 borderWidth: 2,
-                pointBackgroundColor: '#818cf8',
-                pointBorderColor: '#818cf8',
+                pointBackgroundColor: colors.accent,
+                pointBorderColor: colors.accent,
                 pointRadius: 4,
             },
         ],
@@ -95,8 +99,8 @@
             {
                 label: 'Energy',
                 data: [50, 55, 60, 58, 72, 80],
-                borderColor: '#eab308',
-                backgroundColor: '#eab308',
+                borderColor: colors.warning,
+                backgroundColor: colors.warning,
                 tension: 0.4,
                 borderWidth: 2,
                 pointRadius: 4,
@@ -105,8 +109,8 @@
             {
                 label: 'Focus',
                 data: [45, 52, 48, 65, 70, 78],
-                borderColor: '#22c55e',
-                backgroundColor: '#22c55e',
+                borderColor: colors.success,
+                backgroundColor: colors.success,
                 tension: 0.4,
                 borderWidth: 2,
                 pointRadius: 4,
@@ -115,8 +119,8 @@
             {
                 label: 'Knowledge',
                 data: [55, 58, 62, 70, 75, 85],
-                borderColor: '#3b82f6',
-                backgroundColor: '#3b82f6',
+                borderColor: colors.info,
+                backgroundColor: colors.info,
                 tension: 0.4,
                 borderWidth: 2,
                 pointRadius: 4,
@@ -125,8 +129,8 @@
             {
                 label: 'Strength',
                 data: [48, 50, 55, 60, 68, 75],
-                borderColor: '#ef4444',
-                backgroundColor: '#ef4444',
+                borderColor: colors.error,
+                backgroundColor: colors.error,
                 tension: 0.4,
                 borderWidth: 2,
                 pointRadius: 4,
@@ -141,13 +145,13 @@
             {
                 label: 'XP',
                 data: [420, 580, 350, 720, 850, 940],
-                backgroundColor: '#818cf8',
+                backgroundColor: colors.accent,
                 borderRadius: 6,
             },
         ],
     };
 
-    const achievements: AnalyticsAchievement[] = [
+    const achievements: Achievement[] = [
         {
             emoji: '🏃',
             label: 'First Steps',
@@ -194,13 +198,11 @@
 </script>
 
 <template>
-    <div class="flex flex-col gap-6 p-4 md:p-8 flex-1 max-h-screen overflow-y-auto">
-        <div class="flex flex-col gap-1">
-            <BaseHeader tag="h1">Progress Analytics</BaseHeader>
-            <BaseText>Detailed insights into your growth journey</BaseText>
-        </div>
-
-        <AnalyticsStats :stats="stats" />
+    <PageLayout
+        title="Progress Analytics"
+        subtitle="Detailed insights into your growth journey"
+    >
+        <BaseStatGrid :stats="stats" />
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <AnalyticsWeeklyActivity :data="weeklyActivityData" />
@@ -212,6 +214,10 @@
             <AnalyticsXpPerWeek :data="xpPerWeekData" />
         </div>
 
-        <AnalyticsAchievements :achievements="achievements" />
-    </div>
+        <BaseAchievementGrid
+            title="Achievement Progress"
+            :achievements="achievements"
+            :columns="3"
+        />
+    </PageLayout>
 </template>

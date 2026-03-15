@@ -1,11 +1,10 @@
 <script setup lang="ts">
     import { useRouter } from 'vue-router';
-    import BaseHeader from '@/components/base/BaseHeader.vue';
-    import BaseText from '@/components/base/BaseText.vue';
+    import PageLayout from '@/components/layout/PageLayout.vue';
     import DashboardCharacter from '@/components/dashboard/DashboardCharacter.vue';
     import DashboardCharacterStats from '@/components/dashboard/DashboardCharacterStats.vue';
     import DashboardDailyQuest from '@/components/dashboard/DashboardDailyQuest.vue';
-    import DashboardRecentAchievements from '@/components/dashboard/DashboardRecentAchievements.vue';
+    import BaseAchievementGrid from '@/components/base/BaseAchievementGrid.vue';
     import { useAddTaskModal } from '@/composables/useAddTaskModal';
     import { useLogActivityModal } from '@/composables/useLogActivityModal';
     import { useDailyBoostModal } from '@/composables/useDailyBoostModal';
@@ -40,13 +39,10 @@
 </script>
 
 <template>
-    <div class="flex flex-col gap-6 p-4 md:p-8 flex-1 max-h-screen overflow-y-auto">
-        <!-- Page Header -->
-        <div class="flex flex-col gap-1">
-            <BaseHeader tag="h1">Welcome Back, Champion! 🎮</BaseHeader>
-            <BaseText>Ready to level up today? Let's crush those goals!</BaseText>
-        </div>
-
+    <PageLayout
+        title="Welcome Back, Champion! 🎮"
+        subtitle="Ready to level up today? Let's crush those goals!"
+    >
         <!-- Top Row: Character + Stats -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <DashboardCharacter
@@ -68,6 +64,10 @@
             :actions="questActions"
         />
 
-        <DashboardRecentAchievements :achievements="achievements" />
-    </div>
+        <BaseAchievementGrid
+            title="🥇 Recent Achievements"
+            :achievements="achievements"
+            :columns="5"
+        />
+    </PageLayout>
 </template>
