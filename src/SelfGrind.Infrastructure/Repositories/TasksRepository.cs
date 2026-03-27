@@ -1,4 +1,6 @@
-﻿using SelfGrind.Domain.Constants;
+﻿using Microsoft.EntityFrameworkCore;
+using SelfGrind.Application.User;
+using SelfGrind.Domain.Constants;
 using SelfGrind.Domain.Entities;
 using SelfGrind.Domain.Repositories;
 using SelfGrind.Infrastructure.Persistence;
@@ -15,7 +17,12 @@ public class TasksRepository(SelfGrindDbContext dbContext) : ITasksRepository
         await dbContext.SaveChangesAsync();
         return taskItem.Id;
     }
-    
+
+    public async Task<TaskItem[]> GetAllAsync(string userId)
+    {
+        return await dbContext.Tasks.Where(t => t.UserId == userId).ToArrayAsync();
+    }
+
     private void CreateOccurrencesRange(TaskItem taskItem)
     {
         var schedule = taskItem.Schedule;
@@ -54,4 +61,6 @@ public class TasksRepository(SelfGrindDbContext dbContext) : ITasksRepository
         
         dbContext.TaskOccurrences.AddRange(occurrences);
     }
+    
+    
 }

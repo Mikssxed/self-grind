@@ -5,4 +5,5 @@ namespace SelfGrind.Domain.Repositories;
 public interface ITasksRepository
 {
     Task<Guid> Create(TaskItem taskItem);
+    Task<TaskItem[]> GetAllAsync(string userId);
 }

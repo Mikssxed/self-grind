@@ -17,6 +17,12 @@ public class TasksProfile : Profile
                 RepeatInterval = src.RepeatInterval,
                 DaysOfWeek = src.DaysOfWeek
             }));
+        
+        CreateMap<TaskItem, TaskItemDto>()
+            .ForMember(tid => tid.StartDate, opt => opt.MapFrom(src => src.Schedule.StartDate))
+            .ForMember(tid => tid.EndDate, opt => opt.MapFrom(src => src.Schedule.EndDate))
+            .ForMember(tid => tid.RepetitionType, opt => opt.MapFrom(src => src.Schedule.RepetitionType))
+            .ForMember(tid => tid.RepeatInterval, opt => opt.MapFrom(src => src.Schedule.RepeatInterval))
+            .ForMember(tid => tid.DaysOfWeek, opt => opt.MapFrom(src => src.Schedule.DaysOfWeek));
     }
-    
 }

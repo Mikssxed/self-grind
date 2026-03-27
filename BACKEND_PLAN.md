@@ -26,13 +26,13 @@ This is a learning plan — you'll implement it yourself. Tips are included per 
 ### Phase 1: Task CRUD — The Foundation
 > Everything else depends on tasks working end-to-end.
 
-| Feature | Type | What to build |
-|---------|------|---------------|
-| Get all user tasks | Query | `GetTasksQuery` → returns list of task DTOs with schedule info |
-| Get task by ID | Query | `GetTaskByIdQuery` → single task DTO (throw `NotFoundException` if missing) |
-| Update task | Command | `UpdateTaskCommand` → modify title, description, XP, attribute, schedule |
-| Delete task | Command | `DeleteTaskCommand` → soft-delete (set `IsArchived = true`) or hard delete |
-| Get today's tasks | Query | `GetTodayTasksQuery` → tasks with occurrences scheduled for today |
+| Feature                | Type | What to build |
+|------------------------|------|---------------|
+| ~~Get all user tasks~~ | Query | `GetTasksQuery` → returns list of task DTOs with schedule info |
+| Get task by ID         | Query | `GetTaskByIdQuery` → single task DTO (throw `NotFoundException` if missing) |
+| Update task            | Command | `UpdateTaskCommand` → modify title, description, XP, attribute, schedule |
+| Delete task            | Command | `DeleteTaskCommand` → soft-delete (set `IsArchived = true`) or hard delete |
+| Get today's tasks      | Query | `GetTodayTasksQuery` → tasks with occurrences scheduled for today |
 
 **Repository methods to add to `ITasksRepository`:**
 - `GetAllByUserId(string userId)`
