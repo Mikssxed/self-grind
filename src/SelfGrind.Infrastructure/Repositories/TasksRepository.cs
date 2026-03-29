@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SelfGrind.Application.User;
 using SelfGrind.Domain.Constants;
 using SelfGrind.Domain.Entities;
 using SelfGrind.Domain.Repositories;
@@ -18,9 +17,50 @@ public class TasksRepository(SelfGrindDbContext dbContext) : ITasksRepository
         return taskItem.Id;
     }
 
-    public async Task<TaskItem[]> GetAllAsync(string userId)
+    public async Task<TaskItem[]> GetAllAsync(string userId, CancellationToken cancellationToken = default)
     {
-        return await dbContext.Tasks.Where(t => t.UserId == userId).ToArrayAsync();
+        return await dbContext.Tasks
+            .Include(t => t.Schedule)
+            .Where(t => t.UserId == userId && !t.IsArchived)
+            .ToArrayAsync(cancellationToken);
+    }
+
+    public async Task<TaskItem?> GetByIdAsync(string userId, Guid taskItemId, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.Tasks.Include(t => t.Schedule)
+            .Where(t => t.UserId == userId && t.Id == taskItemId && !t.IsArchived)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task<TaskOccurrence[]> GetTodayTasksAsync(string userId, DateOnly today, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.TaskOccurrences
+            .Include(o => o.TaskItem)
+                .ThenInclude(t => t.Schedule)
+            .Where(o => o.TaskItem.UserId == userId
+                     && o.ScheduledDate == today
+                     && !o.TaskItem.IsArchived)
+            .ToArrayAsync(cancellationToken);
+    }
+
+    public async Task UpdateAsync(TaskItem taskItem, CancellationToken cancellationToken = default)
+    {
+        var existingOccurrences = await dbContext.TaskOccurrences
+            .Where(o => o.TaskItemId == taskItem.Id)
+            .ToListAsync(cancellationToken);
+        dbContext.TaskOccurrences.RemoveRange(existingOccurrences);
+
+        CreateOccurrencesRange(taskItem);
+
+        taskItem.UpdatedAt = DateTime.Now;
+        await dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task ArchiveAsync(TaskItem taskItem, CancellationToken cancellationToken = default)
+    {
+        taskItem.IsArchived = true;
+        taskItem.ArchivedAt = DateTime.Now;
+        await dbContext.SaveChangesAsync(cancellationToken);
     }
 
     private void CreateOccurrencesRange(TaskItem taskItem)
@@ -61,6 +101,4 @@ public class TasksRepository(SelfGrindDbContext dbContext) : ITasksRepository
         
         dbContext.TaskOccurrences.AddRange(occurrences);
     }
-    
-    
 }

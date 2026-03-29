@@ -3,7 +3,9 @@
     "allow": [
       "Bash(claude mcp:*)",
       "Read(//c/Users/eksil/AppData/Roaming/Claude/**)",
-      "Read(//c/Users/eksil/AppData/Roaming/**)"
+      "Read(//c/Users/eksil/AppData/Roaming/**)",
+      "Bash(grep:*)",
+      "Bash(dotnet build:*)"
     ]
   }
 }

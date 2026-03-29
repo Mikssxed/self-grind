@@ -1,24 +1,18 @@
-﻿using SelfGrind.Domain.Constants;
+using MediatR;
+using SelfGrind.Domain.Constants;
 
-namespace SelfGrind.Application.Tasks.Dtos;
+namespace SelfGrind.Application.Tasks.Commands.UpdateTask;
 
-public class TaskItemDto
+public class UpdateTaskCommand : IRequest
 {
     public Guid Id { get; set; }
     public required string Title { get; set; }
     public required string Description { get; set; }
-    public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
-    public bool IsCompleted { get; set; }
     public int Exp { get; set; }
     public BaseAttribute Attribute { get; set; }
-    public bool IsArchived { get; set; }
-    public DateTime? ArchivedAt { get; set; }
-    
     public DateOnly StartDate { get; set; }
     public DateOnly EndDate { get; set; }
     public TaskRepetitionType RepetitionType { get; set; }
-    public int RepeatInterval { get; set; }
+    public int RepeatInterval { get; set; } = 1;
     public List<DayOfWeek>? DaysOfWeek { get; set; } = [];
-    
 }

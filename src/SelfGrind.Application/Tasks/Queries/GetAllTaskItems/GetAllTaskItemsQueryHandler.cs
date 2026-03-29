@@ -5,7 +5,7 @@ using SelfGrind.Application.Tasks.Dtos;
 using SelfGrind.Application.User;
 using SelfGrind.Domain.Repositories;
 
-namespace SelfGrind.Application.Tasks.Queries;
+namespace SelfGrind.Application.Tasks.Queries.GetAllTaskItems;
 
 public class GetAllTaskItemsQueryHandler(ILogger<GetAllTaskItemsQueryHandler> logger, IMapper mapper, ITasksRepository tasksRepository, IUserContext userContext) :
     IRequestHandler<GetAllTaskItemsQuery, TaskItemDto[]>
@@ -15,7 +15,7 @@ public class GetAllTaskItemsQueryHandler(ILogger<GetAllTaskItemsQueryHandler> lo
         logger.LogInformation("Handling GetAllTaskItemsQuery");
 
         var userId = userContext.GetCurrentUser().Id;
-        var taskItems = await tasksRepository.GetAllAsync(userId);
+        var taskItems = await tasksRepository.GetAllAsync(userId, cancellationToken);
         return mapper.Map<TaskItemDto[]>(taskItems);
     }
 }
