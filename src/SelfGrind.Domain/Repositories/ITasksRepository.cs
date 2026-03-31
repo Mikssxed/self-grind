@@ -10,4 +10,6 @@ public interface ITasksRepository
     Task<TaskOccurrence[]> GetTodayTasksAsync(string userId, DateOnly today, CancellationToken cancellationToken = default);
     Task UpdateAsync(TaskItem taskItem, CancellationToken cancellationToken = default);
     Task ArchiveAsync(TaskItem taskItem, CancellationToken cancellationToken = default);
+    Task<TaskOccurrence?> GetTaskOccurenceById(string userId, Guid taskOccurenceId, CancellationToken cancellationToken = default);
+    Task CompleteOccurrenceAsync(CancellationToken cancellationToken = default);
 }

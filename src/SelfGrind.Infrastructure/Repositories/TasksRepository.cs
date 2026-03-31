@@ -63,6 +63,17 @@ public class TasksRepository(SelfGrindDbContext dbContext) : ITasksRepository
         await dbContext.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task<TaskOccurrence?> GetTaskOccurenceById(string userId, Guid taskOccurenceId, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.TaskOccurrences.Where(o => o.TaskItem.UserId == userId && o.Id == taskOccurenceId)
+            .FirstOrDefaultAsync(cancellationToken);
+    }
+
+    public async Task CompleteOccurrenceAsync(CancellationToken cancellationToken = default)
+    {
+        await dbContext.SaveChangesAsync(cancellationToken);
+    }
+
     private void CreateOccurrencesRange(TaskItem taskItem)
     {
         var schedule = taskItem.Schedule;
