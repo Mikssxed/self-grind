@@ -25,7 +25,7 @@ public class CompleteTaskOccurenceCommandHandler(ILogger<CompleteTaskOccurenceCo
         taskOccurence.Status = TaskOccurrenceStatus.Done;
         taskOccurence.CompletedDate = DateOnly.FromDateTime(DateTime.UtcNow);
 
-        await tasksRepository.CompleteOccurrenceAsync(cancellationToken);
+        await tasksRepository.SaveChangesAsync(cancellationToken);
 
         return taskOccurence.Id;
     }

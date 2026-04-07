@@ -7,6 +7,7 @@ using SelfGrind.Application.Tasks.Commands.UpdateTask;
 using SelfGrind.Application.Tasks.Dtos;
 using SelfGrind.Application.Tasks.Queries.GetAllTaskItems;
 using SelfGrind.Application.Tasks.Queries.GetTaskItemById;
+using SelfGrind.Application.Tasks.Queries.GetDailySummary;
 using SelfGrind.Application.Tasks.Queries.GetTodayTaskItems;
 
 namespace SelfGrind.Controllers;
@@ -59,6 +60,14 @@ public class TasksController(IMediator mediator) : ControllerBase
         return NoContent();
     }
 
+    [HttpGet("daily-summary")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<DailySummaryDto>> GetDailySummary()
+    {
+        var summary = await mediator.Send(new GetDailySummaryQuery());
+        return Ok(summary);
+    }
+
     [HttpDelete("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -68,5 +77,4 @@ public class TasksController(IMediator mediator) : ControllerBase
         await mediator.Send(new DeleteTaskCommand(id));
         return NoContent();
     }
-    
 }

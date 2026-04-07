@@ -69,9 +69,45 @@ public class TasksRepository(SelfGrindDbContext dbContext) : ITasksRepository
             .FirstOrDefaultAsync(cancellationToken);
     }
 
-    public async Task CompleteOccurrenceAsync(CancellationToken cancellationToken = default)
+    public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
     {
         await dbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<int> GetTodayTotalExp(string userId, DateOnly today, CancellationToken cancellationToken = default)
+    {
+        var totalExp = await dbContext.TaskOccurrences
+            .Where(o => o.TaskItem.UserId == userId
+                     && o.ScheduledDate == today
+                     && o.Status == TaskOccurrenceStatus.Done)
+            .SumAsync(o => o.TaskItem.Exp, cancellationToken);
+
+        return totalExp;
+    }
+
+    public async Task<int> GetTotalCompletedCountAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.TaskOccurrences
+            .Where(o => o.TaskItem.UserId == userId && o.Status == TaskOccurrenceStatus.Done)
+            .CountAsync(cancellationToken);
+    }
+
+    public async Task<(DateOnly Date, int Completed)[]> GetDailyCompletionSummaryAsync(string userId, DateOnly today, CancellationToken 
+            cancellationToken =
+            default)
+    {
+        return await dbContext.TaskOccurrences
+            .Where(o => o.TaskItem.UserId == userId && o.ScheduledDate < today)
+            .GroupBy(o => o.ScheduledDate)
+            .Select(g => new
+            {
+                Date = g.Key,
+                Completed = g.Count(o => o.Status == TaskOccurrenceStatus.Done)
+            })
+            .OrderByDescending(x => x.Date)
+            .AsAsyncEnumerable()
+            .Select(x => (x.Date, x.Completed))
+            .ToArrayAsync(cancellationToken);
     }
 
     private void CreateOccurrencesRange(TaskItem taskItem)

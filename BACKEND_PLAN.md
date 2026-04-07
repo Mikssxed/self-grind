@@ -56,11 +56,11 @@ This is a learning plan — you'll implement it yourself. Tips are included per 
 ### Phase 2: Task Completion & Occurrence Management
 > Powers the DailyTasks view — marking tasks done, tracking streaks.
 
-| Feature | Type | What to build |
-|---------|------|---------------|
-| Complete occurrence | Command | `CompleteTaskOccurrenceCommand` → set status to Completed, record CompletedDate |
-| Undo completion | Command | `UndoTaskOccurrenceCommand` → revert status to Pending |
-| Get daily summary | Query | `GetDailySummaryQuery` → completed count, total XP earned today, streak |
+| Feature                 | Type | What to build |
+|-------------------------|------|---------------|
+| ~~Complete occurrence~~ | Command | `CompleteTaskOccurrenceCommand` → set status to Completed, record CompletedDate |
+| ~~Undo completion~~     | Command | `UndoTaskOccurrenceCommand` → revert status to Pending |
+| ~~Get daily summary~~   | Query | `GetDailySummaryQuery` → completed count, total XP earned today, streak |
 
 **New concepts needed:**
 - Streak calculation: count consecutive days where at least 1 occurrence was completed
