@@ -18,6 +18,8 @@
         completed: false,
     });
 
+    const emit = defineEmits<{ toggle: [] }>();
+
     const isAnimating = ref(false);
 
     watch(() => props.completed, (newVal, oldVal) => {
@@ -115,7 +117,7 @@
 
 <template>
     <div :class="containerClasses">
-        <div :class="checkboxClass">
+        <div :class="checkboxClass" @click.stop="emit('toggle')" role="checkbox" :aria-checked="completed" class="cursor-pointer">
             <svg
                 v-if="completed"
                 class="w-3 h-3 text-white animate-check"

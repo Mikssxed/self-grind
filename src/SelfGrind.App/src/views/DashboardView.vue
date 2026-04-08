@@ -1,4 +1,5 @@
 <script setup lang="ts">
+    import { computed } from 'vue';
     import { useRouter } from 'vue-router';
     import PageLayout from '@/components/layout/PageLayout.vue';
     import DashboardCharacter from '@/components/dashboard/DashboardCharacter.vue';
@@ -8,11 +9,14 @@
     import { useAddTaskModal } from '@/composables/useAddTaskModal';
     import { useLogActivityModal } from '@/composables/useLogActivityModal';
     import { useDailyBoostModal } from '@/composables/useDailyBoostModal';
+    import { useDailyTasks } from '@/composables/useDailyTasks';
 
     const router = useRouter();
     const { open: openAddTask } = useAddTaskModal();
     const { open: openLogActivity } = useLogActivityModal();
     const { open: openDailyBoost } = useDailyBoostModal();
+    const { dailySummary } = useDailyTasks();
+    const streakDays = computed(() => dailySummary.value?.streak ?? 0);
 
     const stats = [
         { label: 'Strength', emoji: '💪', value: 78, variant: 'error' as const },
@@ -48,7 +52,7 @@
             <DashboardCharacter
                 :level="42"
                 title="Productivity Warrior"
-                :streakDays="127"
+                :streakDays="streakDays"
                 :xpCurrent="8450"
                 :xpMax="10000"
                 :achievementsCount="47"

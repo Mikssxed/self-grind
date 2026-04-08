@@ -5,7 +5,9 @@
       "Read(//c/Users/eksil/AppData/Roaming/Claude/**)",
       "Read(//c/Users/eksil/AppData/Roaming/**)",
       "Bash(grep:*)",
-      "Bash(dotnet build:*)"
+      "Bash(dotnet build:*)",
+      "Bash(npm run:*)",
+      "Bash(npx tsc:*)"
     ]
   }
 }

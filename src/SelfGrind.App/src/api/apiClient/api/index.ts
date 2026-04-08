@@ -4,7 +4,9 @@
 // @ts-ignore
 import { IdentityRequestBuilderNavigationMetadata, type IdentityRequestBuilder } from './identity/index.js';
 // @ts-ignore
-import { TasksRequestBuilderRequestsMetadata, type TasksRequestBuilder } from './tasks/index.js';
+import { OccurrencesRequestBuilderNavigationMetadata, type OccurrencesRequestBuilder } from './occurrences/index.js';
+// @ts-ignore
+import { TasksRequestBuilderNavigationMetadata, TasksRequestBuilderRequestsMetadata, type TasksRequestBuilder } from './tasks/index.js';
 // @ts-ignore
 import { type BaseRequestBuilder, type KeysToExcludeForNavigationMetadata, type NavigationMetadata } from '@microsoft/kiota-abstractions';
 
@@ -16,6 +18,10 @@ export interface ApiRequestBuilder extends BaseRequestBuilder<ApiRequestBuilder>
      * The identity property
      */
     get identity(): IdentityRequestBuilder;
+    /**
+     * The occurrences property
+     */
+    get occurrences(): OccurrencesRequestBuilder;
     /**
      * The tasks property
      */
@@ -32,8 +38,12 @@ export const ApiRequestBuilderNavigationMetadata: Record<Exclude<keyof ApiReques
     identity: {
         navigationMetadata: IdentityRequestBuilderNavigationMetadata,
     },
+    occurrences: {
+        navigationMetadata: OccurrencesRequestBuilderNavigationMetadata,
+    },
     tasks: {
         requestsMetadata: TasksRequestBuilderRequestsMetadata,
+        navigationMetadata: TasksRequestBuilderNavigationMetadata,
     },
 };
 /* tslint:enable */

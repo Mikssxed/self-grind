@@ -1,27 +1,37 @@
 <script lang="ts" setup>
+    import { computed } from 'vue';
     import BaseBox from '@/components/base/BaseBox.vue';
     import BaseButton from '@/components/base/BaseButton.vue';
     import BaseHeader from '@/components/base/BaseHeader.vue';
-    import DailyTasksQuestItem, { type QuestItemVariant } from './DailyTasksQuestItem.vue';
+    import DailyTasksQuestItem from './DailyTasksQuestItem.vue';
     import { useAddTaskModal } from '@/composables/useAddTaskModal';
+    import { getAttributeDisplay } from '@/composables/useAttributeDisplay';
+    import { TaskOccurrenceStatusObject, type TodayTaskItemDto } from '@/api/apiClient/models';
 
     const { open: openAddTask } = useAddTaskModal();
 
-    export interface Quest {
-        title: string;
-        description: string;
-        xp: number;
-        attribute: string;
-        attributeEmoji: string;
-        variant: QuestItemVariant;
-        completed: boolean;
-    }
+    const props = defineProps<{ items: TodayTaskItemDto[] }>();
+    const emit = defineEmits<{ toggle: [occurrenceId: string] }>();
 
-    interface DailyTasksQuestsProps {
-        quests: Quest[];
-    }
+    const validItems = computed(() =>
+        props.items.filter((i): i is TodayTaskItemDto & { occurrenceId: string } => !!i.occurrenceId)
+    );
 
-    defineProps<DailyTasksQuestsProps>();
+    const displayItems = computed(() =>
+        validItems.value.map(item => {
+            const { label, emoji, variant } = getAttributeDisplay(item.attribute);
+            return {
+                occurrenceId: item.occurrenceId,
+                title: item.title ?? '',
+                description: item.description ?? '',
+                xp: item.exp ?? 0,
+                attribute: label,
+                attributeEmoji: emoji,
+                variant,
+                completed: item.occurrenceStatus === TaskOccurrenceStatusObject.Done,
+            };
+        })
+    );
 </script>
 
 <template>
@@ -37,15 +47,16 @@
         </div>
         <div class="flex flex-col gap-3">
             <DailyTasksQuestItem
-                v-for="quest in quests"
-                :key="quest.title"
-                :title="quest.title"
-                :description="quest.description"
-                :xp="quest.xp"
-                :attribute="quest.attribute"
-                :attributeEmoji="quest.attributeEmoji"
-                :variant="quest.variant"
-                :completed="quest.completed"
+                v-for="item in displayItems"
+                :key="item.occurrenceId"
+                :title="item.title"
+                :description="item.description"
+                :xp="item.xp"
+                :attribute="item.attribute"
+                :attributeEmoji="item.attributeEmoji"
+                :variant="item.variant"
+                :completed="item.completed"
+                @toggle="emit('toggle', item.occurrenceId)"
             />
         </div>
     </BaseBox>

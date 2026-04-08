@@ -2,6 +2,7 @@
 using SelfGrind.Middlewares;
 using Serilog;
 using System.Text;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -43,7 +44,11 @@ public static class WebApplicationBuilderExtensions
             builder.Services.AddAuthentication();
         }
 
-        builder.Services.AddControllers();
+        builder.Services.AddControllers()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+            });
         builder.Services.AddSwaggerGen(c =>
         {
             c.AddSecurityDefinition("bearerAuth", new OpenApiSecurityScheme()

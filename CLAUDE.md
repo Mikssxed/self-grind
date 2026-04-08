@@ -70,16 +70,43 @@ Four layers with strict dependency direction (API → Application → Domain ←
 - **Static Tailwind classes only** — Tailwind CSS v4 uses static scanning, so dynamic class interpolation (`` `bg-${color}-500` ``) won't work. Always use explicit, complete class strings.
 - **Granular components** — each distinct visual element should be its own component. Views compose feature-specific components, which in turn compose base components.
 - **Component folders** — shared primitives go in `src/components/base/`, feature-specific components go in `src/components/<feature>/` (e.g., `dashboard/`).
-- **Computed properties** — use `computed()` for any derived display values (formatted strings, percentages, etc.) rather than inline template expressions.
-- **Type exports** — child components should export their variant/interface types so parents can reference them for prop data.
+- **Computed properties** — use `computed()` for any derived display values (formatted strings, percentages, filtering, mapped arrays, etc.) rather than inline template expressions. No logic of any kind in the template — if there's a `v-for` over transformed data, compute the mapped array first.
+- **No inline event handlers with logic** — `@event="handler"` only; move any arrow functions or expressions into named functions in `<script setup>`.
+- **Type exports** — child components should export their variant/union types so parents can reference them. Do NOT export interfaces that duplicate Kiota-generated types — use the generated type directly instead.
 - **Opacity modifiers** — use Tailwind opacity modifiers (`bg-info-500/30`, `border-accent-500/30`) instead of separate RGBA values.
 - **`tailwind-merge`** — use `twMerge()` when components accept external classes that might conflict with internal ones (e.g., `BaseBadge`).
+- **Use Kiota types directly** — never define a manual interface or type that duplicates a shape already generated in `src/api/apiClient/models`. Pass `TodayTaskItemDto[]`, `TaskItemDto`, etc. directly as props and do any display-mapping (enum → label/emoji/variant) inside the receiving component or a dedicated composable.
+- **Nullable narrowing via computed** — Kiota generates all fields as `T | null | undefined`. Narrow before use with a typed computed: `computed(() => props.items.filter((i): i is Dto & { id: string } => !!i.id))`.
+
+### Enum serialization
+
+All backend enums serialize as **strings** (e.g., `"Strength"` not `0`). This is configured via `JsonStringEnumConverter` in `WebApplicationBuilderExtensions.cs`. Kiota generates them as TypeScript const objects:
+
+```typescript
+export const BaseAttributeObject = { Strength: "Strength", Knowledge: "Knowledge", ... } as const;
+export type BaseAttribute = (typeof BaseAttributeObject)[keyof typeof BaseAttributeObject];
+```
+
+Always compare against the generated enum object constants, never raw string literals:
+
+```typescript
+import { TaskOccurrenceStatusObject, BaseAttributeObject } from '@/api/apiClient/models';
+
+// CORRECT
+item.occurrenceStatus === TaskOccurrenceStatusObject.Done
+item.attribute === BaseAttributeObject.Strength
+
+// WRONG — raw string literals
+item.occurrenceStatus === 'Done'
+item.attribute === 'Strength'
+```
 
 ### API Client regeneration
 
-After changing any backend endpoint signature:
-1. Build the backend: `dotnet build`
-2. Run `npm run build:api` from `src/SelfGrind.App` — this exports swagger from the DLL then runs Kiota to regenerate `src/api/apiClient/`
+After changing any backend endpoint signature or adding/modifying enums:
+1. Stop the running backend (the process locks the DLL)
+2. Build: `dotnet build` from repo root or the API project
+3. Run `npm run build:api` from `src/SelfGrind.App` — exports swagger from the DLL then runs Kiota to regenerate `src/api/apiClient/`
 
 ---
 

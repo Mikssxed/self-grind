@@ -67,26 +67,44 @@ const containerClass = computed(() =>
 ```
 
 ### Export types from child components
-Parent views/components import types from children:
+Export variant/union types from child components so parents can reference them. **Do not** export interfaces that duplicate a Kiota-generated type — use the generated type directly instead.
 
 ```typescript
-// In ChildComponent.vue
-export interface ChildItem {
-    label: string;
-    variant: CardVariant;
-}
+// CORRECT — export variant union for parent to use
+export type CardVariant = 'info' | 'error' | 'success';
 
-// In ParentView.vue
-import type { ChildItem } from '@/components/feature/ChildComponent.vue';
-const items: ChildItem[] = [{ label: 'Foo', variant: 'info' }];
+// WRONG — Quest duplicates TodayTaskItemDto fields; use TodayTaskItemDto directly
+export interface Quest { title: string; xp: number; ... }
 ```
 
 ### Computed for derived values
-Use `computed()` for any derived display string, never inline template expressions:
+Use `computed()` for any derived display value — strings, percentages, filtered arrays, mapped arrays. No logic in the template at all. If a `v-for` iterates over transformed data, compute the full mapped array first:
 
 ```typescript
-const progressPercent = computed(() => Math.round((props.current / props.max) * 100));
-const progressLabel = computed(() => `${progressPercent.value}%`);
+// CORRECT — compute the full display array
+const displayItems = computed(() =>
+    validItems.value.map(item => ({
+        occurrenceId: item.occurrenceId,
+        title: item.title ?? '',
+        completed: item.occurrenceStatus === TaskOccurrenceStatusObject.Done,
+        // ...
+    }))
+);
+
+// WRONG — logic inline in template
+// v-for="item in items" :title="item.title ?? ''" :completed="item.status === 'Done'"
+```
+
+### No inline event-handler logic
+Bind only a named function to event handlers. Arrow functions or expressions in the template are not allowed:
+
+```typescript
+// CORRECT
+function handleToggle(id: string) { ... }
+// <Component @toggle="handleToggle" />
+
+// WRONG
+// <Component @toggle="(id) => doSomething(id, items.find(...))" />
 ```
 
 ### twMerge for external class merging
@@ -203,6 +221,51 @@ After any backend endpoint change, regenerate the client:
 npm run build:api   # from src/SelfGrind.App
 ```
 
+### Data fetching pattern — TanStack Query composables
+
+Wrap Kiota calls in a feature composable using TanStack Query `useQuery` / `useMutation`. Mutations should invalidate relevant query keys on success:
+
+```typescript
+// src/composables/useFeatureName.ts
+export function useFeatureName() {
+    const apiClient = useApiClient();
+    const queryClient = useQueryClient();
+
+    const itemsQuery = useQuery({
+        queryKey: ['feature', 'items'],
+        queryFn: () => apiClient.api.feature.get(),
+    });
+
+    const createMutation = useMutation({
+        mutationFn: (body: CreateFeatureCommand) => apiClient.api.feature.post(body),
+        onSuccess: () => queryClient.invalidateQueries({ queryKey: ['feature'] }),
+    });
+
+    return {
+        items: computed(() => itemsQuery.data.value ?? []),
+        isLoading: computed(() => itemsQuery.isLoading.value),
+        create: createMutation.mutate,
+    };
+}
+```
+
+### Enum display mapping
+
+When an API enum needs to drive display values (label, emoji, variant), create a dedicated composable/utility — not inline logic in components:
+
+```typescript
+// src/composables/useAttributeDisplay.ts
+import type { BaseAttribute } from '@/api/apiClient/models';
+
+export function getAttributeDisplay(attribute: BaseAttribute | null | undefined) {
+    const map: Record<BaseAttribute, { label: string; emoji: string; variant: QuestItemVariant }> = {
+        Strength: { label: 'Strength', emoji: '💪', variant: 'error' },
+        // ...
+    };
+    return map[attribute!] ?? { label: 'Unknown', emoji: '❓', variant: 'info' };
+}
+```
+
 ---
 
 ## State Management (Pinia)
@@ -232,8 +295,16 @@ export const useFeatureStore = defineStore('feature', () => {
 ## TypeScript Rules
 
 - **Never use `any`** — always define proper interfaces
+- **Never duplicate Kiota types** — if `src/api/apiClient/models` already has the shape, use it directly as a prop type; do not re-declare it as a local interface
+- **Kiota fields are nullable** — all generated fields are `T | null | undefined`. Narrow with typed computed using a type predicate before use:
+  ```typescript
+  const validItems = computed(() =>
+      props.items.filter((i): i is TodayTaskItemDto & { occurrenceId: string } => !!i.occurrenceId)
+  );
+  ```
+- **Enum comparisons use generated objects** — never compare against raw string literals; always use the generated const objects: `item.occurrenceStatus === TaskOccurrenceStatusObject.Done`, `item.attribute === BaseAttributeObject.Strength`
 - Use `readonly` for props that should not be mutated
-- Export component-specific types so parents can import them
+- Export component-specific variant/union types so parents can import them
 - Use discriminated unions or union types for variant props
 - Prefer `interface` for object shapes, `type` for unions
 

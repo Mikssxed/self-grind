@@ -1,53 +1,19 @@
 <script setup lang="ts">
+    import { computed } from 'vue';
     import PageLayout from '@/components/layout/PageLayout.vue';
     import DailyTasksHabitTracker from '@/components/daily-tasks/DailyTasksHabitTracker.vue';
     import DailyTasksQuests from '@/components/daily-tasks/DailyTasksQuests.vue';
     import DailyTasksStats from '@/components/daily-tasks/DailyTasksStats.vue';
+    import { useDailyTasks } from '@/composables/useDailyTasks';
+    import { TaskOccurrenceStatusObject } from '@/api/apiClient/models';
 
-    const stats = [
-        { emoji: '✅', value: '12', label: 'Completed Today' },
-        { emoji: '🔥', value: '127', label: 'Day Streak' },
-        { emoji: '⭐', value: '+850', label: 'XP Earned Today' },
-    ];
+    const { todayTasks, dailySummary, toggleOccurrence } = useDailyTasks();
 
-    const quests = [
-        {
-            title: 'Morning Workout',
-            description: '30 minutes cardio',
-            xp: 50,
-            attribute: 'Strength',
-            attributeEmoji: '💪',
-            variant: 'error' as const,
-            completed: true,
-        },
-        {
-            title: 'Read 30 Pages',
-            description: 'Personal development book',
-            xp: 40,
-            attribute: 'Knowledge',
-            attributeEmoji: '📘',
-            variant: 'info' as const,
-            completed: false,
-        },
-        {
-            title: 'Meditation Session',
-            description: '15 minutes mindfulness',
-            xp: 35,
-            attribute: 'Discipline',
-            attributeEmoji: '🛡️',
-            variant: 'violet' as const,
-            completed: false,
-        },
-        {
-            title: 'Code for 2 Hours',
-            description: 'Work on side project',
-            xp: 60,
-            attribute: 'Focus',
-            attributeEmoji: '👁️',
-            variant: 'success' as const,
-            completed: false,
-        },
-    ];
+    const stats = computed(() => [
+        { emoji: '✅', value: String(dailySummary.value?.completedCount ?? 0), label: 'Completed Today' },
+        { emoji: '🔥', value: String(dailySummary.value?.streak ?? 0), label: 'Day Streak' },
+        { emoji: '⭐', value: `+${dailySummary.value?.totalExpEarnedToday ?? 0}`, label: 'XP Earned Today' },
+    ]);
 
     const habits = [
         { emoji: '💧', label: 'Water', value: '6/8', variant: 'info' as const },
@@ -55,6 +21,11 @@
         { emoji: '🍽️', label: 'Meals', value: '3/3', variant: 'warning' as const },
         { emoji: '🏃', label: 'Steps', value: '8.2k', variant: 'violet' as const },
     ];
+
+    function handleToggle(occurrenceId: string) {
+        const task = todayTasks.value.find(t => t.occurrenceId === occurrenceId);
+        toggleOccurrence(occurrenceId, task?.occurrenceStatus === TaskOccurrenceStatusObject.Done);
+    }
 </script>
 
 <template>
@@ -64,7 +35,10 @@
     >
         <DailyTasksStats :stats="stats" />
 
-        <DailyTasksQuests :quests="quests" />
+        <DailyTasksQuests
+            :items="todayTasks"
+            @toggle="handleToggle"
+        />
 
         <DailyTasksHabitTracker :habits="habits" />
     </PageLayout>
