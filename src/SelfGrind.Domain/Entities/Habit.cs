@@ -1,4 +1,6 @@
-﻿namespace SelfGrind.Domain.Entities;
+﻿using System.Collections.ObjectModel;
+
+namespace SelfGrind.Domain.Entities;
 
 public class Habit
 {
@@ -11,4 +13,5 @@ public class Habit
     
     public string UserId { get; set; }
     public User User { get; set; }
+    public ICollection<HabitEntry>? HabitEntries { get; set; } = new Collection<HabitEntry>();
 }

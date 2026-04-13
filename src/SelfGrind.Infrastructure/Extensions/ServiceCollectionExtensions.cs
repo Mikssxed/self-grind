@@ -52,6 +52,7 @@ public static class ServiceCollectionExtensions
         }
 
         services.AddScoped<ITasksRepository, TasksRepository>();
+        services.AddScoped<IHabitsRepository, HabitsRepository>();
 
         services.AddScoped<ITaskAuthorizationService, TaskAuthorizationService>();
 

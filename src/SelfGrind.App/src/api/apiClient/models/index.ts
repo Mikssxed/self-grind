@@ -57,6 +57,15 @@ export function createConfirmEmailCommandFromDiscriminatorValue(parseNode: Parse
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {CreateHabitCommand}
+ */
+// @ts-ignore
+export function createCreateHabitCommandFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoCreateHabitCommand;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {CreateTaskCommand}
  */
 // @ts-ignore
@@ -71,6 +80,20 @@ export function createCreateTaskCommandFromDiscriminatorValue(parseNode: ParseNo
 // @ts-ignore
 export function createDailySummaryDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoDailySummaryDto;
+}
+export interface CreateHabitCommand extends Parsable {
+    /**
+     * The name property
+     */
+    name?: string | null;
+    /**
+     * The targetValue property
+     */
+    targetValue?: number | null;
+    /**
+     * The unit property
+     */
+    unit?: string | null;
 }
 /**
  * Creates a new instance of the appropriate class based on discriminator value
@@ -247,6 +270,19 @@ export function deserializeIntoConfirmEmailCommand(confirmEmailCommand: Partial<
     return {
         "confirmationCode": n => { confirmEmailCommand.confirmationCode = n.getStringValue(); },
         "userId": n => { confirmEmailCommand.userId = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param CreateHabitCommand The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoCreateHabitCommand(createHabitCommand: Partial<CreateHabitCommand> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "name": n => { createHabitCommand.name = n.getStringValue(); },
+        "targetValue": n => { createHabitCommand.targetValue = n.getNumberValue(); },
+        "unit": n => { createHabitCommand.unit = n.getStringValue(); },
     }
 }
 /**
@@ -552,6 +588,19 @@ export function serializeConfirmEmailCommand(writer: SerializationWriter, confir
     if (!confirmEmailCommand || isSerializingDerivedType) { return; }
     writer.writeStringValue("confirmationCode", confirmEmailCommand.confirmationCode);
     writer.writeStringValue("userId", confirmEmailCommand.userId);
+}
+/**
+ * Serializes information the current object
+ * @param CreateHabitCommand The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeCreateHabitCommand(writer: SerializationWriter, createHabitCommand: Partial<CreateHabitCommand> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!createHabitCommand || isSerializingDerivedType) { return; }
+    writer.writeStringValue("name", createHabitCommand.name);
+    writer.writeNumberValue("targetValue", createHabitCommand.targetValue);
+    writer.writeStringValue("unit", createHabitCommand.unit);
 }
 /**
  * Serializes information the current object

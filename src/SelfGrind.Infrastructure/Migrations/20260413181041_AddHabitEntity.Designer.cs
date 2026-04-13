@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SelfGrind.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using SelfGrind.Infrastructure.Persistence;
 namespace SelfGrind.Infrastructure.Migrations
 {
     [DbContext(typeof(SelfGrindDbContext))]
-    partial class SelfGrindDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260413181041_AddHabitEntity")]
+    partial class AddHabitEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -185,7 +188,7 @@ namespace SelfGrind.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Habits");
+                    b.ToTable("Habit");
                 });
 
             modelBuilder.Entity("SelfGrind.Domain.Entities.HabitEntry", b =>
@@ -207,7 +210,7 @@ namespace SelfGrind.Infrastructure.Migrations
 
                     b.HasIndex("HabitId");
 
-                    b.ToTable("HabitEntries");
+                    b.ToTable("HabitEntry");
                 });
 
             modelBuilder.Entity("SelfGrind.Domain.Entities.TaskItem", b =>

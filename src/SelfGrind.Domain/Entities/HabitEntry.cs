@@ -1,4 +1,6 @@
-﻿namespace SelfGrind.Domain.Entities;
+﻿using System.Collections.ObjectModel;
+
+namespace SelfGrind.Domain.Entities;
 
 public class HabitEntry
 {

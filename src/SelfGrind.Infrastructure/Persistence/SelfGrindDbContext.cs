@@ -9,6 +9,8 @@ public class SelfGrindDbContext(DbContextOptions<SelfGrindDbContext> options) : 
     public DbSet<TaskItem> Tasks { get; set; }
     public DbSet<TaskOccurrence> TaskOccurrences { get; set; }
     public DbSet<TaskSchedule> TaskSchedules { get; set; }
+    public DbSet<Habit> Habits { get; set; }
+    public DbSet<HabitEntry> HabitEntries { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -29,6 +31,18 @@ public class SelfGrindDbContext(DbContextOptions<SelfGrindDbContext> options) : 
                     .WithMany(u => u.TaskItems)
                     .HasForeignKey(t => t.UserId);
             });
+
+        modelBuilder.Entity<Habit>(habit =>
+        {
+            habit.HasOne(h => h.User)
+                .WithMany(u => u.Habits)
+                .HasForeignKey(h => h.UserId);
+            
+            habit.HasMany(h => h.HabitEntries)
+                .WithOne(e => e.Habit)
+                .HasForeignKey(e => e.HabitId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
 
     }
 }
