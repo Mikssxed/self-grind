@@ -83,13 +83,13 @@ This is a learning plan — you'll implement it yourself. Tips are included per 
 
 **Recommended: Option A** — habits have different behavior (daily tracking with numeric values, no XP, no scheduling).
 
-| Feature | Type | What to build |
-|---------|------|---------------|
-| Create habit | Command | `CreateHabitCommand` → name, emoji, target value, unit |
-| Get user habits | Query | `GetHabitsQuery` → all habits with today's logged value |
-| Log habit entry | Command | `LogHabitEntryCommand` → record value for today |
-| Update habit | Command | `UpdateHabitCommand` → modify name, target, emoji |
-| Delete habit | Command | `DeleteHabitCommand` |
+| Feature             | Type | What to build |
+|---------------------|------|---------------|
+| ~~Create habit~~    | Command | `CreateHabitCommand` → name, emoji, target value, unit |
+| ~~Get user habits~~ | Query | `GetHabitsQuery` → all habits with today's logged value |
+| Log habit entry     | Command | `LogHabitEntryCommand` → record value for today |
+| Update habit        | Command | `UpdateHabitCommand` → modify name, target, emoji |
+| Delete habit        | Command | `DeleteHabitCommand` |
 
 **New entities:**
 - `Habit` — Id, Name, Emoji, TargetValue, Unit, UserId

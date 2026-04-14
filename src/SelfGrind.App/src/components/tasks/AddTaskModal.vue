@@ -77,6 +77,7 @@
     import { toTypedSchema } from '@vee-validate/zod';
     import { object, string, number, enum as zEnum, optional, array, date } from 'zod';
     import { watch, computed } from 'vue';
+    import { DateOnly } from '@microsoft/kiota-abstractions';
     import BaseModal from '@/components/base/BaseModal.vue';
     import BaseButton from '@/components/base/BaseButton.vue';
     import TextField from '@/components/form/TextField.vue';
@@ -88,8 +89,13 @@
     import DayOfWeekSelector from '@/components/form/DayOfWeekSelector.vue';
     import DatePickerField from '@/components/form/DatePickerField.vue';
     import { useAddTaskModal } from '@/composables/useAddTaskModal';
+    import { useTasks } from '@/composables/useTasks';
+    import { DayOfWeekObject, type DayOfWeek } from '@/api/apiClient/models';
 
     const { isOpen, close } = useAddTaskModal();
+    const { createMutation } = useTasks();
+
+    const dayNumberToEnum: DayOfWeek[] = Object.values(DayOfWeekObject) as DayOfWeek[];
 
     const taskTypeOptions: ToggleOption[] = [
         { label: 'Daily', value: 'Daily' },
@@ -149,8 +155,17 @@
         return d;
     });
 
-    const onSubmit = handleSubmit((values) => {
-        console.log('New Task:', values);
+    const onSubmit = handleSubmit(async (values) => {
+        await createMutation.mutateAsync({
+            title: values.title,
+            description: values.description || null,
+            repetitionType: values.repetitionType,
+            exp: values.exp,
+            attribute: values.attribute ?? null,
+            daysOfWeek: values.daysOfWeek?.map(n => dayNumberToEnum[n]).filter((d): d is DayOfWeek => d !== undefined) ?? null,
+            startDate: values.taskDate ? DateOnly.fromDate(values.taskDate) : null,
+            endDate: values.taskDate ? DateOnly.fromDate(values.taskDate) : null,
+        });
         close();
     });
 

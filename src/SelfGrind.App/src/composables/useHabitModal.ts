@@ -1,8 +1,8 @@
 import { ref, readonly } from 'vue';
-import type { Habit } from '@/components/daily-tasks/DailyTasksHabitTracker.vue';
+import type { HabitDto } from '@/api/apiClient/models';
 
 const isOpen = ref(false);
-const editingHabit = ref<Habit | null>(null);
+const editingHabit = ref<HabitDto | null>(null);
 
 export function useHabitModal() {
     const openAdd = () => {
@@ -10,7 +10,7 @@ export function useHabitModal() {
         isOpen.value = true;
     };
 
-    const openEdit = (habit: Habit) => {
+    const openEdit = (habit: HabitDto) => {
         editingHabit.value = habit;
         isOpen.value = true;
     };

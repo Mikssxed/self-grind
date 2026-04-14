@@ -98,6 +98,24 @@ export interface CreateHabitCommand extends Parsable {
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {HabitDto}
+ */
+// @ts-ignore
+export function createHabitDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoHabitDto;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {LogHabitEntryCommand}
+ */
+// @ts-ignore
+export function createLogHabitEntryCommandFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoLogHabitEntryCommand;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {LoginResponseApiOperationResult_errors}
  */
 // @ts-ignore
@@ -204,6 +222,15 @@ export function createTaskItemDtoFromDiscriminatorValue(parseNode: ParseNode | u
 // @ts-ignore
 export function createTodayTaskItemDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoTodayTaskItemDto;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {UpdateHabitCommand}
+ */
+// @ts-ignore
+export function createUpdateHabitCommandFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoUpdateHabitCommand;
 }
 /**
  * Creates a new instance of the appropriate class based on discriminator value
@@ -315,6 +342,33 @@ export function deserializeIntoDailySummaryDto(dailySummaryDto: Partial<DailySum
         "completedCount": n => { dailySummaryDto.completedCount = n.getNumberValue(); },
         "streak": n => { dailySummaryDto.streak = n.getNumberValue(); },
         "totalExpEarnedToday": n => { dailySummaryDto.totalExpEarnedToday = n.getNumberValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param HabitDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoHabitDto(habitDto: Partial<HabitDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "id": n => { habitDto.id = n.getGuidValue(); },
+        "name": n => { habitDto.name = n.getStringValue(); },
+        "targetValue": n => { habitDto.targetValue = n.getNumberValue(); },
+        "todayValue": n => { habitDto.todayValue = n.getNumberValue(); },
+        "unit": n => { habitDto.unit = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param LogHabitEntryCommand The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoLogHabitEntryCommand(logHabitEntryCommand: Partial<LogHabitEntryCommand> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "habitId": n => { logHabitEntryCommand.habitId = n.getGuidValue(); },
+        "value": n => { logHabitEntryCommand.value = n.getNumberValue(); },
     }
 }
 /**
@@ -445,6 +499,20 @@ export function deserializeIntoTodayTaskItemDto(todayTaskItemDto: Partial<TodayT
 }
 /**
  * The deserialization information for the current model
+ * @param UpdateHabitCommand The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoUpdateHabitCommand(updateHabitCommand: Partial<UpdateHabitCommand> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "id": n => { updateHabitCommand.id = n.getGuidValue(); },
+        "name": n => { updateHabitCommand.name = n.getStringValue(); },
+        "targetValue": n => { updateHabitCommand.targetValue = n.getNumberValue(); },
+        "unit": n => { updateHabitCommand.unit = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
  * @param UpdateTaskCommand The instance to deserialize into.
  * @returns {Record<string, (node: ParseNode) => void>}
  */
@@ -473,6 +541,38 @@ export function deserializeIntoUpdateUserDetailsCommand(updateUserDetailsCommand
     return {
         "username": n => { updateUserDetailsCommand.username = n.getStringValue(); },
     }
+}
+export interface HabitDto extends Parsable {
+    /**
+     * The id property
+     */
+    id?: Guid | null;
+    /**
+     * The name property
+     */
+    name?: string | null;
+    /**
+     * The targetValue property
+     */
+    targetValue?: number | null;
+    /**
+     * The todayValue property
+     */
+    todayValue?: number | null;
+    /**
+     * The unit property
+     */
+    unit?: string | null;
+}
+export interface LogHabitEntryCommand extends Parsable {
+    /**
+     * The habitId property
+     */
+    habitId?: Guid | null;
+    /**
+     * The value property
+     */
+    value?: number | null;
 }
 export interface LoginResponse extends Parsable {
     /**
@@ -637,6 +737,33 @@ export function serializeDailySummaryDto(writer: SerializationWriter, dailySumma
 }
 /**
  * Serializes information the current object
+ * @param HabitDto The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeHabitDto(writer: SerializationWriter, habitDto: Partial<HabitDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!habitDto || isSerializingDerivedType) { return; }
+    writer.writeGuidValue("id", habitDto.id);
+    writer.writeStringValue("name", habitDto.name);
+    writer.writeNumberValue("targetValue", habitDto.targetValue);
+    writer.writeNumberValue("todayValue", habitDto.todayValue);
+    writer.writeStringValue("unit", habitDto.unit);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param LogHabitEntryCommand The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeLogHabitEntryCommand(writer: SerializationWriter, logHabitEntryCommand: Partial<LogHabitEntryCommand> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!logHabitEntryCommand || isSerializingDerivedType) { return; }
+    writer.writeGuidValue("habitId", logHabitEntryCommand.habitId);
+    writer.writeNumberValue("value", logHabitEntryCommand.value);
+}
+/**
+ * Serializes information the current object
  * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
  * @param LoginResponse The instance to serialize from.
  * @param writer Serialization writer to use to serialize this model
@@ -764,6 +891,20 @@ export function serializeTodayTaskItemDto(writer: SerializationWriter, todayTask
     writer.writeDateOnlyValue("scheduledDate", todayTaskItemDto.scheduledDate);
     writer.writeDateOnlyValue("startDate", todayTaskItemDto.startDate);
     writer.writeStringValue("title", todayTaskItemDto.title);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param UpdateHabitCommand The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeUpdateHabitCommand(writer: SerializationWriter, updateHabitCommand: Partial<UpdateHabitCommand> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!updateHabitCommand || isSerializingDerivedType) { return; }
+    writer.writeGuidValue("id", updateHabitCommand.id);
+    writer.writeStringValue("name", updateHabitCommand.name);
+    writer.writeNumberValue("targetValue", updateHabitCommand.targetValue);
+    writer.writeStringValue("unit", updateHabitCommand.unit);
 }
 /**
  * Serializes information the current object
@@ -918,6 +1059,24 @@ export interface TodayTaskItemDto extends Parsable {
      * The title property
      */
     title?: string | null;
+}
+export interface UpdateHabitCommand extends Parsable {
+    /**
+     * The id property
+     */
+    id?: Guid | null;
+    /**
+     * The name property
+     */
+    name?: string | null;
+    /**
+     * The targetValue property
+     */
+    targetValue?: number | null;
+    /**
+     * The unit property
+     */
+    unit?: string | null;
 }
 export interface UpdateTaskCommand extends Parsable {
     /**

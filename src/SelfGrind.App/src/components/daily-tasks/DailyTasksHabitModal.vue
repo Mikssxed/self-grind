@@ -10,13 +10,7 @@
         >
             <TextField
                 label="Habit Name"
-                name="label"
-                :required="true"
-            />
-
-            <TextField
-                label="Emoji Icon"
-                name="emoji"
+                name="name"
                 :required="true"
             />
 
@@ -24,7 +18,7 @@
                 <div class="flex-1">
                     <RangeSliderField
                         label="Target"
-                        name="target"
+                        name="targetValue"
                         :min="1"
                         :max="20"
                         :step="1"
@@ -37,12 +31,6 @@
                     />
                 </div>
             </div>
-
-            <ToggleButtonGroup
-                label="Color"
-                name="variant"
-                :options="variantOptions"
-            />
 
             <div class="flex gap-3 pt-2">
                 <BaseButton
@@ -82,65 +70,61 @@
     import BaseModal from '@/components/base/BaseModal.vue';
     import BaseButton from '@/components/base/BaseButton.vue';
     import TextField from '@/components/form/TextField.vue';
-    import ToggleButtonGroup from '@/components/form/ToggleButtonGroup.vue';
-    import type { ToggleOption } from '@/components/form/ToggleButtonGroup.vue';
     import RangeSliderField from '@/components/form/RangeSliderField.vue';
     import { useHabitModal } from '@/composables/useHabitModal';
+    import { useHabits } from '@/composables/useHabits';
 
     const { isOpen, editingHabit, close } = useHabitModal();
+    const { createMutation, updateMutation, deleteMutation } = useHabits();
 
     const isEditing = computed(() => editingHabit.value !== null);
 
-    const variantOptions: ToggleOption[] = [
-        { label: 'Blue', value: 'info' },
-        { label: 'Green', value: 'success' },
-        { label: 'Yellow', value: 'warning' },
-        { label: 'Purple', value: 'violet' },
-    ];
-
     const schema = toTypedSchema(
         object({
-            label: string().min(1, 'Habit name is required'),
-            emoji: string().min(1, 'Emoji is required'),
-            target: number().min(1).max(20),
+            name: string().min(1, 'Habit name is required'),
+            targetValue: number().min(1).max(20),
             unit: string(),
-            variant: string(),
         })
     );
 
     const { handleSubmit, resetForm, setValues } = useVeeValidateForm({
         validationSchema: schema,
         initialValues: {
-            label: '',
-            emoji: '',
-            target: 5,
+            name: '',
+            targetValue: 5,
             unit: '',
-            variant: 'info',
         },
     });
 
-    const onSubmit = handleSubmit((values) => {
-        if (isEditing.value) {
-            console.log('Update Habit:', values);
+    const onSubmit = handleSubmit(async (formValues) => {
+        if (isEditing.value && editingHabit.value?.id) {
+            await updateMutation.mutateAsync({
+                id: editingHabit.value.id,
+                command: { name: formValues.name, targetValue: formValues.targetValue, unit: formValues.unit },
+            });
         } else {
-            console.log('New Habit:', values);
+            await createMutation.mutateAsync({
+                name: formValues.name,
+                targetValue: formValues.targetValue,
+                unit: formValues.unit,
+            });
         }
         close();
     });
 
-    const onDelete = () => {
-        console.log('Delete Habit:', editingHabit.value);
+    const onDelete = async () => {
+        if (editingHabit.value?.id) {
+            await deleteMutation.mutateAsync(editingHabit.value.id);
+        }
         close();
     };
 
     watch(isOpen, (open) => {
         if (open && editingHabit.value) {
             setValues({
-                label: editingHabit.value.label,
-                emoji: editingHabit.value.emoji,
-                target: 5,
-                unit: '',
-                variant: editingHabit.value.variant,
+                name: editingHabit.value.name ?? '',
+                targetValue: editingHabit.value.targetValue ?? 5,
+                unit: editingHabit.value.unit ?? '',
             });
         } else if (open) {
             resetForm();
@@ -148,8 +132,6 @@
     });
 
     function handleVisibilityChange(visible: boolean) {
-        if (!visible) {
-            close();
-        }
+        if (!visible) close();
     }
 </script>

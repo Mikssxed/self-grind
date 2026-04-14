@@ -1,22 +1,16 @@
 <script lang="ts" setup>
+    import type { HabitDto } from '@/api/apiClient/models';
     import BaseBox from '@/components/base/BaseBox.vue';
     import BaseHeader from '@/components/base/BaseHeader.vue';
-    import DailyTasksHabitCard, { type HabitCardVariant } from './DailyTasksHabitCard.vue';
+    import DailyTasksHabitCard from './DailyTasksHabitCard.vue';
     import DailyTasksHabitModal from './DailyTasksHabitModal.vue';
     import { useHabitModal } from '@/composables/useHabitModal';
 
-    export interface Habit {
-        emoji: string;
-        label: string;
-        value: string;
-        variant: HabitCardVariant;
+    interface Props {
+        habits: (HabitDto & { id: string })[];
     }
 
-    interface DailyTasksHabitTrackerProps {
-        habits: Habit[];
-    }
-
-    defineProps<DailyTasksHabitTrackerProps>();
+    defineProps<Props>();
 
     const { openAdd, openEdit } = useHabitModal();
 </script>
@@ -27,11 +21,8 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <DailyTasksHabitCard
                 v-for="habit in habits"
-                :key="habit.label"
-                :emoji="habit.emoji"
-                :label="habit.label"
-                :value="habit.value"
-                :variant="habit.variant"
+                :key="habit.id ?? ''"
+                :habit="habit"
                 @edit="openEdit(habit)"
             />
             <button
