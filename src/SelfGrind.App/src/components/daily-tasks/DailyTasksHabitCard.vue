@@ -4,7 +4,7 @@
     import { useHabits } from '@/composables/useHabits';
 
     interface Props {
-        habit: HabitDto & { id: string };
+        habit: HabitDto;
     }
 
     const props = defineProps<Props>();

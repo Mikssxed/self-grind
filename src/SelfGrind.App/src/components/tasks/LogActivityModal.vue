@@ -60,8 +60,8 @@
 <script setup lang="ts">
     import { useForm as useVeeValidateForm } from 'vee-validate';
     import { toTypedSchema } from '@vee-validate/zod';
-    import { object, string, number, enum as zEnum, optional } from 'zod';
     import { watch } from 'vue';
+    import { logActivitySchema } from '@/schemas/logActivitySchema';
     import BaseModal from '@/components/base/BaseModal.vue';
     import BaseButton from '@/components/base/BaseButton.vue';
     import TextField from '@/components/form/TextField.vue';
@@ -72,15 +72,7 @@
 
     const { isOpen, close } = useLogActivityModal();
 
-    const schema = toTypedSchema(
-        object({
-            activityName: string().min(1, 'Activity name is required'),
-            notes: optional(string()),
-            duration: optional(string()),
-            exp: number().min(5).max(50),
-            attribute: optional(zEnum(['Strength', 'Knowledge', 'Health', 'Charisma', 'Focus', 'Creativity'])),
-        })
-    );
+    const schema = toTypedSchema(logActivitySchema);
 
     const { handleSubmit, resetForm } = useVeeValidateForm({
         validationSchema: schema,

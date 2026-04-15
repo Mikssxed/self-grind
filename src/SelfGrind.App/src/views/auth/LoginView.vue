@@ -40,12 +40,7 @@
     import { toTypedSchema } from '@vee-validate/zod';
     import { useForm as useVeeValidateForm } from 'vee-validate';
     import { computed } from 'vue';
-    import { object, string } from 'zod';
-
-    const loginSchema = object({
-        email: string().email('Invalid email address'),
-        password: string().min(1, 'Password is required'),
-    });
+    import { loginSchema } from '@/schemas/loginSchema';
 
     const loginMutation = useLoginMutation();
     const form = useForm(loginMutation);
