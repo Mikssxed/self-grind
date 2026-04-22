@@ -2,7 +2,6 @@ import type { CreateHabitCommand, HabitDto, UpdateHabitCommand } from '@/api/api
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { computed } from 'vue';
 import { useApiClient } from './useApiClient';
-import type {Guid} from "@microsoft/kiota-abstractions";
 
 export function useHabits() {
     const apiClient = useApiClient();
@@ -30,14 +29,12 @@ export function useHabits() {
     });
 
     const logEntryMutation = useMutation({
-        mutationFn: ({ id, value }: { id: Guid; value: number }) =>
+        mutationFn: ({ id, value }: { id: string; value: number }) =>
             apiClient.api.habits.byId(id).entries.post({ value }),
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ['habits'] }),
     });
 
-    const habits = computed(() =>
-        (habitsQuery.data.value ?? []).filter((h): h is HabitDto & { id: string } => !!h.id),
-    );
+    const habits = computed(() => habitsQuery.data.value ?? []);
 
     return {
         habits,

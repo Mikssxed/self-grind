@@ -12,7 +12,7 @@
                 :key="option.value"
                 type="button"
                 :class="optionClass(option.value)"
-                @click="value = option.value"
+                @click="selectOption(option.value)"
             >
                 {{ option.label }}
             </button>
@@ -41,6 +41,10 @@
     const baseClasses = 'px-6 py-2 rounded-full text-sm font-semibold transition-all cursor-pointer';
     const activeClasses = 'button-primary text-white';
     const inactiveClasses = 'bg-primary-800 text-primary-400 hover:text-white';
+
+    function selectOption(optionValue: string) {
+        value.value = optionValue;
+    }
 
     function optionClass(optionValue: string) {
         const isActive = value.value === optionValue;

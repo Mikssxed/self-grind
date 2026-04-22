@@ -81,11 +81,6 @@
     });
 
     function claimBoost() {
-        console.log('Daily Boost Claimed:', {
-            xp: boostXp.value,
-            quote: quoteText.value,
-            author: quoteAuthor.value,
-        });
         close();
     }
 

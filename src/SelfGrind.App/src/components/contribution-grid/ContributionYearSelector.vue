@@ -3,8 +3,8 @@
         <button
             v-for="year in years"
             :key="year"
-            :class="year === selectedYear ? selectedClass : defaultClass"
-            @click="$emit('update:selectedYear', year)"
+            :class="yearClass(year)"
+            @click="selectYear(year)"
         >
             {{ year }}
         </button>
@@ -20,9 +20,17 @@
         selectedYear: number;
     }
 
-    defineProps<ContributionYearSelectorProps>();
+    const props = defineProps<ContributionYearSelectorProps>();
 
-    defineEmits<{
+    const emit = defineEmits<{
         'update:selectedYear': [year: number];
     }>();
+
+    function yearClass(year: number) {
+        return year === props.selectedYear ? selectedClass : defaultClass;
+    }
+
+    function selectYear(year: number) {
+        emit('update:selectedYear', year);
+    }
 </script>

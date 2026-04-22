@@ -7,7 +7,7 @@
     import { useHabitModal } from '@/composables/useHabitModal';
 
     interface Props {
-        habits: (HabitDto & { id: string })[];
+        habits: HabitDto[];
     }
 
     defineProps<Props>();
@@ -21,7 +21,7 @@
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <DailyTasksHabitCard
                 v-for="habit in habits"
-                :key="habit.id ?? ''"
+                :key="habit.id"
                 :habit="habit"
                 @edit="openEdit(habit)"
             />

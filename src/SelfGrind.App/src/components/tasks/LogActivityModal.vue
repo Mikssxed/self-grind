@@ -85,8 +85,7 @@
         },
     });
 
-    const onSubmit = handleSubmit((values) => {
-        console.log('Logged Activity:', values);
+    const onSubmit = handleSubmit(() => {
         close();
     });
 

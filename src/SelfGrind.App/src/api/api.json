@@ -720,8 +720,8 @@
           "204": {
             "description": "No Content"
           },
-          "404": {
-            "description": "Not Found",
+          "403": {
+            "description": "Forbidden",
             "content": {
               "text/plain": {
                 "schema": {
@@ -740,8 +740,8 @@
               }
             }
           },
-          "403": {
-            "description": "Forbidden",
+          "404": {
+            "description": "Not Found",
             "content": {
               "text/plain": {
                 "schema": {
@@ -781,8 +781,8 @@
           "204": {
             "description": "No Content"
           },
-          "404": {
-            "description": "Not Found",
+          "403": {
+            "description": "Forbidden",
             "content": {
               "text/plain": {
                 "schema": {
@@ -801,8 +801,8 @@
               }
             }
           },
-          "403": {
-            "description": "Forbidden",
+          "404": {
+            "description": "Not Found",
             "content": {
               "text/plain": {
                 "schema": {
@@ -866,14 +866,17 @@
               "items": {
                 "type": "string"
               }
-            },
-            "nullable": true
+            }
           },
           "isSuccess": {
             "type": "boolean"
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "required": [
+          "errors",
+          "isSuccess"
+        ]
       },
       "BaseAttribute": {
         "enum": [
@@ -894,12 +897,10 @@
         "type": "object",
         "properties": {
           "userId": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "confirmationCode": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -908,8 +909,7 @@
         "type": "object",
         "properties": {
           "name": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "targetValue": {
             "type": "integer",
@@ -920,22 +920,30 @@
             "nullable": true
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "targetValue"
+        ]
       },
       "CreateTaskCommand": {
         "required": [
+          "attribute",
           "description",
+          "endDate",
+          "exp",
+          "repeatInterval",
+          "repetitionType",
+          "startDate",
           "title"
         ],
         "type": "object",
         "properties": {
           "title": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "description": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "exp": {
             "type": "integer",
@@ -985,7 +993,12 @@
             "format": "int32"
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "required": [
+          "completedCount",
+          "streak",
+          "totalExpEarnedToday"
+        ]
       },
       "DayOfWeek": {
         "enum": [
@@ -1007,8 +1020,7 @@
             "format": "uuid"
           },
           "name": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "targetValue": {
             "type": "integer",
@@ -1023,7 +1035,13 @@
             "format": "int32"
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "targetValue",
+          "todayValue"
+        ]
       },
       "LogHabitEntryCommand": {
         "type": "object",
@@ -1037,7 +1055,11 @@
             "format": "int32"
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "required": [
+          "habitId",
+          "value"
+        ]
       },
       "LoginResponse": {
         "required": [
@@ -1049,20 +1071,17 @@
         "type": "object",
         "properties": {
           "tokenType": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "accessToken": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "expiresIn": {
             "type": "integer",
             "format": "int32"
           },
           "refreshToken": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -1077,8 +1096,7 @@
               "items": {
                 "type": "string"
               }
-            },
-            "nullable": true
+            }
           },
           "isSuccess": {
             "type": "boolean"
@@ -1087,7 +1105,12 @@
             "$ref": "#/components/schemas/LoginResponse"
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "required": [
+          "data",
+          "errors",
+          "isSuccess"
+        ]
       },
       "LoginUserCommand": {
         "required": [
@@ -1097,12 +1120,10 @@
         "type": "object",
         "properties": {
           "email": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "password": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         },
         "additionalProperties": false
@@ -1132,7 +1153,7 @@
             "nullable": true
           }
         },
-        "additionalProperties": { }
+        "additionalProperties": {}
       },
       "RegisterUserCommand": {
         "required": [
@@ -1143,24 +1164,32 @@
         "type": "object",
         "properties": {
           "email": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "password": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "username": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         },
         "additionalProperties": false
       },
       "TaskItemDto": {
         "required": [
+          "attribute",
+          "createdAt",
           "description",
-          "title"
+          "endDate",
+          "exp",
+          "id",
+          "isArchived",
+          "isCompleted",
+          "repeatInterval",
+          "repetitionType",
+          "startDate",
+          "title",
+          "updatedAt"
         ],
         "type": "object",
         "properties": {
@@ -1169,12 +1198,10 @@
             "format": "uuid"
           },
           "title": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "description": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "createdAt": {
             "type": "string",
@@ -1245,7 +1272,18 @@
       },
       "TodayTaskItemDto": {
         "required": [
+          "attribute",
           "description",
+          "endDate",
+          "exp",
+          "id",
+          "isCompleted",
+          "occurrenceId",
+          "occurrenceStatus",
+          "repeatInterval",
+          "repetitionType",
+          "scheduledDate",
+          "startDate",
           "title"
         ],
         "type": "object",
@@ -1266,12 +1304,10 @@
             "format": "uuid"
           },
           "title": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "description": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "exp": {
             "type": "integer",
@@ -1316,8 +1352,7 @@
             "format": "uuid"
           },
           "name": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "targetValue": {
             "type": "integer",
@@ -1328,11 +1363,23 @@
             "nullable": true
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "targetValue"
+        ]
       },
       "UpdateTaskCommand": {
         "required": [
+          "attribute",
           "description",
+          "endDate",
+          "exp",
+          "id",
+          "repeatInterval",
+          "repetitionType",
+          "startDate",
           "title"
         ],
         "type": "object",
@@ -1342,12 +1389,10 @@
             "format": "uuid"
           },
           "title": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "description": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "exp": {
             "type": "integer",
@@ -1385,11 +1430,13 @@
         "type": "object",
         "properties": {
           "username": {
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         },
-        "additionalProperties": false
+        "additionalProperties": false,
+        "required": [
+          "username"
+        ]
       }
     },
     "securitySchemes": {
@@ -1401,7 +1448,7 @@
   },
   "security": [
     {
-      "bearerAuth": [ ]
+      "bearerAuth": []
     }
   ],
   "tags": [

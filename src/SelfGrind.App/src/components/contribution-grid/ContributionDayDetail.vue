@@ -29,10 +29,7 @@
                 v-if="tasks.length > 0"
                 class="mt-auto pt-2 border-t border-primary-800"
             >
-                <span class="text-xs text-primary-400">
-                    {{ tasks.length }} task{{ tasks.length !== 1 ? 's' : '' }} completed · +{{ totalXp }}
-                    XP earned
-                </span>
+                <span class="text-xs text-primary-400">{{ taskSummary }}</span>
             </div>
         </template>
         <div
@@ -135,4 +132,9 @@
     });
 
     const totalXp = computed(() => props.tasks.reduce((sum, task) => sum + task.xp, 0));
+
+    const taskSummary = computed(() => {
+        const suffix = props.tasks.length !== 1 ? 's' : '';
+        return `${props.tasks.length} task${suffix} completed · +${totalXp.value} XP earned`;
+    });
 </script>

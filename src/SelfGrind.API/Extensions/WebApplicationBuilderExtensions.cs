@@ -51,6 +51,8 @@ public static class WebApplicationBuilderExtensions
             });
         builder.Services.AddSwaggerGen(c =>
         {
+            c.SupportNonNullableReferenceTypes();
+
             c.AddSecurityDefinition("bearerAuth", new OpenApiSecurityScheme()
             {
                 Type = SecuritySchemeType.Http,

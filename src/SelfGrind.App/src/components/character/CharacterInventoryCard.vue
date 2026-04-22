@@ -19,12 +19,12 @@
             </span>
         </div>
         <BaseButton
-            :variant="isEquipped ? 'secondary' : 'primary'"
+            :variant="equipButtonVariant"
             size="sm"
             :disabled="isEquipped"
             class="w-full text-center"
         >
-            {{ isEquipped ? 'Equipped' : 'Equip' }}
+            {{ equipButtonLabel }}
         </BaseButton>
     </div>
 </template>
@@ -79,4 +79,6 @@
     const borderClass = computed(() => borderClasses[props.rarity]);
     const iconBgClass = computed(() => iconBgClasses[props.rarity]);
     const bonusTextClass = computed(() => bonusTextClasses[props.rarity]);
+    const equipButtonVariant = computed(() => props.isEquipped ? 'secondary' : 'primary');
+    const equipButtonLabel = computed(() => props.isEquipped ? 'Equipped' : 'Equip');
 </script>

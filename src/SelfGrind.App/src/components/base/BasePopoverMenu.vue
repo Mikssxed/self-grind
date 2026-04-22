@@ -23,6 +23,7 @@
 <script setup lang="ts">
     import Popover from 'primevue/popover';
     import { ref } from 'vue';
+    import { twMerge } from 'tailwind-merge';
     import BaseIcon from './BaseIcon.vue';
     import type { IconName } from '@/components/icons';
 
@@ -61,7 +62,7 @@
     };
 
     function itemClasses(item: PopoverMenuItem) {
-        return `${baseItemClass} ${variantItemClasses[item.variant ?? 'default']}`;
+        return twMerge(baseItemClass, variantItemClasses[item.variant ?? 'default']);
     }
 
     function toggle(event: Event) {

@@ -254,15 +254,15 @@ export interface DailySummaryDto extends Parsable {
     /**
      * The completedCount property
      */
-    completedCount?: number | null;
+    completedCount: number;
     /**
      * The streak property
      */
-    streak?: number | null;
+    streak: number;
     /**
      * The totalExpEarnedToday property
      */
-    totalExpEarnedToday?: number | null;
+    totalExpEarnedToday: number;
 }
 export type DayOfWeek = (typeof DayOfWeekObject)[keyof typeof DayOfWeekObject];
 /**
@@ -546,19 +546,19 @@ export interface HabitDto extends Parsable {
     /**
      * The id property
      */
-    id?: Guid | null;
+    id: Guid;
     /**
      * The name property
      */
-    name?: string | null;
+    name: string;
     /**
      * The targetValue property
      */
-    targetValue?: number | null;
+    targetValue: number;
     /**
      * The todayValue property
      */
-    todayValue?: number | null;
+    todayValue: number;
     /**
      * The unit property
      */
@@ -578,33 +578,33 @@ export interface LoginResponse extends Parsable {
     /**
      * The accessToken property
      */
-    accessToken?: string | null;
+    accessToken: string;
     /**
      * The expiresIn property
      */
-    expiresIn?: number | null;
+    expiresIn: number;
     /**
      * The refreshToken property
      */
-    refreshToken?: string | null;
+    refreshToken: string;
     /**
      * The tokenType property
      */
-    tokenType?: string | null;
+    tokenType: string;
 }
 export interface LoginResponseApiOperationResult extends Parsable {
     /**
      * The data property
      */
-    data?: LoginResponse | null;
+    data: LoginResponse;
     /**
      * The errors property
      */
-    errors?: LoginResponseApiOperationResult_errors | null;
+    errors: LoginResponseApiOperationResult_errors;
     /**
      * The isSuccess property
      */
-    isSuccess?: boolean | null;
+    isSuccess: boolean;
 }
 export interface LoginResponseApiOperationResult_errors extends AdditionalDataHolder, Parsable {
 }
@@ -946,11 +946,11 @@ export interface TaskItemDto extends Parsable {
     /**
      * The attribute property
      */
-    attribute?: BaseAttribute | null;
+    attribute: BaseAttribute;
     /**
      * The createdAt property
      */
-    createdAt?: Date | null;
+    createdAt: Date;
     /**
      * The daysOfWeek property
      */
@@ -958,47 +958,47 @@ export interface TaskItemDto extends Parsable {
     /**
      * The description property
      */
-    description?: string | null;
+    description: string;
     /**
      * The endDate property
      */
-    endDate?: DateOnly | null;
+    endDate: DateOnly;
     /**
      * The exp property
      */
-    exp?: number | null;
+    exp: number;
     /**
      * The id property
      */
-    id?: Guid | null;
+    id: Guid;
     /**
      * The isArchived property
      */
-    isArchived?: boolean | null;
+    isArchived: boolean;
     /**
      * The isCompleted property
      */
-    isCompleted?: boolean | null;
+    isCompleted: boolean;
     /**
      * The repeatInterval property
      */
-    repeatInterval?: number | null;
+    repeatInterval: number;
     /**
      * The repetitionType property
      */
-    repetitionType?: TaskRepetitionType | null;
+    repetitionType: TaskRepetitionType;
     /**
      * The startDate property
      */
-    startDate?: DateOnly | null;
+    startDate: DateOnly;
     /**
      * The title property
      */
-    title?: string | null;
+    title: string;
     /**
      * The updatedAt property
      */
-    updatedAt?: Date | null;
+    updatedAt: Date;
 }
 export type TaskOccurrenceStatus = (typeof TaskOccurrenceStatusObject)[keyof typeof TaskOccurrenceStatusObject];
 export type TaskRepetitionType = (typeof TaskRepetitionTypeObject)[keyof typeof TaskRepetitionTypeObject];
@@ -1006,7 +1006,7 @@ export interface TodayTaskItemDto extends Parsable {
     /**
      * The attribute property
      */
-    attribute?: BaseAttribute | null;
+    attribute: BaseAttribute;
     /**
      * The daysOfWeek property
      */
@@ -1014,51 +1014,51 @@ export interface TodayTaskItemDto extends Parsable {
     /**
      * The description property
      */
-    description?: string | null;
+    description: string;
     /**
      * The endDate property
      */
-    endDate?: DateOnly | null;
+    endDate: DateOnly;
     /**
      * The exp property
      */
-    exp?: number | null;
+    exp: number;
     /**
      * The id property
      */
-    id?: Guid | null;
+    id: Guid;
     /**
      * The isCompleted property
      */
-    isCompleted?: boolean | null;
+    isCompleted: boolean;
     /**
      * The occurrenceId property
      */
-    occurrenceId?: Guid | null;
+    occurrenceId: Guid;
     /**
      * The occurrenceStatus property
      */
-    occurrenceStatus?: TaskOccurrenceStatus | null;
+    occurrenceStatus: TaskOccurrenceStatus;
     /**
      * The repeatInterval property
      */
-    repeatInterval?: number | null;
+    repeatInterval: number;
     /**
      * The repetitionType property
      */
-    repetitionType?: TaskRepetitionType | null;
+    repetitionType: TaskRepetitionType;
     /**
      * The scheduledDate property
      */
-    scheduledDate?: DateOnly | null;
+    scheduledDate: DateOnly;
     /**
      * The startDate property
      */
-    startDate?: DateOnly | null;
+    startDate: DateOnly;
     /**
      * The title property
      */
-    title?: string | null;
+    title: string;
 }
 export interface UpdateHabitCommand extends Parsable {
     /**

@@ -94,17 +94,18 @@
     });
 
     const onSubmit = handleSubmit(async (formValues) => {
-        if (isEditing.value && editingHabit.value?.id) {
-            await updateHabit(formValues);
+        const habitId = editingHabit.value?.id;
+        if (habitId) {
+            await updateHabit(habitId, formValues);
         } else {
             await createHabit(formValues);
         }
         close();
     });
-    
-    const updateHabit = async (formValues: UpdateHabitCommand) => {
+
+    const updateHabit = async (id: string, formValues: UpdateHabitCommand) => {
       await updateMutation.mutateAsync({
-        id: editingHabit.value.id,
+        id,
         command: { name: formValues.name, targetValue: formValues.targetValue, unit: formValues.unit },
       });
     }
@@ -115,7 +116,7 @@
         targetValue: formValues.targetValue,
         unit: formValues.unit,
       });
-    }}
+    };
 
     const onDelete = async () => {
         if (editingHabit.value?.id) {

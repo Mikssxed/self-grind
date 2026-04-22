@@ -7,9 +7,11 @@
         "dev": "vite",
         "build": "vue-tsc -b && vite build",
         "preview": "vite preview",
-        "build:api": "npm run build:api-file && npm run build:api-client",
+        "build:api": "npm run build:api-file && npm run build:api-fix && npm run build:api-client && npm run build:api-patch",
         "build:api-file": "swagger tofile --output ./src/api/api.json ../SelfGrind.API/bin/Debug/net10.0/SelfGrind.API.dll v1",
-        "build:api-client": "kiota generate --language typescript --openapi ./src/api/api.json --class-name apiClient --output ./src/api/apiClient --clean-output"
+        "build:api-fix": "node ./src/api/fix-openapi.mjs",
+        "build:api-client": "kiota generate --language typescript --openapi ./src/api/api.json --class-name apiClient --output ./src/api/apiClient --clean-output",
+        "build:api-patch": "node ./src/api/fix-generated.mjs"
     },
     "dependencies": {
         "@microsoft/kiota-abstractions": "^1.0.0-preview.99",

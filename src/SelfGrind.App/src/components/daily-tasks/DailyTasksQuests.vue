@@ -13,18 +13,14 @@
     const props = defineProps<{ items: TodayTaskItemDto[] }>();
     const emit = defineEmits<{ toggle: [occurrenceId: string] }>();
 
-    const validItems = computed(() =>
-        props.items.filter((i): i is TodayTaskItemDto & { occurrenceId: string } => !!i.occurrenceId)
-    );
-
     const displayItems = computed(() =>
-        validItems.value.map(item => {
+        props.items.map(item => {
             const { label, emoji, variant } = getAttributeDisplay(item.attribute);
             return {
                 occurrenceId: item.occurrenceId,
-                title: item.title ?? '',
-                description: item.description ?? '',
-                xp: item.exp ?? 0,
+                title: item.title,
+                description: item.description,
+                xp: item.exp,
                 attribute: label,
                 attributeEmoji: emoji,
                 variant,
