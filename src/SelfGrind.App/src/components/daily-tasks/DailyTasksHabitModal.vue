@@ -36,7 +36,7 @@
                 <BaseButton
                     v-if="isEditing"
                     variant="secondary"
-                    class="py-3 px-4 !bg-error-900/40 !text-error-500 !border-error-500/30"
+                    class="py-3 px-4 bg-error-900/40! text-error-500! border-error-500/30!"
                     type="button"
                     @click="onDelete"
                 >

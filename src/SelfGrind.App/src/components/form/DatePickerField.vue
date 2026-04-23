@@ -9,7 +9,7 @@
             :placeholder="placeholder"
             dateFormat="yy-mm-dd"
             :pt="passThroughStyles"
-            appendTo="self"
+            appendTo="body"
         />
     </FormField>
 </template>
@@ -34,31 +34,31 @@
 
     const passThroughStyles = {
         root: {
-            class: 'relative w-full',
+            class: 'relative w-full rounded-xl border-2 border-primary-800 bg-primary-900 px-4 py-3 focus-within:ring-2 focus-within:ring-primary-600 transition-shadow',
         },
         pcInput: {
             root: {
-                class: 'input-default w-full px-4 py-3 text-sm cursor-pointer',
+                class: 'w-full text-sm text-white placeholder:text-primary-600 cursor-pointer bg-transparent outline-none',
             },
         },
         panel: {
-            class: 'bg-primary-900 border border-primary-800 rounded-xl shadow-xl mt-2 p-4 z-[100]',
+            class: 'bg-primary-900 border border-primary-800 rounded-2xl shadow-2xl p-4 z-[200]',
         },
         header: {
-            class: 'flex items-center justify-between mb-3',
+            class: 'flex items-center justify-between mb-3 pb-3 border-b border-primary-800/60',
+        },
+        title: {
+            class: 'flex gap-1 items-center',
         },
         pcPreviousButton: {
             root: {
-                class: 'text-primary-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-primary-800 cursor-pointer',
+                class: 'w-8 h-8 flex items-center justify-center text-primary-400 hover:text-white hover:bg-primary-800 rounded-lg cursor-pointer transition-all',
             },
         },
         pcNextButton: {
             root: {
-                class: 'text-primary-400 hover:text-white transition-colors p-2 rounded-lg hover:bg-primary-800 cursor-pointer',
+                class: 'w-8 h-8 flex items-center justify-center text-primary-400 hover:text-white hover:bg-primary-800 rounded-lg cursor-pointer transition-all',
             },
-        },
-        title: {
-            class: 'flex gap-2',
         },
         pcMonthTitle: {
             root: {
@@ -67,35 +67,38 @@
         },
         pcYearTitle: {
             root: {
-                class: 'text-white font-semibold text-sm cursor-pointer hover:text-accent-500 transition-colors',
+                class: 'text-primary-400 text-sm cursor-pointer hover:text-accent-500 transition-colors',
             },
         },
         dayView: {
-            class: 'w-full',
+            class: 'w-full mt-1',
         },
         tableHeaderRow: {
-            class: 'text-primary-400 text-xs font-semibold',
+            class: '',
         },
         tableHeaderCell: {
-            class: 'p-2 text-center',
+            class: 'text-center pb-2',
+        },
+        columnHeader: {
+            class: 'text-primary-500 text-xs font-medium uppercase tracking-wide',
         },
         tableBodyRow: {
             class: '',
         },
         tableBodyCell: {
-            class: 'p-1 text-center',
+            class: 'p-0.5 text-center',
         },
         day: {
-            class: 'w-9 h-9 rounded-full flex items-center justify-center text-sm cursor-pointer transition-all text-primary-200 hover:bg-accent-500/20 hover:text-white',
+            class: 'w-8 h-8 rounded-lg flex items-center justify-center text-sm cursor-pointer transition-all text-primary-300 hover:bg-accent-500/15 hover:text-white mx-auto',
         },
         daySelected: {
-            class: 'w-9 h-9 rounded-full flex items-center justify-center text-sm cursor-pointer transition-all button-primary text-white',
+            class: 'w-8 h-8 rounded-lg flex items-center justify-center text-sm font-semibold cursor-pointer transition-all button-primary text-white mx-auto',
         },
         dayToday: {
-            class: 'w-9 h-9 rounded-full flex items-center justify-center text-sm cursor-pointer transition-all border border-accent-500 text-accent-500 hover:bg-accent-500/20',
+            class: 'w-8 h-8 rounded-lg flex items-center justify-center text-sm cursor-pointer transition-all border border-accent-500/50 text-accent-400 hover:bg-accent-500/15 hover:text-white mx-auto',
         },
         dayDisabled: {
-            class: 'w-9 h-9 rounded-full flex items-center justify-center text-sm text-primary-600 cursor-not-allowed',
+            class: 'w-8 h-8 rounded-lg flex items-center justify-center text-sm text-primary-700 cursor-not-allowed mx-auto',
         },
     };
 </script>

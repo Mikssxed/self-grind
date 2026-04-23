@@ -32,16 +32,16 @@
 
     const passThroughStyles = {
         root: {
-            class: 'bg-primary-900 border border-primary-800 rounded-2xl shadow-xl w-full max-w-lg mx-4',
+            class: 'bg-primary-900 border border-primary-800 rounded-2xl shadow-xl w-full max-w-lg mx-4 max-h-[80vh] flex flex-col',
         },
         header: {
-            class: 'flex items-center justify-between p-6 pb-4',
+            class: 'flex items-center justify-between p-6 pb-4 shrink-0',
         },
         title: {
             class: 'text-white font-semibold text-xl',
         },
         content: {
-            class: 'px-6 pb-6',
+            class: 'px-6 pb-6 overflow-y-auto',
         },
         footer: {
             class: 'px-6 pb-6 pt-2 flex gap-3',

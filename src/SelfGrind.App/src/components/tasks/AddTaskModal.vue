@@ -15,10 +15,11 @@
             />
 
             <TextAreaField
-                label="Description (optional)"
+                label="Description"
                 name="description"
                 placeholder="Add details about this task..."
                 :rows="3"
+                :required="true"
             />
 
             <ToggleButtonGroup
@@ -28,17 +29,43 @@
             />
 
             <DayOfWeekSelector
-                v-if="repetitionTypeValue === 'Weekly'"
+                v-if="isWeekly"
                 name="daysOfWeek"
                 label="Repeat on"
             />
 
             <DatePickerField
-                v-if="repetitionTypeValue === 'Once'"
+                v-if="isOnce"
                 name="taskDate"
                 label="Date"
                 :minDate="today"
                 placeholder="Select a date"
+            />
+
+            <DatePickerField
+                v-if="isRecurring"
+                name="startDate"
+                label="Start Date"
+                :minDate="today"
+                placeholder="Select start date"
+            />
+
+            <DatePickerField
+                v-if="isRecurring"
+                name="endDate"
+                label="End Date"
+                :minDate="minEndDate"
+                placeholder="Select end date"
+            />
+
+            <RangeSliderField
+                v-if="isRecurring"
+                label="Repeat Every"
+                name="repeatInterval"
+                :min="1"
+                :max="7"
+                :step="1"
+                :unit="repeatIntervalUnit"
             />
 
             <RangeSliderField
@@ -50,7 +77,10 @@
                 unit="XP"
             />
 
-            <AttributeSelector name="attribute" />
+            <AttributeSelector
+                name="attribute"
+                label="Character Attribute"
+            />
 
             <div class="flex gap-3 pt-2">
                 <BaseButton
@@ -115,10 +145,14 @@
             attribute: undefined,
             daysOfWeek: [] as number[],
             taskDate: undefined as Date | undefined,
+            startDate: undefined as Date | undefined,
+            endDate: undefined as Date | undefined,
+            repeatInterval: 1,
         },
     });
 
     const repetitionTypeValue = useFieldValue<string>('repetitionType');
+    const startDateValue = useFieldValue<Date | undefined>('startDate');
 
     const today = computed(() => {
         const d = new Date();
@@ -126,16 +160,31 @@
         return d;
     });
 
+    const isWeekly = computed(() => repetitionTypeValue.value === 'Weekly');
+    const isOnce = computed(() => repetitionTypeValue.value === 'Once');
+    const isRecurring = computed(() => repetitionTypeValue.value !== 'Once');
+    const minEndDate = computed(() => startDateValue.value ?? today.value);
+    const repeatIntervalUnit = computed(() => isWeekly.value ? 'weeks' : 'days');
+
     const onSubmit = handleSubmit(async (values) => {
+        const startDate = isOnce.value
+            ? (values.taskDate ? DateOnly.fromDate(values.taskDate) : null)
+            : (values.startDate ? DateOnly.fromDate(values.startDate) : null);
+
+        const endDate = isOnce.value
+            ? (values.taskDate ? DateOnly.fromDate(values.taskDate) : null)
+            : (values.endDate ? DateOnly.fromDate(values.endDate) : null);
+
         await createMutation.mutateAsync({
             title: values.title,
-            description: values.description || null,
+            description: values.description,
             repetitionType: values.repetitionType,
             exp: values.exp,
             attribute: values.attribute ?? null,
             daysOfWeek: values.daysOfWeek?.map(n => dayNumberToEnum[n]).filter((d): d is DayOfWeek => d !== undefined) ?? null,
-            startDate: values.taskDate ? DateOnly.fromDate(values.taskDate) : null,
-            endDate: values.taskDate ? DateOnly.fromDate(values.taskDate) : null,
+            startDate,
+            endDate,
+            repeatInterval: values.repeatInterval ?? 1,
         });
         close();
     });
@@ -144,7 +193,10 @@
         if (newType !== 'Weekly') {
             setFieldValue('daysOfWeek', []);
         }
-        if (newType !== 'Once') {
+        if (newType === 'Once') {
+            setFieldValue('startDate', undefined);
+            setFieldValue('endDate', undefined);
+        } else {
             setFieldValue('taskDate', undefined);
         }
     });

@@ -35,10 +35,12 @@ export function useHabits() {
     });
 
     const habits = computed(() => habitsQuery.data.value ?? []);
+    
+    const isLoading = computed(() => habitsQuery.isLoading.value);
 
     return {
         habits,
-        isLoading: computed(() => habitsQuery.isLoading.value),
+        isLoading,
         createMutation,
         updateMutation,
         deleteMutation,

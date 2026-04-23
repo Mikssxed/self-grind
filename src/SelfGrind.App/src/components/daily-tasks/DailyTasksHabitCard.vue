@@ -29,13 +29,20 @@
         if (todayValue.value <= 0) return;
         logEntryMutation.mutate({ id: props.habit.id, value: todayValue.value - 1 });
     }
+    
+    const isDecrementDisabled = computed(() => todayValue.value <= 0);
+    const isIncrementDisabled = computed(() => todayValue.value >= targetValue.value);
+    
+    const onEdit = () => {
+        emit('edit');
+    }
 </script>
 
 <template>
     <div class="flex flex-col items-center gap-3 p-4 rounded-xl border-b-4 bg-primary-800/40 border-b-accent-500">
         <span
             class="text-sm text-primary-400 cursor-pointer hover:text-primary-200 transition-colors"
-            @click="emit('edit')"
+            @click="onEdit()"
         >
             {{ habit.name }}
         </span>
@@ -43,14 +50,14 @@
         <div class="flex gap-2 w-full">
             <button
                 class="flex-1 py-1 rounded-lg bg-primary-700 text-primary-300 transition-colors hover:bg-primary-600 disabled:opacity-30 disabled:cursor-not-allowed"
-                :disabled="todayValue <= 0"
+                :disabled="isDecrementDisabled"
                 @click="decrement"
             >
                 −
             </button>
             <button
                 class="flex-1 py-1 rounded-lg bg-accent-500/20 text-accent-400 transition-colors hover:bg-accent-500/30 disabled:opacity-30 disabled:cursor-not-allowed"
-                :disabled="todayValue >= targetValue"
+                :disabled="isIncrementDisabled"
                 @click="increment"
             >
                 +

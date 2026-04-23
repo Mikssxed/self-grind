@@ -37,6 +37,7 @@ const createRoute = (
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
+        { path: '/', redirect: { name: 'dashboard' } },
         createRoute('/dashboard', 'dashboard', LayoutType.WITH_SIDEBAR, true),
         createRoute('/daily-tasks', 'dailyTasks', LayoutType.WITH_SIDEBAR, true),
         createRoute('/contribution-grid', 'contributionGrid', LayoutType.WITH_SIDEBAR, true),
@@ -53,6 +54,7 @@ router.beforeEach((to, _from, next) => {
     const requiresAuth =
         import.meta.env.VITE_DISABLE_AUTH !== 'true' && to.meta.requiresAuth !== false;
     const accountPage = ['register', 'login'].includes(to.name as string);
+    const isNoNamePage = to.name === undefined;
     const isAuthenticated = authStore.isAuthenticated;
     if (requiresAuth) {
         // needs authentication - if not authenticated, redirect to login
@@ -61,7 +63,7 @@ router.beforeEach((to, _from, next) => {
         } else {
             next({ name: 'login', query: { returnUrl: to.fullPath } });
         }
-    } else if (accountPage) {
+    } else if (accountPage || isNoNamePage) {
         // pages for unauthenticated users - if authenticated, redirect to dashboard
         if (isAuthenticated) {
             next({ name: 'dashboard' });

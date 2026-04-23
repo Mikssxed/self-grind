@@ -10,7 +10,10 @@
       "Bash(npx tsc:*)",
       "Bash(npx vue-tsc:*)",
       "Bash(node_modules/.bin/vue-tsc --noEmit)",
-      "Bash(echo \"exit: $?\")"
+      "Bash(echo \"exit: $?\")",
+      "mcp__chrome-devtools__list_pages",
+      "mcp__playwright__browser_navigate",
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__navigate_page"
     ]
   }
 }
