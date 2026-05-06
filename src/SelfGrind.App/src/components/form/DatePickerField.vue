@@ -34,41 +34,37 @@
 
     const passThroughStyles = {
         root: {
-            class: 'relative w-full rounded-xl border-2 border-primary-800 bg-primary-900 px-4 py-3 focus-within:ring-2 focus-within:ring-primary-600 transition-shadow',
+            class: 'relative w-full rounded-xl border-2 border-primary-800 bg-primary-900 focus-within:ring-2 focus-within:ring-primary-600 transition-shadow',
         },
-        pcInput: {
+        pcInputText: {
             root: {
-                class: 'w-full text-sm text-white placeholder:text-primary-600 cursor-pointer bg-transparent outline-none',
+                class: 'w-full px-4 py-3 text-sm text-white placeholder:text-primary-600 cursor-pointer bg-transparent outline-none',
             },
         },
         panel: {
-            class: 'bg-primary-900 border border-primary-800 rounded-2xl shadow-2xl p-4 z-[200]',
+            class: 'bg-primary-800 border-2 border-primary-600 rounded-2xl shadow-2xl p-4 z-[200] mt-1',
         },
         header: {
-            class: 'flex items-center justify-between mb-3 pb-3 border-b border-primary-800/60',
+            class: 'flex items-center justify-between mb-3 pb-3 border-b border-primary-600/60',
         },
         title: {
             class: 'flex gap-1 items-center',
         },
-        pcPreviousButton: {
+        pcPrevButton: {
             root: {
-                class: 'w-8 h-8 flex items-center justify-center text-primary-400 hover:text-white hover:bg-primary-800 rounded-lg cursor-pointer transition-all',
+                class: 'w-8 h-8 flex items-center justify-center text-primary-400 hover:text-white hover:bg-primary-900 rounded-lg cursor-pointer transition-all',
             },
         },
         pcNextButton: {
             root: {
-                class: 'w-8 h-8 flex items-center justify-center text-primary-400 hover:text-white hover:bg-primary-800 rounded-lg cursor-pointer transition-all',
+                class: 'w-8 h-8 flex items-center justify-center text-primary-400 hover:text-white hover:bg-primary-900 rounded-lg cursor-pointer transition-all',
             },
         },
-        pcMonthTitle: {
-            root: {
-                class: 'text-white font-semibold text-sm cursor-pointer hover:text-accent-500 transition-colors',
-            },
+        selectMonth: {
+            class: 'text-white font-semibold text-sm cursor-pointer hover:text-accent-500 transition-colors',
         },
-        pcYearTitle: {
-            root: {
-                class: 'text-primary-400 text-sm cursor-pointer hover:text-accent-500 transition-colors',
-            },
+        selectYear: {
+            class: 'text-primary-400 text-sm cursor-pointer hover:text-accent-500 transition-colors',
         },
         dayView: {
             class: 'w-full mt-1',
@@ -79,26 +75,26 @@
         tableHeaderCell: {
             class: 'text-center pb-2',
         },
-        columnHeader: {
+        weekDay: {
             class: 'text-primary-500 text-xs font-medium uppercase tracking-wide',
         },
         tableBodyRow: {
             class: '',
         },
-        tableBodyCell: {
+        dayCell: {
             class: 'p-0.5 text-center',
         },
-        day: {
-            class: 'w-8 h-8 rounded-lg flex items-center justify-center text-sm cursor-pointer transition-all text-primary-300 hover:bg-accent-500/15 hover:text-white mx-auto',
-        },
-        daySelected: {
-            class: 'w-8 h-8 rounded-lg flex items-center justify-center text-sm font-semibold cursor-pointer transition-all button-primary text-white mx-auto',
-        },
-        dayToday: {
-            class: 'w-8 h-8 rounded-lg flex items-center justify-center text-sm cursor-pointer transition-all border border-accent-500/50 text-accent-400 hover:bg-accent-500/15 hover:text-white mx-auto',
-        },
-        dayDisabled: {
-            class: 'w-8 h-8 rounded-lg flex items-center justify-center text-sm text-primary-700 cursor-not-allowed mx-auto',
-        },
+        day: ({ context }: { context: { selected: boolean; today: boolean; disabled: boolean } }) => ({
+            class: [
+                'w-8 h-8 rounded-lg flex items-center justify-center text-sm mx-auto transition-all',
+                context.disabled
+                    ? 'text-primary-700 cursor-not-allowed'
+                    : context.selected
+                      ? 'button-primary text-white font-semibold cursor-pointer'
+                      : context.today
+                        ? 'border border-accent-500/50 text-accent-400 hover:bg-accent-500/15 hover:text-white cursor-pointer'
+                        : 'text-primary-300 hover:bg-accent-500/15 hover:text-white cursor-pointer',
+            ].join(' '),
+        }),
     };
 </script>

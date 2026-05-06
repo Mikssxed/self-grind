@@ -5,7 +5,7 @@ public enum BaseAttribute
     Strength,
     Knowledge,
     Health,
-    Charisma,
+    Discipline,
     Focus,
-    Creativity
+    Energy
 }
