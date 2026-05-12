@@ -883,9 +883,9 @@
           "Strength",
           "Knowledge",
           "Health",
-          "Charisma",
+          "Discipline",
           "Focus",
-          "Creativity"
+          "Energy"
         ],
         "type": "string"
       },

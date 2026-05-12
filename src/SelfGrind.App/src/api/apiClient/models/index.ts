@@ -1130,9 +1130,9 @@ export const BaseAttributeObject = {
     Strength: "Strength",
     Knowledge: "Knowledge",
     Health: "Health",
-    Charisma: "Charisma",
+    Discipline: "Discipline",
     Focus: "Focus",
-    Creativity: "Creativity",
+    Energy: "Energy",
 } as const;
 export const DayOfWeekObject = {
     Sunday: "Sunday",
