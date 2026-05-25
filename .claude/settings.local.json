@@ -13,7 +13,16 @@
       "Bash(echo \"exit: $?\")",
       "mcp__chrome-devtools__list_pages",
       "mcp__playwright__browser_navigate",
-      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__navigate_page"
+      "mcp__plugin_chrome-devtools-mcp_chrome-devtools__navigate_page",
+      "Bash(Get-ChildItem -Path \"C:\\\\projects\\\\SelfGrind\\\\SelfGrind\\\\src\" -Directory)",
+      "Bash(Select-Object -ExpandProperty Name)",
+      "Bash(dotnet run *)",
+      "mcp__chrome-devtools__new_page",
+      "Bash(npx playwright *)",
+      "Bash(taskkill *)",
+      "PowerShell(Stop-Process *)",
+      "PowerShell(Get-Process *)",
+      "Bash(dotnet ef *)"
     ]
   }
 }

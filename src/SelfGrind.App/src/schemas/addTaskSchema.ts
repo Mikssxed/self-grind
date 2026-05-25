@@ -5,7 +5,7 @@ export const addTaskSchema = object({
     description: string().min(1, 'Description is required').max(500, 'Description must be 500 characters or less'),
     repetitionType: zEnum(['Daily', 'Weekly', 'Once']),
     exp: number().min(5).max(100),
-    attribute: zEnum(['Strength', 'Knowledge', 'Health', 'Charisma', 'Focus', 'Creativity'], {
+    attribute: zEnum(['Strength', 'Knowledge', 'Health', 'Discipline', 'Focus', 'Energy'], {
         errorMap: () => ({ message: 'Select a character attribute' }),
     }),
     daysOfWeek: optional(array(number().min(0).max(6))),

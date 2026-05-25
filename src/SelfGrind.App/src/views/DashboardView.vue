@@ -10,21 +10,20 @@
     import { useLogActivityModal } from '@/composables/useLogActivityModal';
     import { useDailyBoostModal } from '@/composables/useDailyBoostModal';
     import { useDailyTasks } from '@/composables/useDailyTasks';
+    import { useUserStats } from '@/composables/useUserStats';
 
     const router = useRouter();
     const { open: openAddTask } = useAddTaskModal();
     const { open: openLogActivity } = useLogActivityModal();
     const { open: openDailyBoost } = useDailyBoostModal();
     const { dailySummary } = useDailyTasks();
-    const streakDays = computed(() => dailySummary.value?.streak ?? 0);
+    const { userStats } = useUserStats();
 
-    const stats = [
-        { label: 'Strength', emoji: '💪', value: 78, variant: 'error' as const },
-        { label: 'Knowledge', emoji: '📘', value: 85, variant: 'info' as const },
-        { label: 'Discipline', emoji: '🛡️', value: 92, variant: 'violet' as const },
-        { label: 'Energy', emoji: '⚡', value: 67, variant: 'warning' as const },
-        { label: 'Focus', emoji: '👁️', value: 81, variant: 'success' as const },
-    ];
+    const streakDays = computed(() => dailySummary.value?.streak ?? 0);
+    const level = computed(() => userStats.value?.level ?? 1);
+    const xpCurrent = computed(() => userStats.value?.exp ?? 0);
+    const xpMax = computed(() => userStats.value?.requiredExp ?? 0);
+    const attributeStats = computed(() => userStats.value?.attributeStats ?? []);
 
     const achievements = [
         { label: '100 Day Streak', emoji: '🔥', variant: 'orange' as const },
@@ -50,15 +49,15 @@
         <!-- Top Row: Character + Stats -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <DashboardCharacter
-                :level="42"
+                :level="level"
                 title="Productivity Warrior"
                 :streakDays="streakDays"
-                :xpCurrent="8450"
-                :xpMax="10000"
-                :achievementsCount="47"
-                :achievementsTotal="100"
+                :xpCurrent="xpCurrent"
+                :xpMax="xpMax"
+                :achievementsCount="0"
+                :achievementsTotal="0"
             />
-            <DashboardCharacterStats :stats="stats" />
+            <DashboardCharacterStats :stats="attributeStats" />
         </div>
 
         <DashboardDailyQuest

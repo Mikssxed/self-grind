@@ -2,6 +2,7 @@ import type { DailySummaryDto, TodayTaskItemDto } from '@/api/apiClient/models';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
 import { computed } from 'vue';
 import { useApiClient } from './useApiClient';
+import { userStatsQueryKey } from './useUserStats';
 
 export function useDailyTasks() {
     const apiClient = useApiClient();
@@ -24,6 +25,7 @@ export function useDailyTasks() {
             apiClient.api.occurrences.byId(occurrenceId).complete.post(),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['tasks'] });
+            queryClient.invalidateQueries({ queryKey: userStatsQueryKey });
         },
     });
 
@@ -32,6 +34,7 @@ export function useDailyTasks() {
             apiClient.api.occurrences.byId(occurrenceId).undo.post(),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['tasks'] });
+            queryClient.invalidateQueries({ queryKey: userStatsQueryKey });
         },
     });
 

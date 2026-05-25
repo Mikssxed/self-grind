@@ -5,5 +5,5 @@ export const logActivitySchema = object({
     notes: optional(string()),
     duration: optional(string()),
     exp: number().min(5).max(50),
-    attribute: optional(zEnum(['Strength', 'Knowledge', 'Health', 'Charisma', 'Focus', 'Creativity'])),
+    attribute: optional(zEnum(['Strength', 'Knowledge', 'Health', 'Discipline', 'Focus', 'Energy'])),
 });

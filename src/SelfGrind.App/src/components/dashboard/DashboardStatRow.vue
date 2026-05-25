@@ -5,10 +5,10 @@
             <span
                 class="text-sm font-bold"
                 :class="textClass"
-            >{{ value }}/100</span>
+            >{{ valueLabel }}</span>
         </div>
         <BaseProgressBar
-            :percentage="value"
+            :percentage="percentage"
             :variant="variant"
         />
     </div>
@@ -21,7 +21,8 @@
     interface DashboardStatRowProps {
         label: string;
         emoji: string;
-        value: number;
+        percentage: number;
+        valueLabel: string;
         variant: ProgressBarVariant;
     }
 

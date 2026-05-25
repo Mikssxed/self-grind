@@ -50,6 +50,8 @@ Four layers with strict dependency direction (API → Application → Domain ←
 
 **Adding a new feature:** create `Command`/`Query` + `Handler` + `Validator` in `Application`, add repository method to the interface in `Domain` and implement in `Infrastructure`, then expose via a controller in `API`.
 
+**Application-layer domain services** (e.g., `Application/Stats/Services/StatsService.cs`) take domain entities or primitives as input and mutate them in-memory — they must never touch `DbContext` or call repositories. Persistence is always the caller's (handler's) responsibility: load via repository → mutate via service → `SaveChangesAsync` via repository. This keeps services pure/testable and keeps the persistence boundary in handlers.
+
 ### Frontend — Vue 3 + Composition API
 
 - **`src/api/apiClient/`** — generated Kiota TypeScript client (do not edit manually; regenerate with `npm run build:api`)

@@ -16,6 +16,24 @@ export interface ApiOperationResult extends ApiError, Parsable {
 }
 export interface ApiOperationResult_errors extends AdditionalDataHolder, Parsable {
 }
+export interface AttributeStatDto extends Parsable {
+    /**
+     * The attribute property
+     */
+    attribute: BaseAttribute;
+    /**
+     * The exp property
+     */
+    exp: number;
+    /**
+     * The level property
+     */
+    level: number;
+    /**
+     * The requiredExp property
+     */
+    requiredExp: number;
+}
 export type BaseAttribute = (typeof BaseAttributeObject)[keyof typeof BaseAttributeObject];
 export interface ConfirmEmailCommand extends Parsable {
     /**
@@ -44,6 +62,15 @@ export function createApiOperationResult_errorsFromDiscriminatorValue(parseNode:
 // @ts-ignore
 export function createApiOperationResultFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoApiOperationResult;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {AttributeStatDto}
+ */
+// @ts-ignore
+export function createAttributeStatDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoAttributeStatDto;
 }
 /**
  * Creates a new instance of the appropriate class based on discriminator value
@@ -250,6 +277,15 @@ export function createUpdateTaskCommandFromDiscriminatorValue(parseNode: ParseNo
 export function createUpdateUserDetailsCommandFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoUpdateUserDetailsCommand;
 }
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {UserStatsDto}
+ */
+// @ts-ignore
+export function createUserStatsDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoUserStatsDto;
+}
 export interface DailySummaryDto extends Parsable {
     /**
      * The completedCount property
@@ -285,6 +321,20 @@ export function deserializeIntoApiOperationResult(apiOperationResult: Partial<Ap
 // @ts-ignore
 export function deserializeIntoApiOperationResult_errors(apiOperationResult_errors: Partial<ApiOperationResult_errors> | undefined = {}) : Record<string, (node: ParseNode) => void> {
     return {
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param AttributeStatDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoAttributeStatDto(attributeStatDto: Partial<AttributeStatDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "attribute": n => { attributeStatDto.attribute = n.getEnumValue<BaseAttribute>(BaseAttributeObject); },
+        "exp": n => { attributeStatDto.exp = n.getNumberValue(); },
+        "level": n => { attributeStatDto.level = n.getNumberValue(); },
+        "requiredExp": n => { attributeStatDto.requiredExp = n.getNumberValue(); },
     }
 }
 /**
@@ -542,6 +592,20 @@ export function deserializeIntoUpdateUserDetailsCommand(updateUserDetailsCommand
         "username": n => { updateUserDetailsCommand.username = n.getStringValue(); },
     }
 }
+/**
+ * The deserialization information for the current model
+ * @param UserStatsDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoUserStatsDto(userStatsDto: Partial<UserStatsDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "attributeStats": n => { userStatsDto.attributeStats = n.getCollectionOfObjectValues<AttributeStatDto>(createAttributeStatDtoFromDiscriminatorValue); },
+        "exp": n => { userStatsDto.exp = n.getNumberValue(); },
+        "level": n => { userStatsDto.level = n.getNumberValue(); },
+        "requiredExp": n => { userStatsDto.requiredExp = n.getNumberValue(); },
+    }
+}
 export interface HabitDto extends Parsable {
     /**
      * The id property
@@ -676,6 +740,20 @@ export function serializeApiOperationResult(writer: SerializationWriter, apiOper
 export function serializeApiOperationResult_errors(writer: SerializationWriter, apiOperationResult_errors: Partial<ApiOperationResult_errors> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
     if (!apiOperationResult_errors || isSerializingDerivedType) { return; }
     writer.writeAdditionalData(apiOperationResult_errors.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param AttributeStatDto The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeAttributeStatDto(writer: SerializationWriter, attributeStatDto: Partial<AttributeStatDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!attributeStatDto || isSerializingDerivedType) { return; }
+    writer.writeEnumValue<BaseAttribute>("attribute", attributeStatDto.attribute);
+    writer.writeNumberValue("exp", attributeStatDto.exp);
+    writer.writeNumberValue("level", attributeStatDto.level);
+    writer.writeNumberValue("requiredExp", attributeStatDto.requiredExp);
 }
 /**
  * Serializes information the current object
@@ -938,6 +1016,20 @@ export function serializeUpdateUserDetailsCommand(writer: SerializationWriter, u
     if (!updateUserDetailsCommand || isSerializingDerivedType) { return; }
     writer.writeStringValue("username", updateUserDetailsCommand.username);
 }
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param UserStatsDto The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeUserStatsDto(writer: SerializationWriter, userStatsDto: Partial<UserStatsDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!userStatsDto || isSerializingDerivedType) { return; }
+    writer.writeCollectionOfObjectValues<AttributeStatDto>("attributeStats", userStatsDto.attributeStats, serializeAttributeStatDto);
+    writer.writeNumberValue("exp", userStatsDto.exp);
+    writer.writeNumberValue("level", userStatsDto.level);
+    writer.writeNumberValue("requiredExp", userStatsDto.requiredExp);
+}
 export interface TaskItemDto extends Parsable {
     /**
      * The archivedAt property
@@ -1125,6 +1217,24 @@ export interface UpdateUserDetailsCommand extends Parsable {
      * The username property
      */
     username?: string | null;
+}
+export interface UserStatsDto extends Parsable {
+    /**
+     * The attributeStats property
+     */
+    attributeStats: AttributeStatDto[];
+    /**
+     * The exp property
+     */
+    exp: number;
+    /**
+     * The level property
+     */
+    level: number;
+    /**
+     * The requiredExp property
+     */
+    requiredExp: number;
 }
 export const BaseAttributeObject = {
     Strength: "Strength",

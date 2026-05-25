@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SelfGrind.Application.Behaviors;
 using SelfGrind.Domain.Interfaces;
+using SelfGrind.Domain.Repositories;
 
 namespace SelfGrind.Application.User.Commands.RegisterUser;
 
@@ -11,6 +12,7 @@ public class RegisterUserCommandHandler(
     ILogger<RegisterUserCommandHandler> logger,
     UserManager<Domain.Entities.User> userManager,
     IEmailService emailService,
+    IUsersRepository usersRepository,
     IConfiguration configuration)
     : IRequestHandler<RegisterUserCommand>
 {
@@ -26,6 +28,8 @@ public class RegisterUserCommandHandler(
 
         var result = await userManager.CreateAsync(user, request.Password);
         result.ThrowIfFailed();
+
+        await usersRepository.SeedStatsAsync(user.Id, cancellationToken);
 
         var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
         var frontendUrl = configuration["AppSettings:FrontendUrl"] ?? "http://localhost:5173";

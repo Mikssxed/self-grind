@@ -11,9 +11,9 @@ const attributeMap: Record<BaseAttribute, AttributeDisplay> = {
     Strength:   { label: 'Strength',   emoji: '💪', variant: 'error'   },
     Knowledge:  { label: 'Knowledge',  emoji: '📘', variant: 'info'    },
     Health:     { label: 'Health',     emoji: '💚', variant: 'success' },
-    Charisma:   { label: 'Charisma',   emoji: '🌟', variant: 'warning' },
+    Discipline: { label: 'Discipline', emoji: '🛡️', variant: 'violet'  },
     Focus:      { label: 'Focus',      emoji: '👁️', variant: 'violet'  },
-    Creativity: { label: 'Creativity', emoji: '🎨', variant: 'violet'  },
+    Energy:     { label: 'Energy',     emoji: '⚡', variant: 'warning' },
 };
 
 const fallback: AttributeDisplay = { label: 'Unknown', emoji: '❓', variant: 'info' };

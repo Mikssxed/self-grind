@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SelfGrind.Application.Behaviors;
 using SelfGrind.Application.Settings;
+using SelfGrind.Application.Stats.Services;
 using SelfGrind.Application.User;
 
 namespace SelfGrind.Application.Extensions;
@@ -25,6 +26,7 @@ public static class ServiceCollectionExtensions
         services.AddValidatorsFromAssembly(applicationAssembly);
 
         services.AddScoped<IUserContext, UserContext>();
+        services.AddScoped<IStatsService, StatsService>();
         services.AddHttpContextAccessor();
     }
 }

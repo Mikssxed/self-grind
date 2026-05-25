@@ -852,6 +852,55 @@
           }
         }
       }
+    },
+    "/api/user/stats": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserStatsDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserStatsDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserStatsDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -876,6 +925,33 @@
         "required": [
           "errors",
           "isSuccess"
+        ]
+      },
+      "AttributeStatDto": {
+        "type": "object",
+        "properties": {
+          "attribute": {
+            "$ref": "#/components/schemas/BaseAttribute"
+          },
+          "level": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "exp": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "requiredExp": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "attribute",
+          "exp",
+          "level",
+          "requiredExp"
         ]
       },
       "BaseAttribute": {
@@ -1437,6 +1513,36 @@
         "required": [
           "username"
         ]
+      },
+      "UserStatsDto": {
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "exp": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "requiredExp": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "attributeStats": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AttributeStatDto"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "attributeStats",
+          "exp",
+          "level",
+          "requiredExp"
+        ]
       }
     },
     "securitySchemes": {
@@ -1463,6 +1569,9 @@
     },
     {
       "name": "Tasks"
+    },
+    {
+      "name": "User"
     }
   ]
 }

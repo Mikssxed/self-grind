@@ -21,10 +21,9 @@
     </div>
 </template>
 <script setup lang="ts">
+    import type { BaseAttribute } from '@/api/apiClient/models';
     import { useField } from 'vee-validate';
     import InputLabel from './InputLabel.vue';
-
-    export type AttributeValue = 'Strength' | 'Knowledge' | 'Health' | 'Charisma' | 'Focus' | 'Creativity';
 
     export interface AttributeSelectorProps {
         name: string;
@@ -35,27 +34,27 @@
         label: 'Character Attribute (optional)',
     });
 
-    const { value } = useField<AttributeValue | undefined>(() => props.name);
+    const { value } = useField<BaseAttribute | undefined>(() => props.name);
 
-    const attributes: { label: string; emoji: string; value: AttributeValue }[] = [
+    const attributes: { label: string; emoji: string; value: BaseAttribute }[] = [
         { label: 'Strength', emoji: '💪', value: 'Strength' },
         { label: 'Knowledge', emoji: '📘', value: 'Knowledge' },
         { label: 'Health', emoji: '❤️', value: 'Health' },
-        { label: 'Charisma', emoji: '💬', value: 'Charisma' },
+        { label: 'Discipline', emoji: '🛡️', value: 'Discipline' },
         { label: 'Focus', emoji: '🎯', value: 'Focus' },
-        { label: 'Creativity', emoji: '🎨', value: 'Creativity' },
+        { label: 'Energy', emoji: '⚡', value: 'Energy' },
     ];
 
     const baseClasses = 'flex flex-col items-center gap-1 p-3 rounded-xl border-2 cursor-pointer transition-all';
     const activeClasses = 'border-accent-500 bg-accent-500/10 text-white';
     const inactiveClasses = 'border-primary-800 bg-primary-900 text-primary-400 hover:border-primary-600';
 
-    function attributeClass(attrValue: AttributeValue) {
+    function attributeClass(attrValue: BaseAttribute) {
         const isActive = value.value === attrValue;
         return [baseClasses, isActive ? activeClasses : inactiveClasses];
     }
 
-    function selectAttribute(attrValue: AttributeValue) {
+    function selectAttribute(attrValue: BaseAttribute) {
         value.value = value.value === attrValue ? undefined : attrValue;
     }
 </script>

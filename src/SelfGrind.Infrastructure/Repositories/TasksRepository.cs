@@ -65,7 +65,9 @@ public class TasksRepository(SelfGrindDbContext dbContext) : ITasksRepository
 
     public async Task<TaskOccurrence?> GetTaskOccurenceById(string userId, Guid taskOccurenceId, CancellationToken cancellationToken = default)
     {
-        return await dbContext.TaskOccurrences.Where(o => o.TaskItem.UserId == userId && o.Id == taskOccurenceId)
+        return await dbContext.TaskOccurrences
+            .Include(o => o.TaskItem)
+            .Where(o => o.TaskItem.UserId == userId && o.Id == taskOccurenceId)
             .FirstOrDefaultAsync(cancellationToken);
     }
 
