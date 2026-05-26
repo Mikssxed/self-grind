@@ -15,4 +15,7 @@ public interface ITasksRepository
     Task<int> GetTodayTotalExp(string userId, DateOnly today, CancellationToken cancellationToken = default);
     Task<int> GetTotalCompletedCountAsync(string userId, CancellationToken cancellationToken = default);
     Task<(DateOnly Date, int Completed)[]> GetDailyCompletionSummaryAsync(string userId, DateOnly today, CancellationToken cancellationToken = default);
+    Task<(DateOnly Date, int CompletedCount, int TotalCount)[]> GetYearlyCompletionSummaryAsync(string userId, int year, CancellationToken cancellationToken = default);
+    Task<TaskOccurrence[]> GetCompletedOccurrencesForDateAsync(string userId, DateOnly date, CancellationToken cancellationToken = default);
+    Task<int[]> GetActiveYearsAsync(string userId, CancellationToken cancellationToken = default);
 }

@@ -853,6 +853,84 @@
         }
       }
     },
+    "/api/tasks/contribution-grid": {
+      "get": {
+        "tags": [
+          "Tasks"
+        ],
+        "parameters": [
+          {
+            "name": "year",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContributionGridDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContributionGridDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ContributionGridDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/tasks/day-activity": {
+      "get": {
+        "tags": [
+          "Tasks"
+        ],
+        "parameters": [
+          {
+            "name": "date",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DayActivityDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DayActivityDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DayActivityDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/user/stats": {
       "get": {
         "tags": [
@@ -981,6 +1059,72 @@
         },
         "additionalProperties": false
       },
+      "ContributionDayDto": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "level": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "date",
+          "level"
+        ]
+      },
+      "ContributionGridDto": {
+        "type": "object",
+        "properties": {
+          "days": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContributionDayDto"
+            }
+          },
+          "currentStreak": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "longestStreak": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalDaysActive": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "activePercentage": {
+            "type": "number",
+            "format": "double"
+          },
+          "completionRate": {
+            "type": "number",
+            "format": "double"
+          },
+          "availableYears": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "activePercentage",
+          "availableYears",
+          "completionRate",
+          "currentStreak",
+          "days",
+          "longestStreak",
+          "totalDaysActive"
+        ]
+      },
       "CreateHabitCommand": {
         "type": "object",
         "properties": {
@@ -1074,6 +1218,52 @@
           "completedCount",
           "streak",
           "totalExpEarnedToday"
+        ]
+      },
+      "DayActivityDto": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "tasks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DayActivityTaskDto"
+            }
+          },
+          "totalXp": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "date",
+          "tasks",
+          "totalXp"
+        ]
+      },
+      "DayActivityTaskDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "xp": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "attribute": {
+            "$ref": "#/components/schemas/BaseAttribute"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "attribute",
+          "title",
+          "xp"
         ]
       },
       "DayOfWeek": {

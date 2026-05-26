@@ -7,7 +7,9 @@ using SelfGrind.Application.Tasks.Commands.UpdateTask;
 using SelfGrind.Application.Tasks.Dtos;
 using SelfGrind.Application.Tasks.Queries.GetAllTaskItems;
 using SelfGrind.Application.Tasks.Queries.GetTaskItemById;
+using SelfGrind.Application.Tasks.Queries.GetContributionGrid;
 using SelfGrind.Application.Tasks.Queries.GetDailySummary;
+using SelfGrind.Application.Tasks.Queries.GetDayActivity;
 using SelfGrind.Application.Tasks.Queries.GetTodayTaskItems;
 
 namespace SelfGrind.Controllers;
@@ -76,5 +78,21 @@ public class TasksController(IMediator mediator) : ControllerBase
     {
         await mediator.Send(new DeleteTaskCommand(id));
         return NoContent();
+    }
+
+    [HttpGet("contribution-grid")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<ContributionGridDto>> GetContributionGrid([FromQuery] int year)
+    {
+        var grid = await mediator.Send(new GetContributionGridQuery { Year = year });
+        return Ok(grid);
+    }
+
+    [HttpGet("day-activity")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<ActionResult<DayActivityDto>> GetDayActivity([FromQuery] DateOnly date)
+    {
+        var activity = await mediator.Send(new GetDayActivityQuery { Date = date });
+        return Ok(activity);
     }
 }

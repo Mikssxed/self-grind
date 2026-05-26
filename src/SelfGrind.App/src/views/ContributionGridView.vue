@@ -7,111 +7,80 @@
     import type { Achievement } from '@/components/base/BaseAchievementGrid.vue';
     import type { BorderedStat } from '@/components/base/BaseStatCardBordered.vue';
     import type { ContributionDay } from '@/components/contribution-grid/ContributionGrid.vue';
-    import type { DayTask } from '@/components/contribution-grid/ContributionDayDetail.vue';
     import type { ActivityLevel } from '@/components/contribution-grid/ContributionGridCell.vue';
+    import type { DayTask, DayTaskVariant } from '@/components/contribution-grid/ContributionDayDetail.vue';
+    import { useContributionGrid, useDayActivity } from '@/composables/useContributionGrid';
+    import { getAttributeDisplay } from '@/composables/useAttributeDisplay';
 
-    const availableYears = [2024, 2025, 2026];
     const selectedYear = ref(new Date().getFullYear());
+    const selectedDate = ref<string | null>(null);
 
-    const stats: BorderedStat[] = [
-        {
-            label: 'Current Streak',
-            value: '15',
-            unit: 'days',
-            subtitle: 'Keep it up!',
-            subtitleEmoji: '🔥',
-            borderVariant: 'info',
-        },
-        {
-            label: 'Longest Streak',
-            value: '28',
-            unit: 'days',
-            subtitle: 'Personal best',
-            subtitleEmoji: '🏆',
-            borderVariant: 'accent',
-        },
-        {
-            label: 'Total Days Active',
-            value: '288',
-            unit: 'days',
-            subtitle: '79% this year',
-            borderVariant: 'success',
-        },
-        {
-            label: 'Completion Rate',
-            value: '87',
-            unit: '%',
-            borderVariant: 'violet',
-        },
-    ];
+    const { gridData } = useContributionGrid(selectedYear);
+    const { dayActivity } = useDayActivity(selectedDate);
 
-    const taskPool: DayTask[] = [
-        { title: 'Morning Workout', xp: 50, attribute: 'Strength', attributeEmoji: '💪', variant: 'error' },
-        { title: 'Read 30 Pages', xp: 40, attribute: 'Knowledge', attributeEmoji: '📘', variant: 'info' },
-        { title: 'Meditation Session', xp: 35, attribute: 'Discipline', attributeEmoji: '🔮', variant: 'violet' },
-        { title: 'Code for 2 Hours', xp: 60, attribute: 'Focus', attributeEmoji: '🎯', variant: 'success' },
-        { title: 'Journal Entry', xp: 25, attribute: 'Discipline', attributeEmoji: '🔮', variant: 'violet' },
-        { title: 'Run 5K', xp: 55, attribute: 'Strength', attributeEmoji: '💪', variant: 'error' },
-        { title: 'Study Session', xp: 45, attribute: 'Knowledge', attributeEmoji: '📘', variant: 'info' },
-        { title: 'Yoga Practice', xp: 30, attribute: 'Energy', attributeEmoji: '⚡', variant: 'warning' },
-    ];
+    const availableYears = computed(() => {
+        const years = gridData.value?.availableYears ?? [];
+        const currentYear = new Date().getFullYear();
+        if (years.length === 0) return [currentYear];
+        return years;
+    });
 
-    function seededRandom(seed: number): number {
-        const x = Math.sin(seed) * 10000;
-        return x - Math.floor(x);
-    }
+    const days = computed<ContributionDay[]>(() => {
+        if (!gridData.value?.days) return [];
+        return gridData.value.days.map(d => ({
+            date: d.date?.toString() ?? '',
+            level: (d.level ?? 0) as ActivityLevel,
+        }));
+    });
 
-    function formatLocalDate(d: Date): string {
-        const y = d.getFullYear();
-        const m = String(d.getMonth() + 1).padStart(2, '0');
-        const day = String(d.getDate()).padStart(2, '0');
-        return `${y}-${m}-${day}`;
-    }
+    const stats = computed<BorderedStat[]>(() => {
+        if (!gridData.value) return [];
+        return [
+            {
+                label: 'Current Streak',
+                value: String(gridData.value.currentStreak ?? 0),
+                unit: 'days',
+                subtitle: (gridData.value.currentStreak ?? 0) > 0 ? 'Keep it up!' : 'Start today!',
+                subtitleEmoji: '🔥',
+                borderVariant: 'info',
+            },
+            {
+                label: 'Longest Streak',
+                value: String(gridData.value.longestStreak ?? 0),
+                unit: 'days',
+                subtitle: 'Personal best',
+                subtitleEmoji: '🏆',
+                borderVariant: 'accent',
+            },
+            {
+                label: 'Total Days Active',
+                value: String(gridData.value.totalDaysActive ?? 0),
+                unit: 'days',
+                subtitle: `${Math.round(gridData.value.activePercentage ?? 0)}% this year`,
+                borderVariant: 'success',
+            },
+            {
+                label: 'Completion Rate',
+                value: String(Math.round(gridData.value.completionRate ?? 0)),
+                unit: '%',
+                borderVariant: 'violet',
+            },
+        ];
+    });
 
-    function generateDays(year: number): ContributionDay[] {
-        const result: ContributionDay[] = [];
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-        const startDate = new Date(year, 0, 1);
-        const endDate = new Date(year, 11, 31);
-
-        for (let d = new Date(startDate); d <= endDate; d.setDate(d.getDate() + 1)) {
-            const dateStr = formatLocalDate(d);
-            const isFuture = d > today;
-
-            let level: ActivityLevel = 0;
-            const tasks: DayTask[] = [];
-
-            if (!isFuture) {
-                const dayOfYear = Math.floor(
-                    (d.getTime() - startDate.getTime()) / 86400000,
-                );
-                const rand = seededRandom(dayOfYear * 31 + 7 + year);
-                if (rand < 0.25) level = 0;
-                else if (rand < 0.45) level = 1;
-                else if (rand < 0.65) level = 2;
-                else if (rand < 0.85) level = 3;
-                else level = 4;
-
-                if (level > 0) {
-                    const taskCount = level;
-                    for (let t = 0; t < taskCount; t++) {
-                        const taskIndex = Math.floor(
-                            seededRandom(dayOfYear * 13 + t * 7 + year) * taskPool.length,
-                        );
-                        const task = taskPool[taskIndex];
-                        if (task) tasks.push(task);
-                    }
-                }
-            }
-
-            result.push({ date: dateStr, level, tasks });
-        }
-
-        return result;
-    }
-
-    const days = computed(() => generateDays(selectedYear.value));
+    const selectedDayTasks = computed<DayTask[]>(() => {
+        if (!dayActivity.value?.tasks) return [];
+        return dayActivity.value.tasks.map(t => {
+            const display = getAttributeDisplay(t.attribute);
+            return {
+                title: t.title ?? '',
+                xp: t.xp ?? 0,
+                attribute: display.label,
+                attributeEmoji: display.emoji,
+                variant: display.variant as DayTaskVariant,
+            };
+        });
+    });
 
     const achievements: Achievement[] = [
         {
@@ -152,7 +121,10 @@
             :days="days"
             :years="availableYears"
             :selected-year="selectedYear"
+            :selected-date="selectedDate"
+            :day-tasks="selectedDayTasks"
             @update:selected-year="selectedYear = $event"
+            @update:selected-date="selectedDate = $event"
         />
 
         <BaseAchievementGrid

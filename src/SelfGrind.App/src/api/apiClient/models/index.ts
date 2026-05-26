@@ -45,6 +45,46 @@ export interface ConfirmEmailCommand extends Parsable {
      */
     userId?: string | null;
 }
+export interface ContributionDayDto extends Parsable {
+    /**
+     * The date property
+     */
+    date: DateOnly;
+    /**
+     * The level property
+     */
+    level: number;
+}
+export interface ContributionGridDto extends Parsable {
+    /**
+     * The activePercentage property
+     */
+    activePercentage: number;
+    /**
+     * The availableYears property
+     */
+    availableYears: number[];
+    /**
+     * The completionRate property
+     */
+    completionRate: number;
+    /**
+     * The currentStreak property
+     */
+    currentStreak: number;
+    /**
+     * The days property
+     */
+    days: ContributionDayDto[];
+    /**
+     * The longestStreak property
+     */
+    longestStreak: number;
+    /**
+     * The totalDaysActive property
+     */
+    totalDaysActive: number;
+}
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
@@ -84,6 +124,24 @@ export function createConfirmEmailCommandFromDiscriminatorValue(parseNode: Parse
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {ContributionDayDto}
+ */
+// @ts-ignore
+export function createContributionDayDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoContributionDayDto;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {ContributionGridDto}
+ */
+// @ts-ignore
+export function createContributionGridDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoContributionGridDto;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {CreateHabitCommand}
  */
 // @ts-ignore
@@ -107,6 +165,24 @@ export function createCreateTaskCommandFromDiscriminatorValue(parseNode: ParseNo
 // @ts-ignore
 export function createDailySummaryDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoDailySummaryDto;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {DayActivityDto}
+ */
+// @ts-ignore
+export function createDayActivityDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoDayActivityDto;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {DayActivityTaskDto}
+ */
+// @ts-ignore
+export function createDayActivityTaskDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoDayActivityTaskDto;
 }
 export interface CreateHabitCommand extends Parsable {
     /**
@@ -300,6 +376,34 @@ export interface DailySummaryDto extends Parsable {
      */
     totalExpEarnedToday: number;
 }
+export interface DayActivityDto extends Parsable {
+    /**
+     * The date property
+     */
+    date: DateOnly;
+    /**
+     * The tasks property
+     */
+    tasks: DayActivityTaskDto[];
+    /**
+     * The totalXp property
+     */
+    totalXp: number;
+}
+export interface DayActivityTaskDto extends Parsable {
+    /**
+     * The attribute property
+     */
+    attribute: BaseAttribute;
+    /**
+     * The title property
+     */
+    title: string;
+    /**
+     * The xp property
+     */
+    xp: number;
+}
 export type DayOfWeek = (typeof DayOfWeekObject)[keyof typeof DayOfWeekObject];
 /**
  * The deserialization information for the current model
@@ -351,6 +455,35 @@ export function deserializeIntoConfirmEmailCommand(confirmEmailCommand: Partial<
 }
 /**
  * The deserialization information for the current model
+ * @param ContributionDayDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoContributionDayDto(contributionDayDto: Partial<ContributionDayDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "date": n => { contributionDayDto.date = n.getDateOnlyValue(); },
+        "level": n => { contributionDayDto.level = n.getNumberValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param ContributionGridDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoContributionGridDto(contributionGridDto: Partial<ContributionGridDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "activePercentage": n => { contributionGridDto.activePercentage = n.getNumberValue(); },
+        "availableYears": n => { contributionGridDto.availableYears = n.getCollectionOfPrimitiveValues<number>(); },
+        "completionRate": n => { contributionGridDto.completionRate = n.getNumberValue(); },
+        "currentStreak": n => { contributionGridDto.currentStreak = n.getNumberValue(); },
+        "days": n => { contributionGridDto.days = n.getCollectionOfObjectValues<ContributionDayDto>(createContributionDayDtoFromDiscriminatorValue); },
+        "longestStreak": n => { contributionGridDto.longestStreak = n.getNumberValue(); },
+        "totalDaysActive": n => { contributionGridDto.totalDaysActive = n.getNumberValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
  * @param CreateHabitCommand The instance to deserialize into.
  * @returns {Record<string, (node: ParseNode) => void>}
  */
@@ -392,6 +525,32 @@ export function deserializeIntoDailySummaryDto(dailySummaryDto: Partial<DailySum
         "completedCount": n => { dailySummaryDto.completedCount = n.getNumberValue(); },
         "streak": n => { dailySummaryDto.streak = n.getNumberValue(); },
         "totalExpEarnedToday": n => { dailySummaryDto.totalExpEarnedToday = n.getNumberValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param DayActivityDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoDayActivityDto(dayActivityDto: Partial<DayActivityDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "date": n => { dayActivityDto.date = n.getDateOnlyValue(); },
+        "tasks": n => { dayActivityDto.tasks = n.getCollectionOfObjectValues<DayActivityTaskDto>(createDayActivityTaskDtoFromDiscriminatorValue); },
+        "totalXp": n => { dayActivityDto.totalXp = n.getNumberValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param DayActivityTaskDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoDayActivityTaskDto(dayActivityTaskDto: Partial<DayActivityTaskDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "attribute": n => { dayActivityTaskDto.attribute = n.getEnumValue<BaseAttribute>(BaseAttributeObject); },
+        "title": n => { dayActivityTaskDto.title = n.getStringValue(); },
+        "xp": n => { dayActivityTaskDto.xp = n.getNumberValue(); },
     }
 }
 /**
@@ -769,6 +928,35 @@ export function serializeConfirmEmailCommand(writer: SerializationWriter, confir
 }
 /**
  * Serializes information the current object
+ * @param ContributionDayDto The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeContributionDayDto(writer: SerializationWriter, contributionDayDto: Partial<ContributionDayDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!contributionDayDto || isSerializingDerivedType) { return; }
+    writer.writeDateOnlyValue("date", contributionDayDto.date);
+    writer.writeNumberValue("level", contributionDayDto.level);
+}
+/**
+ * Serializes information the current object
+ * @param ContributionGridDto The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeContributionGridDto(writer: SerializationWriter, contributionGridDto: Partial<ContributionGridDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!contributionGridDto || isSerializingDerivedType) { return; }
+    writer.writeNumberValue("activePercentage", contributionGridDto.activePercentage);
+    writer.writeCollectionOfPrimitiveValues<number>("availableYears", contributionGridDto.availableYears);
+    writer.writeNumberValue("completionRate", contributionGridDto.completionRate);
+    writer.writeNumberValue("currentStreak", contributionGridDto.currentStreak);
+    writer.writeCollectionOfObjectValues<ContributionDayDto>("days", contributionGridDto.days, serializeContributionDayDto);
+    writer.writeNumberValue("longestStreak", contributionGridDto.longestStreak);
+    writer.writeNumberValue("totalDaysActive", contributionGridDto.totalDaysActive);
+}
+/**
+ * Serializes information the current object
  * @param CreateHabitCommand The instance to serialize from.
  * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
  * @param writer Serialization writer to use to serialize this model
@@ -812,6 +1000,32 @@ export function serializeDailySummaryDto(writer: SerializationWriter, dailySumma
     writer.writeNumberValue("completedCount", dailySummaryDto.completedCount);
     writer.writeNumberValue("streak", dailySummaryDto.streak);
     writer.writeNumberValue("totalExpEarnedToday", dailySummaryDto.totalExpEarnedToday);
+}
+/**
+ * Serializes information the current object
+ * @param DayActivityDto The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeDayActivityDto(writer: SerializationWriter, dayActivityDto: Partial<DayActivityDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!dayActivityDto || isSerializingDerivedType) { return; }
+    writer.writeDateOnlyValue("date", dayActivityDto.date);
+    writer.writeCollectionOfObjectValues<DayActivityTaskDto>("tasks", dayActivityDto.tasks, serializeDayActivityTaskDto);
+    writer.writeNumberValue("totalXp", dayActivityDto.totalXp);
+}
+/**
+ * Serializes information the current object
+ * @param DayActivityTaskDto The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeDayActivityTaskDto(writer: SerializationWriter, dayActivityTaskDto: Partial<DayActivityTaskDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!dayActivityTaskDto || isSerializingDerivedType) { return; }
+    writer.writeEnumValue<BaseAttribute>("attribute", dayActivityTaskDto.attribute);
+    writer.writeStringValue("title", dayActivityTaskDto.title);
+    writer.writeNumberValue("xp", dayActivityTaskDto.xp);
 }
 /**
  * Serializes information the current object

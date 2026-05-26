@@ -131,8 +131,8 @@ This is a learning plan — you'll implement it yourself. Tips are included per 
 
 | Feature | Type | What to build |
 |---------|------|---------------|
-| Get contribution data | Query | `GetContributionGridQuery` → daily activity levels for a given year |
-| Get day detail | Query | `GetDayActivityQuery` → tasks completed on a specific date |
+| ~~Get contribution data~~ | Query | `GetContributionGridQuery` → daily activity levels for a given year |
+| ~~Get day detail~~ | Query | `GetDayActivityQuery` → tasks completed on a specific date |
 
 **How it works:**
 - Query all `TaskOccurrence` records for the user in the given year

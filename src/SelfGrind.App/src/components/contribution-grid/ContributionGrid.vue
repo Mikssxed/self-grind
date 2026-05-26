@@ -24,7 +24,7 @@
                         :key="day.date"
                         :level="day.level"
                         :is-selected="selectedDate === day.date"
-                        @select="selectedDate = day.date"
+                        @select="handleDaySelect(day.date)"
                     />
                 </div>
                 <div
@@ -46,12 +46,12 @@
         </div>
         <ContributionDayDetail
             :date="selectedDate"
-            :tasks="selectedDayTasks"
+            :tasks="dayTasks"
         />
     </BaseBox>
 </template>
 <script setup lang="ts">
-    import { computed, ref } from 'vue';
+    import { computed } from 'vue';
     import BaseBox from '@/components/base/BaseBox.vue';
     import BaseHeader from '@/components/base/BaseHeader.vue';
     import ContributionGridCell from './ContributionGridCell.vue';
@@ -64,33 +64,31 @@
     export interface ContributionDay {
         date: string;
         level: ActivityLevel;
-        tasks: DayTask[];
     }
 
     interface ContributionGridProps {
         days: ContributionDay[];
         years: number[];
         selectedYear: number;
+        selectedDate: string | null;
+        dayTasks: DayTask[];
     }
 
     const props = defineProps<ContributionGridProps>();
 
-    defineEmits<{
+    const emit = defineEmits<{
         'update:selectedYear': [year: number];
+        'update:selectedDate': [date: string | null];
     }>();
 
-    const selectedDate = ref<string | null>(null);
+    function handleDaySelect(date: string) {
+        emit('update:selectedDate', date);
+    }
 
     function parseLocalDate(dateStr: string): Date {
         const [y, m, d] = dateStr.split('-').map(Number);
         return new Date(y!, m! - 1, d!);
     }
-
-    const selectedDayTasks = computed(() => {
-        if (!selectedDate.value) return [];
-        const day = props.days.find((d: ContributionDay) => d.date === selectedDate.value);
-        return day?.tasks ?? [];
-    });
 
     const startDayOffset = computed(() => {
         const firstDay = props.days[0];

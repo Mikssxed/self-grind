@@ -4,7 +4,11 @@
 // @ts-ignore
 import { createTaskItemDtoFromDiscriminatorValue, serializeCreateTaskCommand, type CreateTaskCommand, type TaskItemDto } from '../../models/index.js';
 // @ts-ignore
+import { ContributionGridRequestBuilderRequestsMetadata, type ContributionGridRequestBuilder } from './contributionGrid/index.js';
+// @ts-ignore
 import { DailySummaryRequestBuilderRequestsMetadata, type DailySummaryRequestBuilder } from './dailySummary/index.js';
+// @ts-ignore
+import { DayActivityRequestBuilderRequestsMetadata, type DayActivityRequestBuilder } from './dayActivity/index.js';
 // @ts-ignore
 import { TasksItemRequestBuilderRequestsMetadata, type TasksItemRequestBuilder } from './item/index.js';
 // @ts-ignore
@@ -17,9 +21,17 @@ import { type BaseRequestBuilder, type Guid, type KeysToExcludeForNavigationMeta
  */
 export interface TasksRequestBuilder extends BaseRequestBuilder<TasksRequestBuilder> {
     /**
+     * The contributionGrid property
+     */
+    get contributionGrid(): ContributionGridRequestBuilder;
+    /**
      * The dailySummary property
      */
     get dailySummary(): DailySummaryRequestBuilder;
+    /**
+     * The dayActivity property
+     */
+    get dayActivity(): DayActivityRequestBuilder;
     /**
      * The today property
      */
@@ -64,8 +76,14 @@ export const TasksRequestBuilderNavigationMetadata: Record<Exclude<keyof TasksRe
         requestsMetadata: TasksItemRequestBuilderRequestsMetadata,
         pathParametersMappings: ["id"],
     },
+    contributionGrid: {
+        requestsMetadata: ContributionGridRequestBuilderRequestsMetadata,
+    },
     dailySummary: {
         requestsMetadata: DailySummaryRequestBuilderRequestsMetadata,
+    },
+    dayActivity: {
+        requestsMetadata: DayActivityRequestBuilderRequestsMetadata,
     },
     today: {
         requestsMetadata: TodayRequestBuilderRequestsMetadata,

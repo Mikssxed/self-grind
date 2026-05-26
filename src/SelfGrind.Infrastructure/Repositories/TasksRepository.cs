@@ -112,6 +112,55 @@ public class TasksRepository(SelfGrindDbContext dbContext) : ITasksRepository
             .ToArrayAsync(cancellationToken);
     }
 
+    public async Task<(DateOnly Date, int CompletedCount, int TotalCount)[]> GetYearlyCompletionSummaryAsync(
+        string userId, int year, CancellationToken cancellationToken = default)
+    {
+        var startDate = new DateOnly(year, 1, 1);
+        var endDate = new DateOnly(year, 12, 31);
+
+        return await dbContext.TaskOccurrences
+            .AsNoTracking()
+            .Where(o => o.TaskItem.UserId == userId
+                     && o.ScheduledDate >= startDate
+                     && o.ScheduledDate <= endDate
+                     && !o.TaskItem.IsArchived)
+            .GroupBy(o => o.ScheduledDate)
+            .Select(g => new
+            {
+                Date = g.Key,
+                CompletedCount = g.Count(o => o.Status == TaskOccurrenceStatus.Done),
+                TotalCount = g.Count()
+            })
+            .OrderBy(x => x.Date)
+            .AsAsyncEnumerable()
+            .Select(x => (x.Date, x.CompletedCount, x.TotalCount))
+            .ToArrayAsync(cancellationToken);
+    }
+
+    public async Task<TaskOccurrence[]> GetCompletedOccurrencesForDateAsync(
+        string userId, DateOnly date, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.TaskOccurrences
+            .AsNoTracking()
+            .Include(o => o.TaskItem)
+            .Where(o => o.TaskItem.UserId == userId
+                     && o.ScheduledDate == date
+                     && o.Status == TaskOccurrenceStatus.Done
+                     && !o.TaskItem.IsArchived)
+            .ToArrayAsync(cancellationToken);
+    }
+
+    public async Task<int[]> GetActiveYearsAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.TaskOccurrences
+            .AsNoTracking()
+            .Where(o => o.TaskItem.UserId == userId && !o.TaskItem.IsArchived)
+            .Select(o => o.ScheduledDate.Year)
+            .Distinct()
+            .OrderDescending()
+            .ToArrayAsync(cancellationToken);
+    }
+
     private void CreateOccurrencesRange(TaskItem taskItem)
     {
         var schedule = taskItem.Schedule;
