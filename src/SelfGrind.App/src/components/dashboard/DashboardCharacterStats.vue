@@ -21,6 +21,7 @@
     import { getAttributeDisplay } from '@/composables/useAttributeDisplay';
     import { computed } from 'vue';
     import DashboardStatRow from './DashboardStatRow.vue';
+    import {calculatePercentage} from "@/utils";
 
     interface DashboardCharacterStatsProps {
         stats: AttributeStatDto[];
@@ -32,15 +33,22 @@
         props.stats.map((stat) => {
             const display = getAttributeDisplay(stat.attribute);
             const percentage =
-                stat.requiredExp > 0 ? (stat.exp / stat.requiredExp) * 100 : 0;
+                stat.requiredExp > 0 ? calculatePercentage(stat.exp, stat.requiredExp) : 0;
+            
+            const valueLabel = buildValueLabel(stat);
+          
             return {
                 key: stat.attribute,
                 label: display.label,
                 emoji: display.emoji,
                 variant: display.variant,
                 percentage,
-                valueLabel: `Lv ${stat.level} · ${stat.exp}/${stat.requiredExp}`,
+                valueLabel,
             };
         })
     );
+    
+    const buildValueLabel = (stat: AttributeStatDto) => {
+        return `Lv ${stat.level} · ${stat.exp}/${stat.requiredExp}`;
+    };
 </script>
