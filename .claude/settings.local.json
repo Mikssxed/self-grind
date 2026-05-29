@@ -28,7 +28,14 @@
       "Bash(Get-ChildItem -Path \"C:\\\\projects\\\\SelfGrind\\\\SelfGrind\" -Directory)",
       "Bash(Get-ChildItem *)",
       "Bash(Select-Object FullName)",
-      "Bash(Sort-Object FullName)"
+      "Bash(Sort-Object FullName)",
+      "PowerShell(cd \"C:\\\\Users\\\\WojciechMaslowski\\\\RiderProjects\\\\self-grind\"; Get-ChildItem -Recurse -Directory -Path \"src\\\\SelfGrind.Application\" | ForEach-Object { $_.FullName -replace [regex]::Escape\\(\"C:\\\\Users\\\\WojciechMaslowski\\\\RiderProjects\\\\self-grind\\\\\"\\), \"\" } | Sort-Object)",
+      "PowerShell(head *)",
+      "PowerShell(tail *)",
+      "Bash(where swagger *)",
+      "Bash(dotnet tool *)",
+      "Bash(where kiota *)",
+      "Bash(echo \"EXIT=$?\")"
     ]
   }
 }

@@ -5,6 +5,232 @@
     "version": "1.0"
   },
   "paths": {
+    "/api/analytics/overview": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalyticsOverviewDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalyticsOverviewDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AnalyticsOverviewDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/analytics/weekly-activity": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "parameters": [
+          {
+            "name": "weekStart",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/WeeklyActivityDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WeeklyActivityDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WeeklyActivityDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/analytics/xp-per-week": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "parameters": [
+          {
+            "name": "weeks",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 6
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/XpPerWeekDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/XpPerWeekDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/XpPerWeekDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/analytics/stat-growth": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "parameters": [
+          {
+            "name": "weeks",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 6
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatGrowthDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatGrowthDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StatGrowthDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/analytics/life-balance": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LifeBalanceDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LifeBalanceDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LifeBalanceDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/analytics/achievements": {
+      "get": {
+        "tags": [
+          "Analytics"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/AchievementsDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AchievementsDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AchievementsDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/habits": {
       "post": {
         "tags": [
@@ -983,6 +1209,96 @@
   },
   "components": {
     "schemas": {
+      "AchievementDto": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "subtitle": {
+            "type": "string"
+          },
+          "emoji": {
+            "type": "string"
+          },
+          "variant": {
+            "type": "string"
+          },
+          "locked": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "emoji",
+          "key",
+          "label",
+          "locked",
+          "subtitle",
+          "variant"
+        ]
+      },
+      "AchievementsDto": {
+        "type": "object",
+        "properties": {
+          "achievements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AchievementDto"
+            }
+          },
+          "unlockedCount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalCount": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "achievements",
+          "totalCount",
+          "unlockedCount"
+        ]
+      },
+      "AnalyticsOverviewDto": {
+        "type": "object",
+        "properties": {
+          "totalXp": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "tasksDone": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "achievementsUnlocked": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "achievementsTotal": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "bestStreak": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "achievementsTotal",
+          "achievementsUnlocked",
+          "bestStreak",
+          "tasksDone",
+          "totalXp"
+        ]
+      },
       "ApiOperationResult": {
         "type": "object",
         "properties": {
@@ -1003,6 +1319,23 @@
         "required": [
           "errors",
           "isSuccess"
+        ]
+      },
+      "AttributeCountDto": {
+        "type": "object",
+        "properties": {
+          "attribute": {
+            "$ref": "#/components/schemas/BaseAttribute"
+          },
+          "count": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "attribute",
+          "count"
         ]
       },
       "AttributeStatDto": {
@@ -1309,6 +1642,53 @@
           "todayValue"
         ]
       },
+      "LifeBalanceDto": {
+        "type": "object",
+        "properties": {
+          "attributes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LifeBalanceEntryDto"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "attributes"
+        ]
+      },
+      "LifeBalanceEntryDto": {
+        "type": "object",
+        "properties": {
+          "attribute": {
+            "$ref": "#/components/schemas/BaseAttribute"
+          },
+          "level": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "exp": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "requiredExp": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "score": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "attribute",
+          "exp",
+          "level",
+          "requiredExp",
+          "score"
+        ]
+      },
       "LogHabitEntryCommand": {
         "type": "object",
         "properties": {
@@ -1440,6 +1820,49 @@
           }
         },
         "additionalProperties": false
+      },
+      "StatGrowthDto": {
+        "type": "object",
+        "properties": {
+          "weekStarts": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          "series": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/StatGrowthSeriesDto"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "series",
+          "weekStarts"
+        ]
+      },
+      "StatGrowthSeriesDto": {
+        "type": "object",
+        "properties": {
+          "attribute": {
+            "$ref": "#/components/schemas/BaseAttribute"
+          },
+          "levels": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "attribute",
+          "levels"
+        ]
       },
       "TaskItemDto": {
         "required": [
@@ -1733,6 +2156,88 @@
           "level",
           "requiredExp"
         ]
+      },
+      "WeeklyActivityDayDto": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "dayOfWeek": {
+            "$ref": "#/components/schemas/DayOfWeek"
+          },
+          "counts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AttributeCountDto"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "counts",
+          "date",
+          "dayOfWeek"
+        ]
+      },
+      "WeeklyActivityDto": {
+        "type": "object",
+        "properties": {
+          "weekStart": {
+            "type": "string",
+            "format": "date"
+          },
+          "days": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WeeklyActivityDayDto"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "days",
+          "weekStart"
+        ]
+      },
+      "XpPerWeekDto": {
+        "type": "object",
+        "properties": {
+          "weeks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/XpPerWeekEntryDto"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "weeks"
+        ]
+      },
+      "XpPerWeekEntryDto": {
+        "type": "object",
+        "properties": {
+          "weekStart": {
+            "type": "string",
+            "format": "date"
+          },
+          "weekNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "xp": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "weekNumber",
+          "weekStart",
+          "xp"
+        ]
       }
     },
     "securitySchemes": {
@@ -1748,6 +2253,9 @@
     }
   ],
   "tags": [
+    {
+      "name": "Analytics"
+    },
     {
       "name": "Habits"
     },

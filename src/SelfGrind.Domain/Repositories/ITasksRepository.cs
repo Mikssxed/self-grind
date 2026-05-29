@@ -1,4 +1,5 @@
-﻿using SelfGrind.Domain.Entities;
+﻿using SelfGrind.Domain.Constants;
+using SelfGrind.Domain.Entities;
 
 namespace SelfGrind.Domain.Repositories;
 
@@ -18,4 +19,7 @@ public interface ITasksRepository
     Task<(DateOnly Date, int CompletedCount, int TotalCount)[]> GetYearlyCompletionSummaryAsync(string userId, int year, CancellationToken cancellationToken = default);
     Task<TaskOccurrence[]> GetCompletedOccurrencesForDateAsync(string userId, DateOnly date, CancellationToken cancellationToken = default);
     Task<int[]> GetActiveYearsAsync(string userId, CancellationToken cancellationToken = default);
+    Task<(DateOnly Date, BaseAttribute Attribute, int CompletedCount, int TotalExp)[]> GetCompletedAggregatesAsync(string userId, DateOnly startDate, DateOnly endDate, CancellationToken cancellationToken = default);
+    Task<int> GetTotalEarnedExpAsync(string userId, CancellationToken cancellationToken = default);
+    Task<DateOnly[]> GetAllCompletionDatesAsync(string userId, CancellationToken cancellationToken = default);
 }

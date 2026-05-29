@@ -4,6 +4,68 @@
 // @ts-ignore
 import { type AdditionalDataHolder, type ApiError, type DateOnly, type Guid, type Parsable, type ParseNode, type SerializationWriter } from '@microsoft/kiota-abstractions';
 
+export interface AchievementDto extends Parsable {
+    /**
+     * The emoji property
+     */
+    emoji: string;
+    /**
+     * The key property
+     */
+    key: string;
+    /**
+     * The label property
+     */
+    label: string;
+    /**
+     * The locked property
+     */
+    locked: boolean;
+    /**
+     * The subtitle property
+     */
+    subtitle: string;
+    /**
+     * The variant property
+     */
+    variant: string;
+}
+export interface AchievementsDto extends Parsable {
+    /**
+     * The achievements property
+     */
+    achievements: AchievementDto[];
+    /**
+     * The totalCount property
+     */
+    totalCount: number;
+    /**
+     * The unlockedCount property
+     */
+    unlockedCount: number;
+}
+export interface AnalyticsOverviewDto extends Parsable {
+    /**
+     * The achievementsTotal property
+     */
+    achievementsTotal: number;
+    /**
+     * The achievementsUnlocked property
+     */
+    achievementsUnlocked: number;
+    /**
+     * The bestStreak property
+     */
+    bestStreak: number;
+    /**
+     * The tasksDone property
+     */
+    tasksDone: number;
+    /**
+     * The totalXp property
+     */
+    totalXp: number;
+}
 export interface ApiOperationResult extends ApiError, Parsable {
     /**
      * The errors property
@@ -15,6 +77,16 @@ export interface ApiOperationResult extends ApiError, Parsable {
     isSuccess?: boolean | null;
 }
 export interface ApiOperationResult_errors extends AdditionalDataHolder, Parsable {
+}
+export interface AttributeCountDto extends Parsable {
+    /**
+     * The attribute property
+     */
+    attribute: BaseAttribute;
+    /**
+     * The count property
+     */
+    count: number;
 }
 export interface AttributeStatDto extends Parsable {
     /**
@@ -88,6 +160,33 @@ export interface ContributionGridDto extends Parsable {
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {AchievementDto}
+ */
+// @ts-ignore
+export function createAchievementDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoAchievementDto;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {AchievementsDto}
+ */
+// @ts-ignore
+export function createAchievementsDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoAchievementsDto;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {AnalyticsOverviewDto}
+ */
+// @ts-ignore
+export function createAnalyticsOverviewDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoAnalyticsOverviewDto;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {ApiOperationResult_errors}
  */
 // @ts-ignore
@@ -102,6 +201,15 @@ export function createApiOperationResult_errorsFromDiscriminatorValue(parseNode:
 // @ts-ignore
 export function createApiOperationResultFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoApiOperationResult;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {AttributeCountDto}
+ */
+// @ts-ignore
+export function createAttributeCountDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoAttributeCountDto;
 }
 /**
  * Creates a new instance of the appropriate class based on discriminator value
@@ -210,6 +318,24 @@ export function createHabitDtoFromDiscriminatorValue(parseNode: ParseNode | unde
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {LifeBalanceDto}
+ */
+// @ts-ignore
+export function createLifeBalanceDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoLifeBalanceDto;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {LifeBalanceEntryDto}
+ */
+// @ts-ignore
+export function createLifeBalanceEntryDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoLifeBalanceEntryDto;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {LogHabitEntryCommand}
  */
 // @ts-ignore
@@ -269,6 +395,24 @@ export function createProblemDetailsFromDiscriminatorValue(parseNode: ParseNode 
 // @ts-ignore
 export function createRegisterUserCommandFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoRegisterUserCommand;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {StatGrowthDto}
+ */
+// @ts-ignore
+export function createStatGrowthDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoStatGrowthDto;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {StatGrowthSeriesDto}
+ */
+// @ts-ignore
+export function createStatGrowthSeriesDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoStatGrowthSeriesDto;
 }
 export interface CreateTaskCommand extends Parsable {
     /**
@@ -362,6 +506,42 @@ export function createUpdateUserDetailsCommandFromDiscriminatorValue(parseNode: 
 export function createUserStatsDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoUserStatsDto;
 }
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {WeeklyActivityDayDto}
+ */
+// @ts-ignore
+export function createWeeklyActivityDayDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoWeeklyActivityDayDto;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {WeeklyActivityDto}
+ */
+// @ts-ignore
+export function createWeeklyActivityDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoWeeklyActivityDto;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {XpPerWeekDto}
+ */
+// @ts-ignore
+export function createXpPerWeekDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoXpPerWeekDto;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {XpPerWeekEntryDto}
+ */
+// @ts-ignore
+export function createXpPerWeekEntryDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoXpPerWeekEntryDto;
+}
 export interface DailySummaryDto extends Parsable {
     /**
      * The completedCount property
@@ -407,6 +587,50 @@ export interface DayActivityTaskDto extends Parsable {
 export type DayOfWeek = (typeof DayOfWeekObject)[keyof typeof DayOfWeekObject];
 /**
  * The deserialization information for the current model
+ * @param AchievementDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoAchievementDto(achievementDto: Partial<AchievementDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "emoji": n => { achievementDto.emoji = n.getStringValue(); },
+        "key": n => { achievementDto.key = n.getStringValue(); },
+        "label": n => { achievementDto.label = n.getStringValue(); },
+        "locked": n => { achievementDto.locked = n.getBooleanValue(); },
+        "subtitle": n => { achievementDto.subtitle = n.getStringValue(); },
+        "variant": n => { achievementDto.variant = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param AchievementsDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoAchievementsDto(achievementsDto: Partial<AchievementsDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "achievements": n => { achievementsDto.achievements = n.getCollectionOfObjectValues<AchievementDto>(createAchievementDtoFromDiscriminatorValue); },
+        "totalCount": n => { achievementsDto.totalCount = n.getNumberValue(); },
+        "unlockedCount": n => { achievementsDto.unlockedCount = n.getNumberValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param AnalyticsOverviewDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoAnalyticsOverviewDto(analyticsOverviewDto: Partial<AnalyticsOverviewDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "achievementsTotal": n => { analyticsOverviewDto.achievementsTotal = n.getNumberValue(); },
+        "achievementsUnlocked": n => { analyticsOverviewDto.achievementsUnlocked = n.getNumberValue(); },
+        "bestStreak": n => { analyticsOverviewDto.bestStreak = n.getNumberValue(); },
+        "tasksDone": n => { analyticsOverviewDto.tasksDone = n.getNumberValue(); },
+        "totalXp": n => { analyticsOverviewDto.totalXp = n.getNumberValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
  * @param ApiOperationResult The instance to deserialize into.
  * @returns {Record<string, (node: ParseNode) => void>}
  */
@@ -425,6 +649,18 @@ export function deserializeIntoApiOperationResult(apiOperationResult: Partial<Ap
 // @ts-ignore
 export function deserializeIntoApiOperationResult_errors(apiOperationResult_errors: Partial<ApiOperationResult_errors> | undefined = {}) : Record<string, (node: ParseNode) => void> {
     return {
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param AttributeCountDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoAttributeCountDto(attributeCountDto: Partial<AttributeCountDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "attribute": n => { attributeCountDto.attribute = n.getEnumValue<BaseAttribute>(BaseAttributeObject); },
+        "count": n => { attributeCountDto.count = n.getNumberValue(); },
     }
 }
 /**
@@ -570,6 +806,32 @@ export function deserializeIntoHabitDto(habitDto: Partial<HabitDto> | undefined 
 }
 /**
  * The deserialization information for the current model
+ * @param LifeBalanceDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoLifeBalanceDto(lifeBalanceDto: Partial<LifeBalanceDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "attributes": n => { lifeBalanceDto.attributes = n.getCollectionOfObjectValues<LifeBalanceEntryDto>(createLifeBalanceEntryDtoFromDiscriminatorValue); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param LifeBalanceEntryDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoLifeBalanceEntryDto(lifeBalanceEntryDto: Partial<LifeBalanceEntryDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "attribute": n => { lifeBalanceEntryDto.attribute = n.getEnumValue<BaseAttribute>(BaseAttributeObject); },
+        "exp": n => { lifeBalanceEntryDto.exp = n.getNumberValue(); },
+        "level": n => { lifeBalanceEntryDto.level = n.getNumberValue(); },
+        "requiredExp": n => { lifeBalanceEntryDto.requiredExp = n.getNumberValue(); },
+        "score": n => { lifeBalanceEntryDto.score = n.getNumberValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
  * @param LogHabitEntryCommand The instance to deserialize into.
  * @returns {Record<string, (node: ParseNode) => void>}
  */
@@ -655,6 +917,30 @@ export function deserializeIntoRegisterUserCommand(registerUserCommand: Partial<
         "email": n => { registerUserCommand.email = n.getStringValue(); },
         "password": n => { registerUserCommand.password = n.getStringValue(); },
         "username": n => { registerUserCommand.username = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param StatGrowthDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoStatGrowthDto(statGrowthDto: Partial<StatGrowthDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "series": n => { statGrowthDto.series = n.getCollectionOfObjectValues<StatGrowthSeriesDto>(createStatGrowthSeriesDtoFromDiscriminatorValue); },
+        "weekStarts": n => { statGrowthDto.weekStarts = n.getCollectionOfPrimitiveValues<DateOnly>(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param StatGrowthSeriesDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoStatGrowthSeriesDto(statGrowthSeriesDto: Partial<StatGrowthSeriesDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "attribute": n => { statGrowthSeriesDto.attribute = n.getEnumValue<BaseAttribute>(BaseAttributeObject); },
+        "levels": n => { statGrowthSeriesDto.levels = n.getCollectionOfPrimitiveValues<number>(); },
     }
 }
 /**
@@ -765,6 +1051,55 @@ export function deserializeIntoUserStatsDto(userStatsDto: Partial<UserStatsDto> 
         "requiredExp": n => { userStatsDto.requiredExp = n.getNumberValue(); },
     }
 }
+/**
+ * The deserialization information for the current model
+ * @param WeeklyActivityDayDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoWeeklyActivityDayDto(weeklyActivityDayDto: Partial<WeeklyActivityDayDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "counts": n => { weeklyActivityDayDto.counts = n.getCollectionOfObjectValues<AttributeCountDto>(createAttributeCountDtoFromDiscriminatorValue); },
+        "date": n => { weeklyActivityDayDto.date = n.getDateOnlyValue(); },
+        "dayOfWeek": n => { weeklyActivityDayDto.dayOfWeek = n.getEnumValue<DayOfWeek>(DayOfWeekObject); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param WeeklyActivityDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoWeeklyActivityDto(weeklyActivityDto: Partial<WeeklyActivityDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "days": n => { weeklyActivityDto.days = n.getCollectionOfObjectValues<WeeklyActivityDayDto>(createWeeklyActivityDayDtoFromDiscriminatorValue); },
+        "weekStart": n => { weeklyActivityDto.weekStart = n.getDateOnlyValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param XpPerWeekDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoXpPerWeekDto(xpPerWeekDto: Partial<XpPerWeekDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "weeks": n => { xpPerWeekDto.weeks = n.getCollectionOfObjectValues<XpPerWeekEntryDto>(createXpPerWeekEntryDtoFromDiscriminatorValue); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param XpPerWeekEntryDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoXpPerWeekEntryDto(xpPerWeekEntryDto: Partial<XpPerWeekEntryDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "weekNumber": n => { xpPerWeekEntryDto.weekNumber = n.getNumberValue(); },
+        "weekStart": n => { xpPerWeekEntryDto.weekStart = n.getDateOnlyValue(); },
+        "xp": n => { xpPerWeekEntryDto.xp = n.getNumberValue(); },
+    }
+}
 export interface HabitDto extends Parsable {
     /**
      * The id property
@@ -786,6 +1121,34 @@ export interface HabitDto extends Parsable {
      * The unit property
      */
     unit?: string | null;
+}
+export interface LifeBalanceDto extends Parsable {
+    /**
+     * The attributes property
+     */
+    attributes: LifeBalanceEntryDto[];
+}
+export interface LifeBalanceEntryDto extends Parsable {
+    /**
+     * The attribute property
+     */
+    attribute: BaseAttribute;
+    /**
+     * The exp property
+     */
+    exp: number;
+    /**
+     * The level property
+     */
+    level: number;
+    /**
+     * The requiredExp property
+     */
+    requiredExp: number;
+    /**
+     * The score property
+     */
+    score: number;
 }
 export interface LogHabitEntryCommand extends Parsable {
     /**
@@ -879,6 +1242,50 @@ export interface RegisterUserCommand extends Parsable {
 }
 /**
  * Serializes information the current object
+ * @param AchievementDto The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeAchievementDto(writer: SerializationWriter, achievementDto: Partial<AchievementDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!achievementDto || isSerializingDerivedType) { return; }
+    writer.writeStringValue("emoji", achievementDto.emoji);
+    writer.writeStringValue("key", achievementDto.key);
+    writer.writeStringValue("label", achievementDto.label);
+    writer.writeBooleanValue("locked", achievementDto.locked);
+    writer.writeStringValue("subtitle", achievementDto.subtitle);
+    writer.writeStringValue("variant", achievementDto.variant);
+}
+/**
+ * Serializes information the current object
+ * @param AchievementsDto The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeAchievementsDto(writer: SerializationWriter, achievementsDto: Partial<AchievementsDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!achievementsDto || isSerializingDerivedType) { return; }
+    writer.writeCollectionOfObjectValues<AchievementDto>("achievements", achievementsDto.achievements, serializeAchievementDto);
+    writer.writeNumberValue("totalCount", achievementsDto.totalCount);
+    writer.writeNumberValue("unlockedCount", achievementsDto.unlockedCount);
+}
+/**
+ * Serializes information the current object
+ * @param AnalyticsOverviewDto The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeAnalyticsOverviewDto(writer: SerializationWriter, analyticsOverviewDto: Partial<AnalyticsOverviewDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!analyticsOverviewDto || isSerializingDerivedType) { return; }
+    writer.writeNumberValue("achievementsTotal", analyticsOverviewDto.achievementsTotal);
+    writer.writeNumberValue("achievementsUnlocked", analyticsOverviewDto.achievementsUnlocked);
+    writer.writeNumberValue("bestStreak", analyticsOverviewDto.bestStreak);
+    writer.writeNumberValue("tasksDone", analyticsOverviewDto.tasksDone);
+    writer.writeNumberValue("totalXp", analyticsOverviewDto.totalXp);
+}
+/**
+ * Serializes information the current object
  * @param ApiOperationResult The instance to serialize from.
  * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
  * @param writer Serialization writer to use to serialize this model
@@ -899,6 +1306,18 @@ export function serializeApiOperationResult(writer: SerializationWriter, apiOper
 export function serializeApiOperationResult_errors(writer: SerializationWriter, apiOperationResult_errors: Partial<ApiOperationResult_errors> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
     if (!apiOperationResult_errors || isSerializingDerivedType) { return; }
     writer.writeAdditionalData(apiOperationResult_errors.additionalData);
+}
+/**
+ * Serializes information the current object
+ * @param AttributeCountDto The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeAttributeCountDto(writer: SerializationWriter, attributeCountDto: Partial<AttributeCountDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!attributeCountDto || isSerializingDerivedType) { return; }
+    writer.writeEnumValue<BaseAttribute>("attribute", attributeCountDto.attribute);
+    writer.writeNumberValue("count", attributeCountDto.count);
 }
 /**
  * Serializes information the current object
@@ -1045,6 +1464,32 @@ export function serializeHabitDto(writer: SerializationWriter, habitDto: Partial
 /**
  * Serializes information the current object
  * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param LifeBalanceDto The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeLifeBalanceDto(writer: SerializationWriter, lifeBalanceDto: Partial<LifeBalanceDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!lifeBalanceDto || isSerializingDerivedType) { return; }
+    writer.writeCollectionOfObjectValues<LifeBalanceEntryDto>("attributes", lifeBalanceDto.attributes, serializeLifeBalanceEntryDto);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param LifeBalanceEntryDto The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeLifeBalanceEntryDto(writer: SerializationWriter, lifeBalanceEntryDto: Partial<LifeBalanceEntryDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!lifeBalanceEntryDto || isSerializingDerivedType) { return; }
+    writer.writeEnumValue<BaseAttribute>("attribute", lifeBalanceEntryDto.attribute);
+    writer.writeNumberValue("exp", lifeBalanceEntryDto.exp);
+    writer.writeNumberValue("level", lifeBalanceEntryDto.level);
+    writer.writeNumberValue("requiredExp", lifeBalanceEntryDto.requiredExp);
+    writer.writeNumberValue("score", lifeBalanceEntryDto.score);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
  * @param LogHabitEntryCommand The instance to serialize from.
  * @param writer Serialization writer to use to serialize this model
  */
@@ -1132,6 +1577,30 @@ export function serializeRegisterUserCommand(writer: SerializationWriter, regist
     writer.writeStringValue("email", registerUserCommand.email);
     writer.writeStringValue("password", registerUserCommand.password);
     writer.writeStringValue("username", registerUserCommand.username);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param StatGrowthDto The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeStatGrowthDto(writer: SerializationWriter, statGrowthDto: Partial<StatGrowthDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!statGrowthDto || isSerializingDerivedType) { return; }
+    writer.writeCollectionOfObjectValues<StatGrowthSeriesDto>("series", statGrowthDto.series, serializeStatGrowthSeriesDto);
+    writer.writeCollectionOfPrimitiveValues<DateOnly>("weekStarts", statGrowthDto.weekStarts);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param StatGrowthSeriesDto The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeStatGrowthSeriesDto(writer: SerializationWriter, statGrowthSeriesDto: Partial<StatGrowthSeriesDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!statGrowthSeriesDto || isSerializingDerivedType) { return; }
+    writer.writeEnumValue<BaseAttribute>("attribute", statGrowthSeriesDto.attribute);
+    writer.writeCollectionOfPrimitiveValues<number>("levels", statGrowthSeriesDto.levels);
 }
 /**
  * Serializes information the current object
@@ -1243,6 +1712,75 @@ export function serializeUserStatsDto(writer: SerializationWriter, userStatsDto:
     writer.writeNumberValue("exp", userStatsDto.exp);
     writer.writeNumberValue("level", userStatsDto.level);
     writer.writeNumberValue("requiredExp", userStatsDto.requiredExp);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param WeeklyActivityDayDto The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeWeeklyActivityDayDto(writer: SerializationWriter, weeklyActivityDayDto: Partial<WeeklyActivityDayDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!weeklyActivityDayDto || isSerializingDerivedType) { return; }
+    writer.writeCollectionOfObjectValues<AttributeCountDto>("counts", weeklyActivityDayDto.counts, serializeAttributeCountDto);
+    writer.writeDateOnlyValue("date", weeklyActivityDayDto.date);
+    writer.writeEnumValue<DayOfWeek>("dayOfWeek", weeklyActivityDayDto.dayOfWeek);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param WeeklyActivityDto The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeWeeklyActivityDto(writer: SerializationWriter, weeklyActivityDto: Partial<WeeklyActivityDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!weeklyActivityDto || isSerializingDerivedType) { return; }
+    writer.writeCollectionOfObjectValues<WeeklyActivityDayDto>("days", weeklyActivityDto.days, serializeWeeklyActivityDayDto);
+    writer.writeDateOnlyValue("weekStart", weeklyActivityDto.weekStart);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ * @param XpPerWeekDto The instance to serialize from.
+ */
+// @ts-ignore
+export function serializeXpPerWeekDto(writer: SerializationWriter, xpPerWeekDto: Partial<XpPerWeekDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!xpPerWeekDto || isSerializingDerivedType) { return; }
+    writer.writeCollectionOfObjectValues<XpPerWeekEntryDto>("weeks", xpPerWeekDto.weeks, serializeXpPerWeekEntryDto);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ * @param XpPerWeekEntryDto The instance to serialize from.
+ */
+// @ts-ignore
+export function serializeXpPerWeekEntryDto(writer: SerializationWriter, xpPerWeekEntryDto: Partial<XpPerWeekEntryDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!xpPerWeekEntryDto || isSerializingDerivedType) { return; }
+    writer.writeNumberValue("weekNumber", xpPerWeekEntryDto.weekNumber);
+    writer.writeDateOnlyValue("weekStart", xpPerWeekEntryDto.weekStart);
+    writer.writeNumberValue("xp", xpPerWeekEntryDto.xp);
+}
+export interface StatGrowthDto extends Parsable {
+    /**
+     * The series property
+     */
+    series: StatGrowthSeriesDto[];
+    /**
+     * The weekStarts property
+     */
+    weekStarts: DateOnly[];
+}
+export interface StatGrowthSeriesDto extends Parsable {
+    /**
+     * The attribute property
+     */
+    attribute: BaseAttribute;
+    /**
+     * The levels property
+     */
+    levels: number[];
 }
 export interface TaskItemDto extends Parsable {
     /**
@@ -1449,6 +1987,50 @@ export interface UserStatsDto extends Parsable {
      * The requiredExp property
      */
     requiredExp: number;
+}
+export interface WeeklyActivityDayDto extends Parsable {
+    /**
+     * The counts property
+     */
+    counts: AttributeCountDto[];
+    /**
+     * The date property
+     */
+    date: DateOnly;
+    /**
+     * The dayOfWeek property
+     */
+    dayOfWeek: DayOfWeek;
+}
+export interface WeeklyActivityDto extends Parsable {
+    /**
+     * The days property
+     */
+    days: WeeklyActivityDayDto[];
+    /**
+     * The weekStart property
+     */
+    weekStart: DateOnly;
+}
+export interface XpPerWeekDto extends Parsable {
+    /**
+     * The weeks property
+     */
+    weeks: XpPerWeekEntryDto[];
+}
+export interface XpPerWeekEntryDto extends Parsable {
+    /**
+     * The weekNumber property
+     */
+    weekNumber: number;
+    /**
+     * The weekStart property
+     */
+    weekStart: DateOnly;
+    /**
+     * The xp property
+     */
+    xp: number;
 }
 export const BaseAttributeObject = {
     Strength: "Strength",

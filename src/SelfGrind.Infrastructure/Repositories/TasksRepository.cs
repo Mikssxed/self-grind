@@ -161,6 +161,53 @@ public class TasksRepository(SelfGrindDbContext dbContext) : ITasksRepository
             .ToArrayAsync(cancellationToken);
     }
 
+    public async Task<(DateOnly Date, BaseAttribute Attribute, int CompletedCount, int TotalExp)[]> GetCompletedAggregatesAsync(
+        string userId, DateOnly startDate, DateOnly endDate, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.TaskOccurrences
+            .AsNoTracking()
+            .Where(o => o.TaskItem.UserId == userId
+                     && o.Status == TaskOccurrenceStatus.Done
+                     && o.ScheduledDate >= startDate
+                     && o.ScheduledDate <= endDate
+                     && !o.TaskItem.IsArchived)
+            .GroupBy(o => new { o.ScheduledDate, o.TaskItem.Attribute })
+            .Select(g => new
+            {
+                Date = g.Key.ScheduledDate,
+                Attribute = g.Key.Attribute,
+                CompletedCount = g.Count(),
+                TotalExp = g.Sum(o => o.TaskItem.Exp)
+            })
+            .OrderBy(x => x.Date)
+            .AsAsyncEnumerable()
+            .Select(x => (x.Date, x.Attribute, x.CompletedCount, x.TotalExp))
+            .ToArrayAsync(cancellationToken);
+    }
+
+    public async Task<int> GetTotalEarnedExpAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.TaskOccurrences
+            .AsNoTracking()
+            .Where(o => o.TaskItem.UserId == userId
+                     && o.Status == TaskOccurrenceStatus.Done
+                     && !o.TaskItem.IsArchived)
+            .SumAsync(o => o.TaskItem.Exp, cancellationToken);
+    }
+
+    public async Task<DateOnly[]> GetAllCompletionDatesAsync(string userId, CancellationToken cancellationToken = default)
+    {
+        return await dbContext.TaskOccurrences
+            .AsNoTracking()
+            .Where(o => o.TaskItem.UserId == userId
+                     && o.Status == TaskOccurrenceStatus.Done
+                     && !o.TaskItem.IsArchived)
+            .Select(o => o.ScheduledDate)
+            .Distinct()
+            .OrderBy(d => d)
+            .ToArrayAsync(cancellationToken);
+    }
+
     private void CreateOccurrencesRange(TaskItem taskItem)
     {
         var schedule = taskItem.Schedule;

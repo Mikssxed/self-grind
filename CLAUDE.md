@@ -105,6 +105,13 @@ item.attribute === 'Strength'
 
 ### API Client regeneration
 
+**Prerequisites** (one-time install of global dotnet tools):
+```bash
+dotnet tool install -g Swashbuckle.AspNetCore.Cli --version <matches the Swashbuckle.AspNetCore PackageReference in SelfGrind.API.csproj>
+dotnet tool install -g Microsoft.OpenApi.Kiota
+```
+The Swashbuckle CLI version must match the `Swashbuckle.AspNetCore` package version referenced by the API project, otherwise `swagger tofile` fails to load the assembly.
+
 After changing any backend endpoint signature or adding/modifying enums:
 1. Stop the running backend (the process locks the DLL)
 2. Build: `dotnet build` from repo root or the API project

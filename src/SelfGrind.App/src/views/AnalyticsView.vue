@@ -1,200 +1,193 @@
 <script setup lang="ts">
+    import { computed, ref } from 'vue';
+    import type { ChartData } from 'chart.js';
     import PageLayout from '@/components/layout/PageLayout.vue';
     import BaseStatGrid from '@/components/base/BaseStatGrid.vue';
+    import BaseAchievementGrid from '@/components/base/BaseAchievementGrid.vue';
+    import type { Achievement } from '@/components/base/BaseAchievementGrid.vue';
+    import type { AchievementCardVariant } from '@/components/base/BaseAchievementCard.vue';
+    import type { BorderedStat } from '@/components/base/BaseStatCardBordered.vue';
     import AnalyticsWeeklyActivity from '@/components/analytics/AnalyticsWeeklyActivity.vue';
     import AnalyticsLifeBalance from '@/components/analytics/AnalyticsLifeBalance.vue';
     import AnalyticsStatGrowth from '@/components/analytics/AnalyticsStatGrowth.vue';
     import AnalyticsXpPerWeek from '@/components/analytics/AnalyticsXpPerWeek.vue';
-    import BaseAchievementGrid from '@/components/base/BaseAchievementGrid.vue';
-    import type { Achievement } from '@/components/base/BaseAchievementGrid.vue';
     import { useChartColors } from '@/composables/useChartColors';
-    import type { BorderedStat } from '@/components/base/BaseStatCardBordered.vue';
-    import type { ChartData } from 'chart.js';
+    import { getAttributeDisplay } from '@/composables/useAttributeDisplay';
+    import {
+        useAnalyticsOverview,
+        useWeeklyActivity,
+        useXpPerWeek,
+        useStatGrowth,
+        useLifeBalance,
+        useAchievements,
+    } from '@/composables/useAnalytics';
+    import { BaseAttributeObject, type BaseAttribute } from '@/api/apiClient/models';
 
     const colors = useChartColors();
+    const weeks = ref(6);
 
-    const stats: BorderedStat[] = [
-        {
-            label: 'Total XP',
-            value: '45,230',
-            subtitle: '+12.5% this week',
-            subtitleEmoji: '📈',
-            borderVariant: 'info',
-        },
-        {
-            label: 'Achievements',
-            value: '24',
-            unit: '/ 50',
-            subtitle: '48% completed',
-            borderVariant: 'accent',
-        },
-        {
-            label: 'Tasks Done',
-            value: '342',
-            subtitle: '+28 this week',
-            subtitleEmoji: '✅',
-            borderVariant: 'success',
-        },
-        {
-            label: 'Best Streak',
-            value: '28',
-            unit: 'days',
-            subtitle: 'Personal record!',
-            subtitleEmoji: '🔥',
-            borderVariant: 'violet',
-        },
+    const { overview } = useAnalyticsOverview();
+    const { weeklyActivity } = useWeeklyActivity();
+    const { xpPerWeek } = useXpPerWeek(weeks);
+    const { statGrowth } = useStatGrowth(weeks);
+    const { lifeBalance } = useLifeBalance();
+    const { achievements: achievementsData } = useAchievements();
+
+    const attributeOrder: BaseAttribute[] = [
+        BaseAttributeObject.Strength,
+        BaseAttributeObject.Knowledge,
+        BaseAttributeObject.Health,
+        BaseAttributeObject.Discipline,
+        BaseAttributeObject.Focus,
+        BaseAttributeObject.Energy,
     ];
 
-    const weeklyActivityData: ChartData<'bar'> = {
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-        datasets: [
-            {
-                label: 'Learning',
-                data: [4, 6, 5, 8, 7, 10, 6],
-                backgroundColor: colors.success,
-                borderRadius: 4,
-            },
-            {
-                label: 'Mental',
-                data: [6, 5, 7, 4, 6, 5, 8],
-                backgroundColor: colors.info,
-                borderRadius: 4,
-            },
-            {
-                label: 'Physical',
-                data: [8, 10, 6, 8, 5, 8, 6],
-                backgroundColor: colors.error,
-                borderRadius: 4,
-            },
-            {
-                label: 'Wellness',
-                data: [6, 5, 8, 6, 8, 4, 5],
-                backgroundColor: colors.warning,
-                borderRadius: 4,
-            },
-        ],
+    type ChartColorKey = 'success' | 'info' | 'error' | 'warning' | 'accent' | 'violet';
+    const variantToColor: Record<string, ChartColorKey> = {
+        success: 'success',
+        info: 'info',
+        error: 'error',
+        warning: 'warning',
+        violet: 'violet',
     };
 
-    const accentWithAlpha = `${colors.accent}33`;
+    function attributeColor(attribute: BaseAttribute): string {
+        const variant = getAttributeDisplay(attribute).variant;
+        return colors[variantToColor[variant] ?? 'info'];
+    }
 
-    const lifeBalanceData: ChartData<'radar'> = {
-        labels: ['Physical', 'Mental', 'Learning', 'Wellness', 'Productivity'],
-        datasets: [
+    function attributeLabel(attribute: BaseAttribute): string {
+        return getAttributeDisplay(attribute).label;
+    }
+
+    const dayLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+    const stats = computed<BorderedStat[]>(() => {
+        const o = overview.value;
+        return [
             {
-                label: 'Balance',
-                data: [78, 65, 82, 55, 70],
-                backgroundColor: accentWithAlpha,
-                borderColor: colors.accent,
-                borderWidth: 2,
-                pointBackgroundColor: colors.accent,
-                pointBorderColor: colors.accent,
-                pointRadius: 4,
+                label: 'Total XP',
+                value: (o?.totalXp ?? 0).toLocaleString(),
+                subtitle: 'Lifetime earned',
+                subtitleEmoji: '📈',
+                borderVariant: 'info',
             },
-        ],
-    };
-
-    const statGrowthData: ChartData<'line'> = {
-        labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6'],
-        datasets: [
             {
-                label: 'Energy',
-                data: [50, 55, 60, 58, 72, 80],
-                borderColor: colors.warning,
-                backgroundColor: colors.warning,
+                label: 'Achievements',
+                value: String(o?.achievementsUnlocked ?? 0),
+                unit: `/ ${o?.achievementsTotal ?? 0}`,
+                subtitle: achievementPercent.value,
+                borderVariant: 'accent',
+            },
+            {
+                label: 'Tasks Done',
+                value: String(o?.tasksDone ?? 0),
+                subtitle: 'Completed all time',
+                subtitleEmoji: '✅',
+                borderVariant: 'success',
+            },
+            {
+                label: 'Best Streak',
+                value: String(o?.bestStreak ?? 0),
+                unit: 'days',
+                subtitle: bestStreakSubtitle.value,
+                subtitleEmoji: '🔥',
+                borderVariant: 'violet',
+            },
+        ];
+    });
+
+    const achievementPercent = computed(() => {
+        const total = overview.value?.achievementsTotal ?? 0;
+        const unlocked = overview.value?.achievementsUnlocked ?? 0;
+        if (total === 0) return '0% completed';
+        return `${Math.round((unlocked / total) * 100)}% completed`;
+    });
+
+    const bestStreakSubtitle = computed(() => {
+        const best = overview.value?.bestStreak ?? 0;
+        return best > 0 ? 'Personal record!' : 'Get started!';
+    });
+
+    const weeklyActivityChartData = computed<ChartData<'bar'>>(() => {
+        const days = weeklyActivity.value?.days ?? [];
+        const datasets = attributeOrder.map((attr) => ({
+            label: attributeLabel(attr),
+            data: days.map((day) =>
+                day.counts?.find((c) => c.attribute === attr)?.count ?? 0,
+            ),
+            backgroundColor: attributeColor(attr),
+            borderRadius: 4,
+        }));
+        return { labels: dayLabels, datasets };
+    });
+
+    const xpPerWeekChartData = computed<ChartData<'bar'>>(() => {
+        const entries = xpPerWeek.value?.weeks ?? [];
+        return {
+            labels: entries.map((e) => `W${e.weekNumber ?? 0}`),
+            datasets: [
+                {
+                    label: 'XP',
+                    data: entries.map((e) => e.xp ?? 0),
+                    backgroundColor: colors.accent,
+                    borderRadius: 6,
+                },
+            ],
+        };
+    });
+
+    const statGrowthChartData = computed<ChartData<'line'>>(() => {
+        const data = statGrowth.value;
+        const series = data?.series ?? [];
+        const weekCount = data?.weekStarts?.length ?? 0;
+        const labels = Array.from({ length: weekCount }, (_, i) => `W${i + 1}`);
+        const datasets = series.map((s) => {
+            const color = s.attribute ? attributeColor(s.attribute) : colors.info;
+            return {
+                label: s.attribute ? attributeLabel(s.attribute) : 'Unknown',
+                data: (s.levels ?? []).map((l) => l ?? 0),
+                borderColor: color,
+                backgroundColor: color,
                 tension: 0.4,
                 borderWidth: 2,
                 pointRadius: 4,
                 fill: false,
-            },
-            {
-                label: 'Focus',
-                data: [45, 52, 48, 65, 70, 78],
-                borderColor: colors.success,
-                backgroundColor: colors.success,
-                tension: 0.4,
-                borderWidth: 2,
-                pointRadius: 4,
-                fill: false,
-            },
-            {
-                label: 'Knowledge',
-                data: [55, 58, 62, 70, 75, 85],
-                borderColor: colors.info,
-                backgroundColor: colors.info,
-                tension: 0.4,
-                borderWidth: 2,
-                pointRadius: 4,
-                fill: false,
-            },
-            {
-                label: 'Strength',
-                data: [48, 50, 55, 60, 68, 75],
-                borderColor: colors.error,
-                backgroundColor: colors.error,
-                tension: 0.4,
-                borderWidth: 2,
-                pointRadius: 4,
-                fill: false,
-            },
-        ],
-    };
+            };
+        });
+        return { labels, datasets };
+    });
 
-    const xpPerWeekData: ChartData<'bar'> = {
-        labels: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6'],
-        datasets: [
-            {
-                label: 'XP',
-                data: [420, 580, 350, 720, 850, 940],
-                backgroundColor: colors.accent,
-                borderRadius: 6,
-            },
-        ],
-    };
+    const lifeBalanceChartData = computed<ChartData<'radar'>>(() => {
+        const entries = lifeBalance.value?.attributes ?? [];
+        const accentWithAlpha = `${colors.accent}33`;
+        return {
+            labels: entries.map((e) => (e.attribute ? attributeLabel(e.attribute) : 'Unknown')),
+            datasets: [
+                {
+                    label: 'Balance',
+                    data: entries.map((e) => e.score ?? 0),
+                    backgroundColor: accentWithAlpha,
+                    borderColor: colors.accent,
+                    borderWidth: 2,
+                    pointBackgroundColor: colors.accent,
+                    pointBorderColor: colors.accent,
+                    pointRadius: 4,
+                },
+            ],
+        };
+    });
 
-    const achievements: Achievement[] = [
-        {
-            emoji: '🏃',
-            label: 'First Steps',
-            subtitle: 'Complete your first task',
-            variant: 'orange',
-            locked: false,
-        },
-        {
-            emoji: '⚔️',
-            label: 'Week Warrior',
-            subtitle: 'Complete all daily tasks for a week',
-            variant: 'blue',
-            locked: false,
-        },
-        {
-            emoji: '📚',
-            label: 'Knowledge Seeker',
-            subtitle: 'Read 10 books',
-            variant: 'green',
-            locked: false,
-        },
-        {
-            emoji: '🧘',
-            label: 'Zen Master',
-            subtitle: 'Meditate for 30 days straight',
-            variant: 'purple',
-            locked: true,
-        },
-        {
-            emoji: '💪',
-            label: 'Iron Will',
-            subtitle: 'Reach level 50',
-            variant: 'crimson',
-            locked: true,
-        },
-        {
-            emoji: '👑',
-            label: 'Perfect Month',
-            subtitle: '100% completion rate for a month',
-            variant: 'orange',
-            locked: true,
-        },
-    ];
+    const achievements = computed<Achievement[]>(() => {
+        const items = achievementsData.value?.achievements ?? [];
+        return items.map((a) => ({
+            emoji: a.emoji ?? '',
+            label: a.label ?? '',
+            subtitle: a.subtitle ?? '',
+            variant: (a.variant ?? 'blue') as AchievementCardVariant,
+            locked: a.locked ?? false,
+        }));
+    });
 </script>
 
 <template>
@@ -205,13 +198,13 @@
         <BaseStatGrid :stats="stats" />
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <AnalyticsWeeklyActivity :data="weeklyActivityData" />
-            <AnalyticsLifeBalance :data="lifeBalanceData" />
+            <AnalyticsWeeklyActivity :data="weeklyActivityChartData" />
+            <AnalyticsLifeBalance :data="lifeBalanceChartData" />
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <AnalyticsStatGrowth :data="statGrowthData" />
-            <AnalyticsXpPerWeek :data="xpPerWeekData" />
+            <AnalyticsStatGrowth :data="statGrowthChartData" />
+            <AnalyticsXpPerWeek :data="xpPerWeekChartData" />
         </div>
 
         <BaseAchievementGrid
