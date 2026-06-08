@@ -2,6 +2,7 @@
     import { computed } from 'vue';
     import BaseBox from '@/components/base/BaseBox.vue';
     import BaseButton from '@/components/base/BaseButton.vue';
+    import BaseEmptyState from '@/components/base/BaseEmptyState.vue';
     import BaseHeader from '@/components/base/BaseHeader.vue';
     import DailyTasksQuestItem from './DailyTasksQuestItem.vue';
     import { useAddTaskModal } from '@/composables/useAddTaskModal';
@@ -28,6 +29,8 @@
             };
         })
     );
+
+    const hasItems = computed(() => displayItems.value.length > 0);
 </script>
 
 <template>
@@ -41,7 +44,7 @@
                 + Add Task
             </BaseButton>
         </div>
-        <div class="flex flex-col gap-3">
+        <div v-if="hasItems" class="flex flex-col gap-3">
             <DailyTasksQuestItem
                 v-for="item in displayItems"
                 :key="item.occurrenceId"
@@ -55,5 +58,15 @@
                 @toggle="emit('toggle', item.occurrenceId)"
             />
         </div>
+        <BaseEmptyState
+            v-else
+            emoji="📭"
+            title="No quests for today"
+            message="Add your first task to start earning XP."
+        >
+            <template #action>
+                <BaseButton size="sm" @click="openAddTask">+ Add Task</BaseButton>
+            </template>
+        </BaseEmptyState>
     </BaseBox>
 </template>

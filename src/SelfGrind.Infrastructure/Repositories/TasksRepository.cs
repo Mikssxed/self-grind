@@ -17,6 +17,13 @@ public class TasksRepository(SelfGrindDbContext dbContext) : ITasksRepository
         return taskItem.Id;
     }
 
+    public async Task<Guid> AddLoggedActivityAsync(TaskItem taskItem, CancellationToken cancellationToken = default)
+    {
+        dbContext.Tasks.Add(taskItem);
+        await dbContext.SaveChangesAsync(cancellationToken);
+        return taskItem.Id;
+    }
+
     public async Task<TaskItem[]> GetAllAsync(string userId, CancellationToken cancellationToken = default)
     {
         return await dbContext.Tasks

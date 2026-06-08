@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SelfGrind.Application.Tasks.Commands.CreateTask;
 using SelfGrind.Application.Tasks.Commands.DeleteTask;
+using SelfGrind.Application.Tasks.Commands.LogActivity;
 using SelfGrind.Application.Tasks.Commands.UpdateTask;
 using SelfGrind.Application.Tasks.Dtos;
 using SelfGrind.Application.Tasks.Queries.GetAllTaskItems;
@@ -21,6 +22,14 @@ public class TasksController(IMediator mediator) : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> CreateTask([FromBody] CreateTaskCommand command)
+    {
+        await mediator.Send(command);
+        return NoContent();
+    }
+
+    [HttpPost("log-activity")]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
+    public async Task<ActionResult> LogActivity([FromBody] LogActivityCommand command)
     {
         await mediator.Send(command);
         return NoContent();

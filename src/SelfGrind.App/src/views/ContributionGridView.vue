@@ -4,19 +4,21 @@
     import BaseAchievementGrid from '@/components/base/BaseAchievementGrid.vue';
     import ContributionGrid from '@/components/contribution-grid/ContributionGrid.vue';
     import BaseStatGrid from '@/components/base/BaseStatGrid.vue';
-    import type { Achievement } from '@/components/base/BaseAchievementGrid.vue';
     import type { BorderedStat } from '@/components/base/BaseStatCardBordered.vue';
     import type { ContributionDay } from '@/components/contribution-grid/ContributionGrid.vue';
     import type { ActivityLevel } from '@/components/contribution-grid/ContributionGridCell.vue';
     import type { DayTask, DayTaskVariant } from '@/components/contribution-grid/ContributionDayDetail.vue';
     import { useContributionGrid, useDayActivity } from '@/composables/useContributionGrid';
+    import { useAchievements } from '@/composables/useAnalytics';
     import { getAttributeDisplay } from '@/composables/useAttributeDisplay';
+    import { mapAchievementsToCards } from '@/utils';
 
     const selectedYear = ref(new Date().getFullYear());
     const selectedDate = ref<string | null>(null);
 
     const { gridData } = useContributionGrid(selectedYear);
     const { dayActivity } = useDayActivity(selectedDate);
+    const { achievements: achievementsData } = useAchievements();
 
     const availableYears = computed(() => {
         const years = gridData.value?.availableYears ?? [];
@@ -82,32 +84,9 @@
         });
     });
 
-    const achievements: Achievement[] = [
-        {
-            emoji: '🔥',
-            label: 'Streak Master',
-            subtitle: '30 day streak achieved',
-            variant: 'orange',
-        },
-        {
-            emoji: '🧘',
-            label: 'Mindful Warrior',
-            subtitle: '30 days of meditation',
-            variant: 'blue',
-        },
-        {
-            emoji: '📚',
-            label: 'Knowledge Seeker',
-            subtitle: 'Read 10 books',
-            variant: 'green',
-        },
-        {
-            emoji: '👑',
-            label: 'Consistency King',
-            subtitle: 'No missed days in a month',
-            variant: 'purple',
-        },
-    ];
+    const achievements = computed(() =>
+        mapAchievementsToCards(achievementsData.value?.achievements)
+    );
 </script>
 
 <template>

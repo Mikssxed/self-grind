@@ -107,6 +107,32 @@ export interface AttributeStatDto extends Parsable {
     requiredExp: number;
 }
 export type BaseAttribute = (typeof BaseAttributeObject)[keyof typeof BaseAttributeObject];
+export interface CharacterHeroDto extends Parsable {
+    /**
+     * The exp property
+     */
+    exp: number;
+    /**
+     * The level property
+     */
+    level: number;
+    /**
+     * The nextEvolutionLabel property
+     */
+    nextEvolutionLabel?: string | null;
+    /**
+     * The requiredExp property
+     */
+    requiredExp: number;
+    /**
+     * The stageName property
+     */
+    stageName: string;
+    /**
+     * The stats property
+     */
+    stats: HeroStatDto[];
+}
 export interface ConfirmEmailCommand extends Parsable {
     /**
      * The confirmationCode property
@@ -223,6 +249,15 @@ export function createAttributeStatDtoFromDiscriminatorValue(parseNode: ParseNod
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {CharacterHeroDto}
+ */
+// @ts-ignore
+export function createCharacterHeroDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoCharacterHeroDto;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {ConfirmEmailCommand}
  */
 // @ts-ignore
@@ -292,6 +327,24 @@ export function createDayActivityDtoFromDiscriminatorValue(parseNode: ParseNode 
 export function createDayActivityTaskDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoDayActivityTaskDto;
 }
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {EquippedItemDto}
+ */
+// @ts-ignore
+export function createEquippedItemDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoEquippedItemDto;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {EvolutionTierDto}
+ */
+// @ts-ignore
+export function createEvolutionTierDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoEvolutionTierDto;
+}
 export interface CreateHabitCommand extends Parsable {
     /**
      * The name property
@@ -318,6 +371,42 @@ export function createHabitDtoFromDiscriminatorValue(parseNode: ParseNode | unde
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {HeroStatDto}
+ */
+// @ts-ignore
+export function createHeroStatDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoHeroStatDto;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {InventoryItemDto}
+ */
+// @ts-ignore
+export function createInventoryItemDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoInventoryItemDto;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {LeaderboardDto}
+ */
+// @ts-ignore
+export function createLeaderboardDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoLeaderboardDto;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {LeaderboardEntryDto}
+ */
+// @ts-ignore
+export function createLeaderboardEntryDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoLeaderboardEntryDto;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {LifeBalanceDto}
  */
 // @ts-ignore
@@ -332,6 +421,15 @@ export function createLifeBalanceDtoFromDiscriminatorValue(parseNode: ParseNode 
 // @ts-ignore
 export function createLifeBalanceEntryDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoLifeBalanceEntryDto;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {LogActivityCommand}
+ */
+// @ts-ignore
+export function createLogActivityCommandFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoLogActivityCommand;
 }
 /**
  * Creates a new instance of the appropriate class based on discriminator value
@@ -395,6 +493,24 @@ export function createProblemDetailsFromDiscriminatorValue(parseNode: ParseNode 
 // @ts-ignore
 export function createRegisterUserCommandFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoRegisterUserCommand;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {SkillCategoryDto}
+ */
+// @ts-ignore
+export function createSkillCategoryDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoSkillCategoryDto;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {SkillDto}
+ */
+// @ts-ignore
+export function createSkillDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoSkillDto;
 }
 /**
  * Creates a new instance of the appropriate class based on discriminator value
@@ -679,6 +795,22 @@ export function deserializeIntoAttributeStatDto(attributeStatDto: Partial<Attrib
 }
 /**
  * The deserialization information for the current model
+ * @param CharacterHeroDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoCharacterHeroDto(characterHeroDto: Partial<CharacterHeroDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "exp": n => { characterHeroDto.exp = n.getNumberValue(); },
+        "level": n => { characterHeroDto.level = n.getNumberValue(); },
+        "nextEvolutionLabel": n => { characterHeroDto.nextEvolutionLabel = n.getStringValue(); },
+        "requiredExp": n => { characterHeroDto.requiredExp = n.getNumberValue(); },
+        "stageName": n => { characterHeroDto.stageName = n.getStringValue(); },
+        "stats": n => { characterHeroDto.stats = n.getCollectionOfObjectValues<HeroStatDto>(createHeroStatDtoFromDiscriminatorValue); },
+    }
+}
+/**
+ * The deserialization information for the current model
  * @param ConfirmEmailCommand The instance to deserialize into.
  * @returns {Record<string, (node: ParseNode) => void>}
  */
@@ -791,6 +923,36 @@ export function deserializeIntoDayActivityTaskDto(dayActivityTaskDto: Partial<Da
 }
 /**
  * The deserialization information for the current model
+ * @param EquippedItemDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoEquippedItemDto(equippedItemDto: Partial<EquippedItemDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "bonus": n => { equippedItemDto.bonus = n.getStringValue(); },
+        "emoji": n => { equippedItemDto.emoji = n.getStringValue(); },
+        "name": n => { equippedItemDto.name = n.getStringValue(); },
+        "type": n => { equippedItemDto.type = n.getStringValue(); },
+        "userItemId": n => { equippedItemDto.userItemId = n.getGuidValue(); },
+        "variant": n => { equippedItemDto.variant = n.getEnumValue<ItemVariant>(ItemVariantObject); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param EvolutionTierDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoEvolutionTierDto(evolutionTierDto: Partial<EvolutionTierDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "emoji": n => { evolutionTierDto.emoji = n.getStringValue(); },
+        "levelRange": n => { evolutionTierDto.levelRange = n.getStringValue(); },
+        "name": n => { evolutionTierDto.name = n.getStringValue(); },
+        "status": n => { evolutionTierDto.status = n.getEnumValue<EvolutionTierStatus>(EvolutionTierStatusObject); },
+    }
+}
+/**
+ * The deserialization information for the current model
  * @param HabitDto The instance to deserialize into.
  * @returns {Record<string, (node: ParseNode) => void>}
  */
@@ -802,6 +964,65 @@ export function deserializeIntoHabitDto(habitDto: Partial<HabitDto> | undefined 
         "targetValue": n => { habitDto.targetValue = n.getNumberValue(); },
         "todayValue": n => { habitDto.todayValue = n.getNumberValue(); },
         "unit": n => { habitDto.unit = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param HeroStatDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoHeroStatDto(heroStatDto: Partial<HeroStatDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "emoji": n => { heroStatDto.emoji = n.getStringValue(); },
+        "label": n => { heroStatDto.label = n.getStringValue(); },
+        "value": n => { heroStatDto.value = n.getStringValue(); },
+        "variant": n => { heroStatDto.variant = n.getEnumValue<HeroStatVariant>(HeroStatVariantObject); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param InventoryItemDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoInventoryItemDto(inventoryItemDto: Partial<InventoryItemDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "bonus": n => { inventoryItemDto.bonus = n.getStringValue(); },
+        "emoji": n => { inventoryItemDto.emoji = n.getStringValue(); },
+        "isEquipped": n => { inventoryItemDto.isEquipped = n.getBooleanValue(); },
+        "name": n => { inventoryItemDto.name = n.getStringValue(); },
+        "rarity": n => { inventoryItemDto.rarity = n.getEnumValue<ItemRarity>(ItemRarityObject); },
+        "userItemId": n => { inventoryItemDto.userItemId = n.getGuidValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param LeaderboardDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoLeaderboardDto(leaderboardDto: Partial<LeaderboardDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "entries": n => { leaderboardDto.entries = n.getCollectionOfObjectValues<LeaderboardEntryDto>(createLeaderboardEntryDtoFromDiscriminatorValue); },
+        "weekStart": n => { leaderboardDto.weekStart = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param LeaderboardEntryDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoLeaderboardEntryDto(leaderboardEntryDto: Partial<LeaderboardEntryDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "avatarEmoji": n => { leaderboardEntryDto.avatarEmoji = n.getStringValue(); },
+        "isCurrentUser": n => { leaderboardEntryDto.isCurrentUser = n.getBooleanValue(); },
+        "level": n => { leaderboardEntryDto.level = n.getNumberValue(); },
+        "name": n => { leaderboardEntryDto.name = n.getStringValue(); },
+        "rank": n => { leaderboardEntryDto.rank = n.getNumberValue(); },
+        "title": n => { leaderboardEntryDto.title = n.getStringValue(); },
+        "xp": n => { leaderboardEntryDto.xp = n.getNumberValue(); },
     }
 }
 /**
@@ -828,6 +1049,20 @@ export function deserializeIntoLifeBalanceEntryDto(lifeBalanceEntryDto: Partial<
         "level": n => { lifeBalanceEntryDto.level = n.getNumberValue(); },
         "requiredExp": n => { lifeBalanceEntryDto.requiredExp = n.getNumberValue(); },
         "score": n => { lifeBalanceEntryDto.score = n.getNumberValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param LogActivityCommand The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoLogActivityCommand(logActivityCommand: Partial<LogActivityCommand> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "attribute": n => { logActivityCommand.attribute = n.getEnumValue<BaseAttribute>(BaseAttributeObject); },
+        "exp": n => { logActivityCommand.exp = n.getNumberValue(); },
+        "notes": n => { logActivityCommand.notes = n.getStringValue(); },
+        "title": n => { logActivityCommand.title = n.getStringValue(); },
     }
 }
 /**
@@ -917,6 +1152,35 @@ export function deserializeIntoRegisterUserCommand(registerUserCommand: Partial<
         "email": n => { registerUserCommand.email = n.getStringValue(); },
         "password": n => { registerUserCommand.password = n.getStringValue(); },
         "username": n => { registerUserCommand.username = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param SkillCategoryDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoSkillCategoryDto(skillCategoryDto: Partial<SkillCategoryDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "attribute": n => { skillCategoryDto.attribute = n.getEnumValue<BaseAttribute>(BaseAttributeObject); },
+        "emoji": n => { skillCategoryDto.emoji = n.getStringValue(); },
+        "name": n => { skillCategoryDto.name = n.getStringValue(); },
+        "skills": n => { skillCategoryDto.skills = n.getCollectionOfObjectValues<SkillDto>(createSkillDtoFromDiscriminatorValue); },
+        "variant": n => { skillCategoryDto.variant = n.getEnumValue<SkillCategoryVariant>(SkillCategoryVariantObject); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param SkillDto The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoSkillDto(skillDto: Partial<SkillDto> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "description": n => { skillDto.description = n.getStringValue(); },
+        "emoji": n => { skillDto.emoji = n.getStringValue(); },
+        "name": n => { skillDto.name = n.getStringValue(); },
+        "status": n => { skillDto.status = n.getEnumValue<SkillStatus>(SkillStatusObject); },
     }
 }
 /**
@@ -1100,6 +1364,51 @@ export function deserializeIntoXpPerWeekEntryDto(xpPerWeekEntryDto: Partial<XpPe
         "xp": n => { xpPerWeekEntryDto.xp = n.getNumberValue(); },
     }
 }
+export interface EquippedItemDto extends Parsable {
+    /**
+     * The bonus property
+     */
+    bonus: string;
+    /**
+     * The emoji property
+     */
+    emoji: string;
+    /**
+     * The name property
+     */
+    name: string;
+    /**
+     * The type property
+     */
+    type: string;
+    /**
+     * The userItemId property
+     */
+    userItemId: Guid;
+    /**
+     * The variant property
+     */
+    variant: ItemVariant;
+}
+export interface EvolutionTierDto extends Parsable {
+    /**
+     * The emoji property
+     */
+    emoji: string;
+    /**
+     * The levelRange property
+     */
+    levelRange: string;
+    /**
+     * The name property
+     */
+    name: string;
+    /**
+     * The status property
+     */
+    status: EvolutionTierStatus;
+}
+export type EvolutionTierStatus = (typeof EvolutionTierStatusObject)[keyof typeof EvolutionTierStatusObject];
 export interface HabitDto extends Parsable {
     /**
      * The id property
@@ -1121,6 +1430,93 @@ export interface HabitDto extends Parsable {
      * The unit property
      */
     unit?: string | null;
+}
+export interface HeroStatDto extends Parsable {
+    /**
+     * The emoji property
+     */
+    emoji: string;
+    /**
+     * The label property
+     */
+    label: string;
+    /**
+     * The value property
+     */
+    value: string;
+    /**
+     * The variant property
+     */
+    variant: HeroStatVariant;
+}
+export type HeroStatVariant = (typeof HeroStatVariantObject)[keyof typeof HeroStatVariantObject];
+export interface InventoryItemDto extends Parsable {
+    /**
+     * The bonus property
+     */
+    bonus: string;
+    /**
+     * The emoji property
+     */
+    emoji: string;
+    /**
+     * The isEquipped property
+     */
+    isEquipped: boolean;
+    /**
+     * The name property
+     */
+    name: string;
+    /**
+     * The rarity property
+     */
+    rarity: ItemRarity;
+    /**
+     * The userItemId property
+     */
+    userItemId: Guid;
+}
+export type ItemRarity = (typeof ItemRarityObject)[keyof typeof ItemRarityObject];
+export type ItemVariant = (typeof ItemVariantObject)[keyof typeof ItemVariantObject];
+export interface LeaderboardDto extends Parsable {
+    /**
+     * The entries property
+     */
+    entries: LeaderboardEntryDto[];
+    /**
+     * The weekStart property
+     */
+    weekStart: string;
+}
+export interface LeaderboardEntryDto extends Parsable {
+    /**
+     * The avatarEmoji property
+     */
+    avatarEmoji: string;
+    /**
+     * The isCurrentUser property
+     */
+    isCurrentUser: boolean;
+    /**
+     * The level property
+     */
+    level: number;
+    /**
+     * The name property
+     */
+    name: string;
+    /**
+     * The rank property
+     */
+    rank: number;
+    /**
+     * The title property
+     */
+    title: string;
+    /**
+     * The xp property
+     */
+    xp: number;
 }
 export interface LifeBalanceDto extends Parsable {
     /**
@@ -1149,6 +1545,24 @@ export interface LifeBalanceEntryDto extends Parsable {
      * The score property
      */
     score: number;
+}
+export interface LogActivityCommand extends Parsable {
+    /**
+     * The attribute property
+     */
+    attribute?: BaseAttribute | null;
+    /**
+     * The exp property
+     */
+    exp?: number | null;
+    /**
+     * The notes property
+     */
+    notes?: string | null;
+    /**
+     * The title property
+     */
+    title?: string | null;
 }
 export interface LogHabitEntryCommand extends Parsable {
     /**
@@ -1335,6 +1749,22 @@ export function serializeAttributeStatDto(writer: SerializationWriter, attribute
 }
 /**
  * Serializes information the current object
+ * @param CharacterHeroDto The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeCharacterHeroDto(writer: SerializationWriter, characterHeroDto: Partial<CharacterHeroDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!characterHeroDto || isSerializingDerivedType) { return; }
+    writer.writeNumberValue("exp", characterHeroDto.exp);
+    writer.writeNumberValue("level", characterHeroDto.level);
+    writer.writeStringValue("nextEvolutionLabel", characterHeroDto.nextEvolutionLabel);
+    writer.writeNumberValue("requiredExp", characterHeroDto.requiredExp);
+    writer.writeStringValue("stageName", characterHeroDto.stageName);
+    writer.writeCollectionOfObjectValues<HeroStatDto>("stats", characterHeroDto.stats, serializeHeroStatDto);
+}
+/**
+ * Serializes information the current object
  * @param ConfirmEmailCommand The instance to serialize from.
  * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
  * @param writer Serialization writer to use to serialize this model
@@ -1448,6 +1878,36 @@ export function serializeDayActivityTaskDto(writer: SerializationWriter, dayActi
 }
 /**
  * Serializes information the current object
+ * @param EquippedItemDto The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeEquippedItemDto(writer: SerializationWriter, equippedItemDto: Partial<EquippedItemDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!equippedItemDto || isSerializingDerivedType) { return; }
+    writer.writeStringValue("bonus", equippedItemDto.bonus);
+    writer.writeStringValue("emoji", equippedItemDto.emoji);
+    writer.writeStringValue("name", equippedItemDto.name);
+    writer.writeStringValue("type", equippedItemDto.type);
+    writer.writeGuidValue("userItemId", equippedItemDto.userItemId);
+    writer.writeEnumValue<ItemVariant>("variant", equippedItemDto.variant);
+}
+/**
+ * Serializes information the current object
+ * @param EvolutionTierDto The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeEvolutionTierDto(writer: SerializationWriter, evolutionTierDto: Partial<EvolutionTierDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!evolutionTierDto || isSerializingDerivedType) { return; }
+    writer.writeStringValue("emoji", evolutionTierDto.emoji);
+    writer.writeStringValue("levelRange", evolutionTierDto.levelRange);
+    writer.writeStringValue("name", evolutionTierDto.name);
+    writer.writeEnumValue<EvolutionTierStatus>("status", evolutionTierDto.status);
+}
+/**
+ * Serializes information the current object
  * @param HabitDto The instance to serialize from.
  * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
  * @param writer Serialization writer to use to serialize this model
@@ -1460,6 +1920,65 @@ export function serializeHabitDto(writer: SerializationWriter, habitDto: Partial
     writer.writeNumberValue("targetValue", habitDto.targetValue);
     writer.writeNumberValue("todayValue", habitDto.todayValue);
     writer.writeStringValue("unit", habitDto.unit);
+}
+/**
+ * Serializes information the current object
+ * @param HeroStatDto The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeHeroStatDto(writer: SerializationWriter, heroStatDto: Partial<HeroStatDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!heroStatDto || isSerializingDerivedType) { return; }
+    writer.writeStringValue("emoji", heroStatDto.emoji);
+    writer.writeStringValue("label", heroStatDto.label);
+    writer.writeStringValue("value", heroStatDto.value);
+    writer.writeEnumValue<HeroStatVariant>("variant", heroStatDto.variant);
+}
+/**
+ * Serializes information the current object
+ * @param InventoryItemDto The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeInventoryItemDto(writer: SerializationWriter, inventoryItemDto: Partial<InventoryItemDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!inventoryItemDto || isSerializingDerivedType) { return; }
+    writer.writeStringValue("bonus", inventoryItemDto.bonus);
+    writer.writeStringValue("emoji", inventoryItemDto.emoji);
+    writer.writeBooleanValue("isEquipped", inventoryItemDto.isEquipped);
+    writer.writeStringValue("name", inventoryItemDto.name);
+    writer.writeEnumValue<ItemRarity>("rarity", inventoryItemDto.rarity);
+    writer.writeGuidValue("userItemId", inventoryItemDto.userItemId);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param LeaderboardDto The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeLeaderboardDto(writer: SerializationWriter, leaderboardDto: Partial<LeaderboardDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!leaderboardDto || isSerializingDerivedType) { return; }
+    writer.writeCollectionOfObjectValues<LeaderboardEntryDto>("entries", leaderboardDto.entries, serializeLeaderboardEntryDto);
+    writer.writeStringValue("weekStart", leaderboardDto.weekStart);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param LeaderboardEntryDto The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeLeaderboardEntryDto(writer: SerializationWriter, leaderboardEntryDto: Partial<LeaderboardEntryDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!leaderboardEntryDto || isSerializingDerivedType) { return; }
+    writer.writeStringValue("avatarEmoji", leaderboardEntryDto.avatarEmoji);
+    writer.writeBooleanValue("isCurrentUser", leaderboardEntryDto.isCurrentUser);
+    writer.writeNumberValue("level", leaderboardEntryDto.level);
+    writer.writeStringValue("name", leaderboardEntryDto.name);
+    writer.writeNumberValue("rank", leaderboardEntryDto.rank);
+    writer.writeStringValue("title", leaderboardEntryDto.title);
+    writer.writeNumberValue("xp", leaderboardEntryDto.xp);
 }
 /**
  * Serializes information the current object
@@ -1486,6 +2005,20 @@ export function serializeLifeBalanceEntryDto(writer: SerializationWriter, lifeBa
     writer.writeNumberValue("level", lifeBalanceEntryDto.level);
     writer.writeNumberValue("requiredExp", lifeBalanceEntryDto.requiredExp);
     writer.writeNumberValue("score", lifeBalanceEntryDto.score);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param LogActivityCommand The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeLogActivityCommand(writer: SerializationWriter, logActivityCommand: Partial<LogActivityCommand> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!logActivityCommand || isSerializingDerivedType) { return; }
+    writer.writeEnumValue<BaseAttribute>("attribute", logActivityCommand.attribute);
+    writer.writeNumberValue("exp", logActivityCommand.exp);
+    writer.writeStringValue("notes", logActivityCommand.notes);
+    writer.writeStringValue("title", logActivityCommand.title);
 }
 /**
  * Serializes information the current object
@@ -1577,6 +2110,35 @@ export function serializeRegisterUserCommand(writer: SerializationWriter, regist
     writer.writeStringValue("email", registerUserCommand.email);
     writer.writeStringValue("password", registerUserCommand.password);
     writer.writeStringValue("username", registerUserCommand.username);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param SkillCategoryDto The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeSkillCategoryDto(writer: SerializationWriter, skillCategoryDto: Partial<SkillCategoryDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!skillCategoryDto || isSerializingDerivedType) { return; }
+    writer.writeEnumValue<BaseAttribute>("attribute", skillCategoryDto.attribute);
+    writer.writeStringValue("emoji", skillCategoryDto.emoji);
+    writer.writeStringValue("name", skillCategoryDto.name);
+    writer.writeCollectionOfObjectValues<SkillDto>("skills", skillCategoryDto.skills, serializeSkillDto);
+    writer.writeEnumValue<SkillCategoryVariant>("variant", skillCategoryDto.variant);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param SkillDto The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeSkillDto(writer: SerializationWriter, skillDto: Partial<SkillDto> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!skillDto || isSerializingDerivedType) { return; }
+    writer.writeStringValue("description", skillDto.description);
+    writer.writeStringValue("emoji", skillDto.emoji);
+    writer.writeStringValue("name", skillDto.name);
+    writer.writeEnumValue<SkillStatus>("status", skillDto.status);
 }
 /**
  * Serializes information the current object
@@ -1762,6 +2324,48 @@ export function serializeXpPerWeekEntryDto(writer: SerializationWriter, xpPerWee
     writer.writeDateOnlyValue("weekStart", xpPerWeekEntryDto.weekStart);
     writer.writeNumberValue("xp", xpPerWeekEntryDto.xp);
 }
+export interface SkillCategoryDto extends Parsable {
+    /**
+     * The attribute property
+     */
+    attribute: BaseAttribute;
+    /**
+     * The emoji property
+     */
+    emoji: string;
+    /**
+     * The name property
+     */
+    name: string;
+    /**
+     * The skills property
+     */
+    skills: SkillDto[];
+    /**
+     * The variant property
+     */
+    variant: SkillCategoryVariant;
+}
+export type SkillCategoryVariant = (typeof SkillCategoryVariantObject)[keyof typeof SkillCategoryVariantObject];
+export interface SkillDto extends Parsable {
+    /**
+     * The description property
+     */
+    description: string;
+    /**
+     * The emoji property
+     */
+    emoji: string;
+    /**
+     * The name property
+     */
+    name: string;
+    /**
+     * The status property
+     */
+    status: SkillStatus;
+}
+export type SkillStatus = (typeof SkillStatusObject)[keyof typeof SkillStatusObject];
 export interface StatGrowthDto extends Parsable {
     /**
      * The series property
@@ -2048,6 +2652,41 @@ export const DayOfWeekObject = {
     Thursday: "Thursday",
     Friday: "Friday",
     Saturday: "Saturday",
+} as const;
+export const EvolutionTierStatusObject = {
+    Completed: "Completed",
+    Current: "Current",
+    Locked: "Locked",
+} as const;
+export const HeroStatVariantObject = {
+    DefaultEscaped: "Default",
+    Info: "Info",
+    Violet: "Violet",
+} as const;
+export const ItemRarityObject = {
+    Common: "Common",
+    Uncommon: "Uncommon",
+    Rare: "Rare",
+    Epic: "Epic",
+    Legendary: "Legendary",
+} as const;
+export const ItemVariantObject = {
+    ErrorEscaped: "Error",
+    Info: "Info",
+    Violet: "Violet",
+    Warning: "Warning",
+    Success: "Success",
+} as const;
+export const SkillCategoryVariantObject = {
+    ErrorEscaped: "Error",
+    Info: "Info",
+    Success: "Success",
+    Violet: "Violet",
+    Warning: "Warning",
+} as const;
+export const SkillStatusObject = {
+    Unlocked: "Unlocked",
+    Locked: "Locked",
 } as const;
 export const TaskOccurrenceStatusObject = {
     Pending: "Pending",

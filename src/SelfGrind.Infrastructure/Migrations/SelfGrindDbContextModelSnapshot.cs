@@ -155,6 +155,104 @@ namespace SelfGrind.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("SelfGrind.Domain.Entities.EvolutionTier", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Emoji")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
+
+                    b.Property<int>("MaxLevel")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MinLevel")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("NextEvolutionLabel")
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<string>("StageName")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Order")
+                        .IsUnique();
+
+                    b.ToTable("EvolutionTiers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-000000000001"),
+                            Emoji = "🌱",
+                            MaxLevel = 10,
+                            MinLevel = 1,
+                            Name = "Novice",
+                            NextEvolutionLabel = "Level 11: Apprentice",
+                            Order = 1,
+                            StageName = "Novice Adventurer"
+                        },
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-000000000002"),
+                            Emoji = "📖",
+                            MaxLevel = 20,
+                            MinLevel = 11,
+                            Name = "Apprentice",
+                            NextEvolutionLabel = "Level 21: Adept",
+                            Order = 2,
+                            StageName = "Apprentice"
+                        },
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-000000000003"),
+                            Emoji = "⚡",
+                            MaxLevel = 30,
+                            MinLevel = 21,
+                            Name = "Adept",
+                            NextEvolutionLabel = "Level 31: Expert",
+                            Order = 3,
+                            StageName = "Adept"
+                        },
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-000000000004"),
+                            Emoji = "🔥",
+                            MaxLevel = 40,
+                            MinLevel = 31,
+                            Name = "Expert",
+                            NextEvolutionLabel = "Level 41: Master",
+                            Order = 4,
+                            StageName = "Elite Warrior"
+                        },
+                        new
+                        {
+                            Id = new Guid("11111111-1111-1111-1111-000000000005"),
+                            Emoji = "👑",
+                            MaxLevel = 50,
+                            MinLevel = 41,
+                            Name = "Master",
+                            Order = 5,
+                            StageName = "Legendary Champion"
+                        });
+                });
+
             modelBuilder.Entity("SelfGrind.Domain.Entities.Habit", b =>
                 {
                     b.Property<Guid>("Id")
@@ -208,6 +306,302 @@ namespace SelfGrind.Infrastructure.Migrations
                     b.HasIndex("HabitId");
 
                     b.ToTable("HabitEntries");
+                });
+
+            modelBuilder.Entity("SelfGrind.Domain.Entities.Item", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Bonus")
+                        .IsRequired()
+                        .HasMaxLength(128)
+                        .HasColumnType("nvarchar(128)");
+
+                    b.Property<string>("Emoji")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<string>("Rarity")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<int>("UnlockLevel")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Variant")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Items");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("33333333-0000-0000-0000-000000000001"),
+                            Bonus = "+10% Energy",
+                            Emoji = "🧪",
+                            Name = "Health Potion",
+                            Rarity = "Common",
+                            Type = "Consumable",
+                            UnlockLevel = 1,
+                            Variant = "Success"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-0000-0000-0000-000000000002"),
+                            Bonus = "+15 Knowledge XP",
+                            Emoji = "📜",
+                            Name = "Wisdom Scroll",
+                            Rarity = "Uncommon",
+                            Type = "Artifact",
+                            UnlockLevel = 1,
+                            Variant = "Info"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-0000-0000-0000-000000000003"),
+                            Bonus = "+25 Focus XP",
+                            Emoji = "📿",
+                            Name = "Focus Amulet",
+                            Rarity = "Rare",
+                            Type = "Artifact",
+                            UnlockLevel = 3,
+                            Variant = "Violet"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-0000-0000-0000-000000000004"),
+                            Bonus = "+20% Strength",
+                            Emoji = "💎",
+                            Name = "Power Band",
+                            Rarity = "Epic",
+                            Type = "Accessory",
+                            UnlockLevel = 5,
+                            Variant = "Error"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-0000-0000-0000-000000000005"),
+                            Bonus = "+20 Strength",
+                            Emoji = "🧤",
+                            Name = "Power Gauntlets",
+                            Rarity = "Epic",
+                            Type = "Gloves",
+                            UnlockLevel = 5,
+                            Variant = "Error"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-0000-0000-0000-000000000006"),
+                            Bonus = "+30 Vitality",
+                            Emoji = "💚",
+                            Name = "Life Amulet",
+                            Rarity = "Rare",
+                            Type = "Artifact",
+                            UnlockLevel = 4,
+                            Variant = "Success"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-0000-0000-0000-000000000007"),
+                            Bonus = "+50% XP Gain",
+                            Emoji = "⭐",
+                            Name = "XP Booster",
+                            Rarity = "Legendary",
+                            Type = "Boost",
+                            UnlockLevel = 10,
+                            Variant = "Warning"
+                        },
+                        new
+                        {
+                            Id = new Guid("33333333-0000-0000-0000-000000000008"),
+                            Bonus = "+22 Energy",
+                            Emoji = "⚡",
+                            Name = "Energy Crystal",
+                            Rarity = "Uncommon",
+                            Type = "Consumable",
+                            UnlockLevel = 2,
+                            Variant = "Warning"
+                        });
+                });
+
+            modelBuilder.Entity("SelfGrind.Domain.Entities.Skill", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Attribute")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("Emoji")
+                        .IsRequired()
+                        .HasMaxLength(16)
+                        .HasColumnType("nvarchar(16)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RequiredAttributeLevel")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Attribute", "Order")
+                        .IsUnique();
+
+                    b.ToTable("Skills");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("22222222-0000-0000-0001-000000000001"),
+                            Attribute = "Strength",
+                            Description = "Reach Strength level 1",
+                            Emoji = "⚔️",
+                            Name = "Warrior I",
+                            Order = 1,
+                            RequiredAttributeLevel = 1
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-0000-0000-0001-000000000002"),
+                            Attribute = "Strength",
+                            Description = "Reach Strength level 5",
+                            Emoji = "🗡️",
+                            Name = "Warrior II",
+                            Order = 2,
+                            RequiredAttributeLevel = 5
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-0000-0000-0001-000000000003"),
+                            Attribute = "Strength",
+                            Description = "Reach Strength level 10",
+                            Emoji = "🛡️",
+                            Name = "Warrior III",
+                            Order = 3,
+                            RequiredAttributeLevel = 10
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-0000-0000-0001-000000000004"),
+                            Attribute = "Strength",
+                            Description = "Reach Strength level 20",
+                            Emoji = "💥",
+                            Name = "Titan",
+                            Order = 4,
+                            RequiredAttributeLevel = 20
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-0000-0000-0002-000000000001"),
+                            Attribute = "Knowledge",
+                            Description = "Reach Knowledge level 1",
+                            Emoji = "📖",
+                            Name = "Scholar I",
+                            Order = 1,
+                            RequiredAttributeLevel = 1
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-0000-0000-0002-000000000002"),
+                            Attribute = "Knowledge",
+                            Description = "Reach Knowledge level 5",
+                            Emoji = "📚",
+                            Name = "Scholar II",
+                            Order = 2,
+                            RequiredAttributeLevel = 5
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-0000-0000-0002-000000000003"),
+                            Attribute = "Knowledge",
+                            Description = "Reach Knowledge level 10",
+                            Emoji = "🎓",
+                            Name = "Scholar III",
+                            Order = 3,
+                            RequiredAttributeLevel = 10
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-0000-0000-0002-000000000004"),
+                            Attribute = "Knowledge",
+                            Description = "Reach Knowledge level 20",
+                            Emoji = "🧙",
+                            Name = "Sage",
+                            Order = 4,
+                            RequiredAttributeLevel = 20
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-0000-0000-0003-000000000001"),
+                            Attribute = "Focus",
+                            Description = "Reach Focus level 1",
+                            Emoji = "🧘",
+                            Name = "Monk I",
+                            Order = 1,
+                            RequiredAttributeLevel = 1
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-0000-0000-0003-000000000002"),
+                            Attribute = "Focus",
+                            Description = "Reach Focus level 5",
+                            Emoji = "🌿",
+                            Name = "Monk II",
+                            Order = 2,
+                            RequiredAttributeLevel = 5
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-0000-0000-0003-000000000003"),
+                            Attribute = "Focus",
+                            Description = "Reach Focus level 10",
+                            Emoji = "☯️",
+                            Name = "Monk III",
+                            Order = 3,
+                            RequiredAttributeLevel = 10
+                        },
+                        new
+                        {
+                            Id = new Guid("22222222-0000-0000-0003-000000000004"),
+                            Attribute = "Focus",
+                            Description = "Reach Focus level 20",
+                            Emoji = "✨",
+                            Name = "Zen Master",
+                            Order = 4,
+                            RequiredAttributeLevel = 20
+                        });
                 });
 
             modelBuilder.Entity("SelfGrind.Domain.Entities.TaskItem", b =>
@@ -393,6 +787,35 @@ namespace SelfGrind.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("SelfGrind.Domain.Entities.UserItem", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("AcquiredAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<bool>("IsEquipped")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("ItemId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("UserId", "ItemId")
+                        .IsUnique();
+
+                    b.ToTable("UserItems");
+                });
+
             modelBuilder.Entity("SelfGrind.Domain.Entities.UserStat", b =>
                 {
                     b.Property<Guid>("Id")
@@ -526,6 +949,25 @@ namespace SelfGrind.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("TaskItem");
+                });
+
+            modelBuilder.Entity("SelfGrind.Domain.Entities.UserItem", b =>
+                {
+                    b.HasOne("SelfGrind.Domain.Entities.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SelfGrind.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Item");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SelfGrind.Domain.Entities.UserStat", b =>

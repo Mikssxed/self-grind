@@ -1,7 +1,7 @@
 <template>
     <BaseBox>
         <BaseHeader tag="h3">Character Stats</BaseHeader>
-        <div class="flex flex-col gap-4">
+        <div v-if="hasRows" class="flex flex-col gap-4">
             <DashboardStatRow
                 v-for="row in rows"
                 :key="row.key"
@@ -12,11 +12,19 @@
                 :variant="row.variant"
             />
         </div>
+        <BaseEmptyState
+            v-else
+            emoji="📊"
+            title="No stats yet"
+            message="Complete tasks tied to attributes to start growing your stats."
+            size="sm"
+        />
     </BaseBox>
 </template>
 <script setup lang="ts">
     import type { AttributeStatDto } from '@/api/apiClient/models';
     import BaseBox from '@/components/base/BaseBox.vue';
+    import BaseEmptyState from '@/components/base/BaseEmptyState.vue';
     import BaseHeader from '@/components/base/BaseHeader.vue';
     import { getAttributeDisplay } from '@/composables/useAttributeDisplay';
     import { computed } from 'vue';
@@ -51,4 +59,6 @@
     const buildValueLabel = (stat: AttributeStatDto) => {
         return `Lv ${stat.level} · ${stat.exp}/${stat.requiredExp}`;
     };
+
+    const hasRows = computed(() => rows.value.length > 0);
 </script>

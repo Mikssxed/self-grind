@@ -4,9 +4,8 @@
     import PageLayout from '@/components/layout/PageLayout.vue';
     import BaseStatGrid from '@/components/base/BaseStatGrid.vue';
     import BaseAchievementGrid from '@/components/base/BaseAchievementGrid.vue';
-    import type { Achievement } from '@/components/base/BaseAchievementGrid.vue';
-    import type { AchievementCardVariant } from '@/components/base/BaseAchievementCard.vue';
     import type { BorderedStat } from '@/components/base/BaseStatCardBordered.vue';
+    import { mapAchievementsToCards } from '@/utils';
     import AnalyticsWeeklyActivity from '@/components/analytics/AnalyticsWeeklyActivity.vue';
     import AnalyticsLifeBalance from '@/components/analytics/AnalyticsLifeBalance.vue';
     import AnalyticsStatGrowth from '@/components/analytics/AnalyticsStatGrowth.vue';
@@ -178,16 +177,9 @@
         };
     });
 
-    const achievements = computed<Achievement[]>(() => {
-        const items = achievementsData.value?.achievements ?? [];
-        return items.map((a) => ({
-            emoji: a.emoji ?? '',
-            label: a.label ?? '',
-            subtitle: a.subtitle ?? '',
-            variant: (a.variant ?? 'blue') as AchievementCardVariant,
-            locked: a.locked ?? false,
-        }));
-    });
+    const achievements = computed(() =>
+        mapAchievementsToCards(achievementsData.value?.achievements)
+    );
 </script>
 
 <template>

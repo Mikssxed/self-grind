@@ -179,6 +179,48 @@ This requires:
 
 ---
 
+### Phase 8: Character Page — Hero, Tiers, Skills, Items
+
+> Powers the Character view (`CharacterView.vue`). Frontend pre-built with mocks.
+
+| Feature | Type | What was built |
+|---------|------|----------------|
+| ~~Character hero card~~ | Query | `GetCharacterHeroQuery` → user level/exp/required, stage name, next evolution label, 4 derived hero stats (Attack/Defense/Intelligence/Vitality) computed from `UserStat` levels via `HeroStatCalculator` |
+| ~~Evolution tiers~~ | Query | `GetEvolutionTiersQuery` → all tiers from DB with status (Completed/Current/Locked) resolved against `User.Level`. Entity `EvolutionTier` seeded via `HasData` (Novice → Master) |
+| ~~Skill trees~~ | Query | `GetSkillTreesQuery` → grouped by `BaseAttribute`. Entity `Skill` (Name/Emoji/Description/Attribute/RequiredAttributeLevel/Order) seeded with 12 skills. Status (Unlocked/Locked) computed from user's matching `UserStat.Level` |
+| ~~Inventory~~ | Query | `GetInventoryQuery` → user's `UserItem` rows with eager-loaded `Item` |
+| ~~Equipped items~~ | Query | `GetEquippedItemsQuery` → inventory filtered to `IsEquipped=true` |
+| ~~Equip / Unequip~~ | Commands | `EquipItemCommand` / `UnequipItemCommand` (by `UserItemId`, authorized via `IUserContext`) |
+
+**Granting items:**
+- `IItemGrantingService.CalculateNewlyGranted(userId, catalog, owned, level)` is pure (Application layer) — returns `UserItem[]` to add.
+- Called on `RegisterUserCommandHandler` (initial grant of `UnlockLevel=1` items).
+- Called on `CompleteTaskOccurenceCommandHandler` after `AwardUserExp` *only when level increased*.
+
+**Repositories added:** `IEvolutionTiersRepository`, `ISkillsRepository`, `IItemsRepository`, `IUserItemsRepository`.
+
+**Migrations:** `AddEvolutionTiers`, `AddSkills`, `AddItems` — each seeds catalog data via `HasData`.
+
+**Frontend:** new composable `useCharacter.ts` with `useCharacterHero`, `useEvolutionTiers`, `useSkillTrees`, `useInventory`, `useEquippedItems`, `useEquipItem`, `useUnequipItem`. Components updated to consume Kiota DTOs directly (no manual interfaces).
+
+---
+
+### Phase 9: Community — Leaderboard (Friends/Parties deferred)
+
+> Powers the Community view (`CommunityView.vue`). Friends + Party Quests intentionally hidden (`friendsEnabled = false`) — leave for future.
+
+| Feature | Type | What was built |
+|---------|------|----------------|
+| ~~Leaderboard~~ | Query | `GetLeaderboardQuery(weekStart?, top=10)` → ranked users by weekly XP (sum of `TaskItem.Exp` for occurrences completed since `weekStart`), tie-break by total level/exp. Includes title from `EvolutionTier.StageName` and deterministic avatar emoji from `AvatarEmojiProvider`. |
+
+**Repository:** `IUsersRepository.GetLeaderboardAsync(top, weekStart)` returns `LeaderboardRow[]` with `(UserId, DisplayName, Level, TotalExp, WeeklyExp)`.
+
+**No migration** — reads existing data.
+
+**Frontend:** `useCommunity.ts` with `useLeaderboard`. `CommunityView.vue` consumes the query; friends/parties sections hidden behind feature flags.
+
+---
+
 ## Migration Checklist
 
 | Phase | Migration Needed? | Description |
@@ -190,6 +232,8 @@ This requires:
 | 5 | No | Reads existing data |
 | 6 | No | Reads existing data |
 | 7 | **Yes** | New friendship/party tables |
+| 8 | **Yes** | `AddEvolutionTiers`, `AddSkills`, `AddItems` (catalog seed + `UserItem` table) |
+| 9 | No | Reads existing data |
 
 ---
 

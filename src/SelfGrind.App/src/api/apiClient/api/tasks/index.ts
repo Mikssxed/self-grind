@@ -12,6 +12,8 @@ import { DayActivityRequestBuilderRequestsMetadata, type DayActivityRequestBuild
 // @ts-ignore
 import { TasksItemRequestBuilderRequestsMetadata, type TasksItemRequestBuilder } from './item/index.js';
 // @ts-ignore
+import { LogActivityRequestBuilderRequestsMetadata, type LogActivityRequestBuilder } from './logActivity/index.js';
+// @ts-ignore
 import { TodayRequestBuilderRequestsMetadata, type TodayRequestBuilder } from './today/index.js';
 // @ts-ignore
 import { type BaseRequestBuilder, type Guid, type KeysToExcludeForNavigationMetadata, type NavigationMetadata, type Parsable, type ParsableFactory, type RequestConfiguration, type RequestInformation, type RequestsMetadata } from '@microsoft/kiota-abstractions';
@@ -32,6 +34,10 @@ export interface TasksRequestBuilder extends BaseRequestBuilder<TasksRequestBuil
      * The dayActivity property
      */
     get dayActivity(): DayActivityRequestBuilder;
+    /**
+     * The logActivity property
+     */
+    get logActivity(): LogActivityRequestBuilder;
     /**
      * The today property
      */
@@ -84,6 +90,9 @@ export const TasksRequestBuilderNavigationMetadata: Record<Exclude<keyof TasksRe
     },
     dayActivity: {
         requestsMetadata: DayActivityRequestBuilderRequestsMetadata,
+    },
+    logActivity: {
+        requestsMetadata: LogActivityRequestBuilderRequestsMetadata,
     },
     today: {
         requestsMetadata: TodayRequestBuilderRequestsMetadata,

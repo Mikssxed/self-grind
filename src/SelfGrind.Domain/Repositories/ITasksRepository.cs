@@ -6,6 +6,7 @@ namespace SelfGrind.Domain.Repositories;
 public interface ITasksRepository
 {
     Task<Guid> Create(TaskItem taskItem);
+    Task<Guid> AddLoggedActivityAsync(TaskItem taskItem, CancellationToken cancellationToken = default);
     Task<TaskItem[]> GetAllAsync(string userId, CancellationToken cancellationToken = default);
     Task<TaskItem?> GetByIdAsync(string userId, Guid taskItemId, CancellationToken cancellationToken = default);
     Task<TaskOccurrence[]> GetTodayTasksAsync(string userId, DateOnly today, CancellationToken cancellationToken = default);

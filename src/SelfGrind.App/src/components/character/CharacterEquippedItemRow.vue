@@ -22,27 +22,28 @@
     import { computed } from 'vue';
     import { borderLeftClasses, textClasses } from '@/composables/useColorVariant';
     import type { ColorVariant } from '@/composables/useColorVariant';
-
-    export type EquippedItemVariant = ColorVariant;
-
-    export interface EquippedItem {
-        name: string;
-        type: string;
-        bonus: string;
-        emoji: string;
-        variant: EquippedItemVariant;
-    }
+    import type { ItemVariant } from '@/api/apiClient/models';
+    import { ItemVariantObject } from '@/api/apiClient/models';
 
     interface CharacterEquippedItemRowProps {
         name: string;
         type: string;
         bonus: string;
         emoji: string;
-        variant: EquippedItemVariant;
+        variant: ItemVariant;
     }
 
     const props = defineProps<CharacterEquippedItemRowProps>();
 
-    const borderClass = computed(() => borderLeftClasses[props.variant]);
-    const bonusTextClass = computed(() => textClasses[props.variant]);
+    const colorVariants: Record<ItemVariant, ColorVariant> = {
+        [ItemVariantObject.ErrorEscaped]: 'error',
+        [ItemVariantObject.Info]: 'info',
+        [ItemVariantObject.Violet]: 'violet',
+        [ItemVariantObject.Warning]: 'warning',
+        [ItemVariantObject.Success]: 'success',
+    };
+
+    const colorVariant = computed(() => colorVariants[props.variant]);
+    const borderClass = computed(() => borderLeftClasses[colorVariant.value]);
+    const bonusTextClass = computed(() => textClasses[colorVariant.value]);
 </script>

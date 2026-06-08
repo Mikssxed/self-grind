@@ -1,7 +1,7 @@
 <template>
     <BaseBox>
         <BaseHeader tag="h3">Evolution Path</BaseHeader>
-        <div class="flex flex-col gap-3">
+        <div v-if="hasTiers" class="flex flex-col gap-3">
             <CharacterEvolutionTierItem
                 v-for="tier in tiers"
                 :key="tier.name"
@@ -11,17 +11,27 @@
                 :emoji="tier.emoji"
             />
         </div>
+        <BaseEmptyState
+            v-else
+            emoji="🪜"
+            title="No evolution path defined"
+            message="Tiers will appear once configured."
+            size="sm"
+        />
     </BaseBox>
 </template>
 <script setup lang="ts">
+    import { computed } from 'vue';
     import BaseBox from '@/components/base/BaseBox.vue';
+    import BaseEmptyState from '@/components/base/BaseEmptyState.vue';
     import BaseHeader from '@/components/base/BaseHeader.vue';
     import CharacterEvolutionTierItem from './CharacterEvolutionTierItem.vue';
-    import type { EvolutionTier } from './CharacterEvolutionTierItem.vue';
+    import type { EvolutionTierDto } from '@/api/apiClient/models';
 
     interface CharacterEvolutionTierListProps {
-        tiers: EvolutionTier[];
+        tiers: EvolutionTierDto[];
     }
 
-    defineProps<CharacterEvolutionTierListProps>();
+    const props = defineProps<CharacterEvolutionTierListProps>();
+    const hasTiers = computed(() => props.tiers.length > 0);
 </script>

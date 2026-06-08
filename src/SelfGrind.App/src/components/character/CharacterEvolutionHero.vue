@@ -29,7 +29,7 @@
                     <BaseBadge variant="gradient">{{ stageName }}</BaseBadge>
                 </div>
 
-                <span class="text-xs text-primary-400">{{ nextEvolutionLabel }}</span>
+                <span class="text-xs text-primary-400">{{ nextEvolutionDisplay }}</span>
 
                 <!-- XP Progress -->
                 <div class="flex flex-col gap-2">
@@ -43,12 +43,12 @@
                 <!-- Stat Cards -->
                 <div class="grid grid-cols-2 gap-3">
                     <BaseStatCard
-                        v-for="stat in stats"
+                        v-for="stat in mappedStats"
                         :key="stat.label"
                         :emoji="stat.emoji"
                         :label="stat.label"
                         :value="stat.value"
-                        :variant="stat.variant"
+                        :variant="stat.cardVariant"
                     />
                 </div>
             </div>
@@ -63,33 +63,47 @@
     import BaseProgressBar from '@/components/base/BaseProgressBar.vue';
     import BaseStatCard from '@/components/base/BaseStatCard.vue';
     import type { StatCardVariant } from '@/components/base/BaseStatCard.vue';
+    import type { HeroStatDto, HeroStatVariant } from '@/api/apiClient/models';
+    import { HeroStatVariantObject } from '@/api/apiClient/models';
     import { computed } from 'vue';
-
-    export interface HeroStat {
-        emoji: string;
-        label: string;
-        value: string;
-        variant: StatCardVariant;
-    }
 
     interface CharacterEvolutionHeroProps {
         level: number;
         stageName: string;
-        nextEvolution: string;
+        nextEvolutionLabel?: string | null;
         xpCurrent: number;
         xpMax: number;
-        stats: HeroStat[];
+        stats: HeroStatDto[];
     }
 
     const props = defineProps<CharacterEvolutionHeroProps>();
+
+    const statCardVariants: Record<HeroStatVariant, StatCardVariant> = {
+        [HeroStatVariantObject.DefaultEscaped]: 'default',
+        [HeroStatVariantObject.Info]: 'info',
+        [HeroStatVariantObject.Violet]: 'violet',
+    };
 
     const xpProgressLabel = computed(
         () => `${props.xpCurrent.toLocaleString()} / ${props.xpMax.toLocaleString()}`
     );
 
-    const xpPercentage = computed(() => (props.xpCurrent / props.xpMax) * 100);
+    const xpPercentage = computed(() =>
+        props.xpMax > 0 ? (props.xpCurrent / props.xpMax) * 100 : 0
+    );
 
-    const nextEvolutionLabel = computed(
-        () => `Next evolution at ${props.nextEvolution}`
+    const nextEvolutionDisplay = computed(() =>
+        props.nextEvolutionLabel
+            ? `Next evolution at ${props.nextEvolutionLabel}`
+            : 'You have reached the highest evolution stage'
+    );
+
+    const mappedStats = computed(() =>
+        props.stats.map(stat => ({
+            emoji: stat.emoji,
+            label: stat.label,
+            value: stat.value,
+            cardVariant: statCardVariants[stat.variant],
+        }))
     );
 </script>

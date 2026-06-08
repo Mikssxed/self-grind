@@ -7,7 +7,7 @@
             class="flex items-center justify-center w-12 h-12 rounded-xl text-2xl"
             :class="iconBgClass"
         >
-            <span v-if="status === 'unlocked'">{{ emoji }}</span>
+            <span v-if="isUnlocked">{{ emoji }}</span>
             <span v-else class="opacity-40">🔒</span>
         </div>
         <span
@@ -21,15 +21,8 @@
 </template>
 <script setup lang="ts">
     import { computed } from 'vue';
-
-    export type SkillStatus = 'unlocked' | 'locked';
-
-    export interface SkillNode {
-        name: string;
-        status: SkillStatus;
-        emoji: string;
-        description: string;
-    }
+    import type { SkillStatus } from '@/api/apiClient/models';
+    import { SkillStatusObject } from '@/api/apiClient/models';
 
     interface CharacterSkillNodeProps {
         name: string;
@@ -41,20 +34,21 @@
     const props = defineProps<CharacterSkillNodeProps>();
 
     const containerClasses: Record<SkillStatus, string> = {
-        unlocked: 'bg-accent-500/15 border-accent-500/30',
-        locked: 'bg-primary-900 border-primary-800 opacity-50',
+        [SkillStatusObject.Unlocked]: 'bg-accent-500/15 border-accent-500/30',
+        [SkillStatusObject.Locked]: 'bg-primary-900 border-primary-800 opacity-50',
     };
 
     const iconBgClasses: Record<SkillStatus, string> = {
-        unlocked: 'bg-accent-500/30',
-        locked: 'bg-primary-800',
+        [SkillStatusObject.Unlocked]: 'bg-accent-500/30',
+        [SkillStatusObject.Locked]: 'bg-primary-800',
     };
 
     const nameClasses: Record<SkillStatus, string> = {
-        unlocked: 'text-white',
-        locked: 'text-primary-400',
+        [SkillStatusObject.Unlocked]: 'text-white',
+        [SkillStatusObject.Locked]: 'text-primary-400',
     };
 
+    const isUnlocked = computed(() => props.status === SkillStatusObject.Unlocked);
     const containerClass = computed(() => containerClasses[props.status]);
     const iconBgClass = computed(() => iconBgClasses[props.status]);
     const nameClass = computed(() => nameClasses[props.status]);

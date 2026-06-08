@@ -3,6 +3,7 @@ using FluentValidation.AspNetCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using SelfGrind.Application.Behaviors;
+using SelfGrind.Application.Character.Services;
 using SelfGrind.Application.Settings;
 using SelfGrind.Application.Stats.Services;
 using SelfGrind.Application.User;
@@ -27,6 +28,9 @@ public static class ServiceCollectionExtensions
 
         services.AddScoped<IUserContext, UserContext>();
         services.AddScoped<IStatsService, StatsService>();
+        services.AddScoped<IHeroStatCalculator, HeroStatCalculator>();
+        services.AddScoped<IEvolutionTierResolver, EvolutionTierResolver>();
+        services.AddScoped<IItemGrantingService, ItemGrantingService>();
         services.AddHttpContextAccessor();
     }
 }

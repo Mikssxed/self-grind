@@ -231,6 +231,381 @@
         }
       }
     },
+    "/api/character/hero": {
+      "get": {
+        "tags": [
+          "Character"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterHeroDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterHeroDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CharacterHeroDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/character/evolution-tiers": {
+      "get": {
+        "tags": [
+          "Character"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EvolutionTierDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EvolutionTierDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EvolutionTierDto"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/character/skill-trees": {
+      "get": {
+        "tags": [
+          "Character"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SkillCategoryDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SkillCategoryDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SkillCategoryDto"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/character/inventory": {
+      "get": {
+        "tags": [
+          "Character"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InventoryItemDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InventoryItemDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/InventoryItemDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/character/equipped-items": {
+      "get": {
+        "tags": [
+          "Character"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EquippedItemDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EquippedItemDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EquippedItemDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/character/items/{userItemId}/equip": {
+      "post": {
+        "tags": [
+          "Character"
+        ],
+        "parameters": [
+          {
+            "name": "userItemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/character/items/{userItemId}/unequip": {
+      "post": {
+        "tags": [
+          "Character"
+        ],
+        "parameters": [
+          {
+            "name": "userItemId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/community/leaderboard": {
+      "get": {
+        "tags": [
+          "Community"
+        ],
+        "parameters": [
+          {
+            "name": "weekStart",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "top",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeaderboardDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeaderboardDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LeaderboardDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/habits": {
       "post": {
         "tags": [
@@ -811,6 +1186,37 @@
         }
       }
     },
+    "/api/tasks/log-activity": {
+      "post": {
+        "tags": [
+          "Tasks"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LogActivityCommand"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LogActivityCommand"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LogActivityCommand"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          }
+        }
+      }
+    },
     "/api/tasks/today": {
       "get": {
         "tags": [
@@ -1376,6 +1782,44 @@
         ],
         "type": "string"
       },
+      "CharacterHeroDto": {
+        "required": [
+          "exp",
+          "level",
+          "requiredExp",
+          "stageName",
+          "stats"
+        ],
+        "type": "object",
+        "properties": {
+          "level": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "exp": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "requiredExp": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "stageName": {
+            "type": "string"
+          },
+          "nextEvolutionLabel": {
+            "type": "string",
+            "nullable": true
+          },
+          "stats": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/HeroStatDto"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
       "ConfirmEmailCommand": {
         "required": [
           "confirmationCode",
@@ -1611,6 +2055,71 @@
         ],
         "type": "string"
       },
+      "EquippedItemDto": {
+        "required": [
+          "bonus",
+          "emoji",
+          "name",
+          "type",
+          "userItemId",
+          "variant"
+        ],
+        "type": "object",
+        "properties": {
+          "userItemId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "bonus": {
+            "type": "string"
+          },
+          "emoji": {
+            "type": "string"
+          },
+          "variant": {
+            "$ref": "#/components/schemas/ItemVariant"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EvolutionTierDto": {
+        "required": [
+          "emoji",
+          "levelRange",
+          "name",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "levelRange": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/EvolutionTierStatus"
+          },
+          "emoji": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EvolutionTierStatus": {
+        "enum": [
+          "Completed",
+          "Current",
+          "Locked"
+        ],
+        "type": "string"
+      },
       "HabitDto": {
         "type": "object",
         "properties": {
@@ -1641,6 +2150,149 @@
           "targetValue",
           "todayValue"
         ]
+      },
+      "HeroStatDto": {
+        "required": [
+          "emoji",
+          "label",
+          "value",
+          "variant"
+        ],
+        "type": "object",
+        "properties": {
+          "emoji": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "variant": {
+            "$ref": "#/components/schemas/HeroStatVariant"
+          }
+        },
+        "additionalProperties": false
+      },
+      "HeroStatVariant": {
+        "enum": [
+          "Default",
+          "Info",
+          "Violet"
+        ],
+        "type": "string"
+      },
+      "InventoryItemDto": {
+        "required": [
+          "bonus",
+          "emoji",
+          "isEquipped",
+          "name",
+          "rarity",
+          "userItemId"
+        ],
+        "type": "object",
+        "properties": {
+          "userItemId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "bonus": {
+            "type": "string"
+          },
+          "emoji": {
+            "type": "string"
+          },
+          "rarity": {
+            "$ref": "#/components/schemas/ItemRarity"
+          },
+          "isEquipped": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ItemRarity": {
+        "enum": [
+          "Common",
+          "Uncommon",
+          "Rare",
+          "Epic",
+          "Legendary"
+        ],
+        "type": "string"
+      },
+      "ItemVariant": {
+        "enum": [
+          "Error",
+          "Info",
+          "Violet",
+          "Warning",
+          "Success"
+        ],
+        "type": "string"
+      },
+      "LeaderboardDto": {
+        "required": [
+          "entries",
+          "weekStart"
+        ],
+        "type": "object",
+        "properties": {
+          "weekStart": {
+            "type": "string"
+          },
+          "entries": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LeaderboardEntryDto"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "LeaderboardEntryDto": {
+        "required": [
+          "avatarEmoji",
+          "isCurrentUser",
+          "level",
+          "name",
+          "rank",
+          "title",
+          "xp"
+        ],
+        "type": "object",
+        "properties": {
+          "rank": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string"
+          },
+          "level": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "title": {
+            "type": "string"
+          },
+          "xp": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isCurrentUser": {
+            "type": "boolean"
+          },
+          "avatarEmoji": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
       },
       "LifeBalanceDto": {
         "type": "object",
@@ -1688,6 +2340,31 @@
           "requiredExp",
           "score"
         ]
+      },
+      "LogActivityCommand": {
+        "required": [
+          "attribute",
+          "exp",
+          "title"
+        ],
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "notes": {
+            "type": "string",
+            "nullable": true
+          },
+          "exp": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "attribute": {
+            "$ref": "#/components/schemas/BaseAttribute"
+          }
+        },
+        "additionalProperties": false
       },
       "LogHabitEntryCommand": {
         "type": "object",
@@ -1820,6 +2497,78 @@
           }
         },
         "additionalProperties": false
+      },
+      "SkillCategoryDto": {
+        "required": [
+          "attribute",
+          "emoji",
+          "name",
+          "skills",
+          "variant"
+        ],
+        "type": "object",
+        "properties": {
+          "attribute": {
+            "$ref": "#/components/schemas/BaseAttribute"
+          },
+          "name": {
+            "type": "string"
+          },
+          "emoji": {
+            "type": "string"
+          },
+          "variant": {
+            "$ref": "#/components/schemas/SkillCategoryVariant"
+          },
+          "skills": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SkillDto"
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "SkillCategoryVariant": {
+        "enum": [
+          "Error",
+          "Info",
+          "Success",
+          "Violet",
+          "Warning"
+        ],
+        "type": "string"
+      },
+      "SkillDto": {
+        "required": [
+          "description",
+          "emoji",
+          "name",
+          "status"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "emoji": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "status": {
+            "$ref": "#/components/schemas/SkillStatus"
+          }
+        },
+        "additionalProperties": false
+      },
+      "SkillStatus": {
+        "enum": [
+          "Unlocked",
+          "Locked"
+        ],
+        "type": "string"
       },
       "StatGrowthDto": {
         "type": "object",
@@ -2255,6 +3004,12 @@
   "tags": [
     {
       "name": "Analytics"
+    },
+    {
+      "name": "Character"
+    },
+    {
+      "name": "Community"
     },
     {
       "name": "Habits"

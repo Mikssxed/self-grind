@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using SelfGrind.Application.Behaviors;
+using SelfGrind.Application.Character.Services;
 using SelfGrind.Domain.Interfaces;
 using SelfGrind.Domain.Repositories;
 
@@ -13,6 +14,9 @@ public class RegisterUserCommandHandler(
     UserManager<Domain.Entities.User> userManager,
     IEmailService emailService,
     IUsersRepository usersRepository,
+    IItemsRepository itemsRepository,
+    IUserItemsRepository userItemsRepository,
+    IItemGrantingService itemGrantingService,
     IConfiguration configuration)
     : IRequestHandler<RegisterUserCommand>
 {
@@ -30,6 +34,13 @@ public class RegisterUserCommandHandler(
         result.ThrowIfFailed();
 
         await usersRepository.SeedStatsAsync(user.Id, cancellationToken);
+
+        var catalog = await itemsRepository.GetAllAsync(cancellationToken);
+        var initialGrants = itemGrantingService.CalculateNewlyGranted(user.Id, catalog, [], user.Level);
+        if (initialGrants.Count > 0)
+        {
+            await userItemsRepository.AddRangeAsync(initialGrants, cancellationToken);
+        }
 
         var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
         var frontendUrl = configuration["AppSettings:FrontendUrl"] ?? "http://localhost:5173";

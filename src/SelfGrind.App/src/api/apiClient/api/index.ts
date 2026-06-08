@@ -4,6 +4,10 @@
 // @ts-ignore
 import { AnalyticsRequestBuilderNavigationMetadata, type AnalyticsRequestBuilder } from './analytics/index.js';
 // @ts-ignore
+import { CharacterRequestBuilderNavigationMetadata, type CharacterRequestBuilder } from './character/index.js';
+// @ts-ignore
+import { CommunityRequestBuilderNavigationMetadata, type CommunityRequestBuilder } from './community/index.js';
+// @ts-ignore
 import { HabitsRequestBuilderNavigationMetadata, HabitsRequestBuilderRequestsMetadata, type HabitsRequestBuilder } from './habits/index.js';
 // @ts-ignore
 import { IdentityRequestBuilderNavigationMetadata, type IdentityRequestBuilder } from './identity/index.js';
@@ -24,6 +28,14 @@ export interface ApiRequestBuilder extends BaseRequestBuilder<ApiRequestBuilder>
      * The analytics property
      */
     get analytics(): AnalyticsRequestBuilder;
+    /**
+     * The character property
+     */
+    get character(): CharacterRequestBuilder;
+    /**
+     * The community property
+     */
+    get community(): CommunityRequestBuilder;
     /**
      * The habits property
      */
@@ -55,6 +67,12 @@ export const ApiRequestBuilderUriTemplate = "{+baseurl}/api";
 export const ApiRequestBuilderNavigationMetadata: Record<Exclude<keyof ApiRequestBuilder, KeysToExcludeForNavigationMetadata>, NavigationMetadata> = {
     analytics: {
         navigationMetadata: AnalyticsRequestBuilderNavigationMetadata,
+    },
+    character: {
+        navigationMetadata: CharacterRequestBuilderNavigationMetadata,
+    },
+    community: {
+        navigationMetadata: CommunityRequestBuilderNavigationMetadata,
     },
     habits: {
         requestsMetadata: HabitsRequestBuilderRequestsMetadata,

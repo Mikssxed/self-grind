@@ -2,21 +2,12 @@
     import { computed } from 'vue';
     import { twMerge } from 'tailwind-merge';
     import BaseAvatar from '@/components/base/BaseAvatar.vue';
-
-    export interface LeaderboardEntry {
-        rank: number;
-        name: string;
-        level: number;
-        title: string;
-        xp: number;
-        isCurrentUser: boolean;
-        avatarEmoji: string;
-    }
+    import type { LeaderboardEntryDto } from '@/api/apiClient/models';
 
     type RankVariant = 'gold' | 'silver' | 'bronze' | 'currentUser' | 'default';
 
     interface Props {
-        entry: LeaderboardEntry;
+        entry: LeaderboardEntryDto;
     }
 
     const props = defineProps<Props>();

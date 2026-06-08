@@ -18,41 +18,34 @@
 </template>
 <script setup lang="ts">
     import { computed } from 'vue';
-
-    export type TierStatus = 'completed' | 'current' | 'locked';
-
-    export interface EvolutionTier {
-        name: string;
-        levelRange: string;
-        status: TierStatus;
-        emoji: string;
-    }
+    import type { EvolutionTierStatus } from '@/api/apiClient/models';
+    import { EvolutionTierStatusObject } from '@/api/apiClient/models';
 
     interface CharacterEvolutionTierItemProps {
         name: string;
         levelRange: string;
-        status: TierStatus;
+        status: EvolutionTierStatus;
         emoji: string;
     }
 
     const props = defineProps<CharacterEvolutionTierItemProps>();
 
-    const containerClasses: Record<TierStatus, string> = {
-        completed: 'bg-success-500/20 border-success-500/30',
-        current: 'bg-accent-500/20 border-accent-500/30',
-        locked: 'bg-primary-900 border-primary-800 opacity-50',
+    const containerClasses: Record<EvolutionTierStatus, string> = {
+        [EvolutionTierStatusObject.Completed]: 'bg-success-500/20 border-success-500/30',
+        [EvolutionTierStatusObject.Current]: 'bg-accent-500/20 border-accent-500/30',
+        [EvolutionTierStatusObject.Locked]: 'bg-primary-900 border-primary-800 opacity-50',
     };
 
-    const iconBgClasses: Record<TierStatus, string> = {
-        completed: 'bg-success-500/30',
-        current: 'bg-accent-500/30',
-        locked: 'bg-primary-800',
+    const iconBgClasses: Record<EvolutionTierStatus, string> = {
+        [EvolutionTierStatusObject.Completed]: 'bg-success-500/30',
+        [EvolutionTierStatusObject.Current]: 'bg-accent-500/30',
+        [EvolutionTierStatusObject.Locked]: 'bg-primary-800',
     };
 
-    const statusIcons: Record<TierStatus, string> = {
-        completed: '✅',
-        current: '⭐',
-        locked: '🔒',
+    const statusIcons: Record<EvolutionTierStatus, string> = {
+        [EvolutionTierStatusObject.Completed]: '✅',
+        [EvolutionTierStatusObject.Current]: '⭐',
+        [EvolutionTierStatusObject.Locked]: '🔒',
     };
 
     const containerClass = computed(() => containerClasses[props.status]);

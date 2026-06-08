@@ -3,7 +3,7 @@
         <template v-if="date">
             <span class="text-sm font-bold text-white">{{ formattedDate }}</span>
             <div
-                v-if="tasks.length > 0"
+                v-if="hasTasks"
                 class="flex flex-col gap-2"
             >
                 <div
@@ -19,30 +19,33 @@
                     </div>
                 </div>
             </div>
-            <p
+            <BaseEmptyState
                 v-else
-                class="text-sm text-primary-400"
-            >
-                No tasks completed this day.
-            </p>
+                emoji="🌙"
+                title="No tasks completed"
+                message="This day was a rest day."
+                size="sm"
+            />
             <div
-                v-if="tasks.length > 0"
+                v-if="hasTasks"
                 class="mt-auto pt-2 border-t border-primary-800"
             >
                 <span class="text-xs text-primary-400">{{ taskSummary }}</span>
             </div>
         </template>
-        <div
+        <BaseEmptyState
             v-else
-            class="flex items-center justify-center h-full"
-        >
-            <p class="text-sm text-primary-400">Click a day to see details</p>
-        </div>
+            emoji="👆"
+            title="Pick a day"
+            message="Click a tile in the grid to see what you completed."
+            size="sm"
+        />
     </div>
 </template>
 <script setup lang="ts">
     import { twMerge } from 'tailwind-merge';
     import { computed } from 'vue';
+    import BaseEmptyState from '@/components/base/BaseEmptyState.vue';
 
     export type DayTaskVariant = 'error' | 'info' | 'violet' | 'success' | 'warning';
 
@@ -131,6 +134,7 @@
         });
     });
 
+    const hasTasks = computed(() => props.tasks.length > 0);
     const totalXp = computed(() => props.tasks.reduce((sum, task) => sum + task.xp, 0));
 
     const taskSummary = computed(() => {

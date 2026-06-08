@@ -8,36 +8,39 @@
     import BaseAchievementGrid from '@/components/base/BaseAchievementGrid.vue';
     import { useAddTaskModal } from '@/composables/useAddTaskModal';
     import { useLogActivityModal } from '@/composables/useLogActivityModal';
-    import { useDailyBoostModal } from '@/composables/useDailyBoostModal';
     import { useDailyTasks } from '@/composables/useDailyTasks';
     import { useUserStats } from '@/composables/useUserStats';
+    import { useCharacterHero } from '@/composables/useCharacter';
+    import { useAchievements, useAnalyticsOverview } from '@/composables/useAnalytics';
+    import { mapAchievementsToCards } from '@/utils';
 
     const router = useRouter();
     const { open: openAddTask } = useAddTaskModal();
     const { open: openLogActivity } = useLogActivityModal();
-    const { open: openDailyBoost } = useDailyBoostModal();
     const { dailySummary } = useDailyTasks();
     const { userStats } = useUserStats();
+    const { hero } = useCharacterHero();
+    const { achievements: achievementsData } = useAchievements();
+    const { overview } = useAnalyticsOverview();
 
     const streakDays = computed(() => dailySummary.value?.streak ?? 0);
     const level = computed(() => userStats.value?.level ?? 1);
     const xpCurrent = computed(() => userStats.value?.exp ?? 0);
     const xpMax = computed(() => userStats.value?.requiredExp ?? 0);
     const attributeStats = computed(() => userStats.value?.attributeStats ?? []);
+    const characterTitle = computed(() => hero.value?.stageName ?? 'Adventurer');
+    const achievementsCount = computed(() => overview.value?.achievementsUnlocked ?? 0);
+    const achievementsTotal = computed(() => overview.value?.achievementsTotal ?? 0);
 
-    const achievements = [
-        { label: '100 Day Streak', emoji: '🔥', variant: 'orange' as const },
-        { label: 'Bookworm', emoji: '📚', variant: 'blue' as const },
-        { label: 'Zen Master', emoji: '🌿', variant: 'green' as const },
-        { label: 'Marathon', emoji: '🏃', variant: 'purple' as const },
-        { label: 'Champion', emoji: '👑', variant: 'crimson' as const },
-    ];
+    const recentAchievements = computed(() => {
+        const unlocked = (achievementsData.value?.achievements ?? []).filter(a => !a.locked);
+        return mapAchievementsToCards(unlocked.slice(0, 5));
+    });
 
     const questActions = [
         { emoji: '➕', label: 'Add Task', borderVariant: 'accent' as const, action: openAddTask },
         { emoji: '✅', label: 'Log Activity', borderVariant: 'info' as const, action: openLogActivity },
         { emoji: '📊', label: 'View Stats', borderVariant: 'violet' as const, action: () => router.push('/contribution-grid') },
-        { emoji: '🎁', label: 'Daily Boost', borderVariant: 'warning' as const, action: openDailyBoost },
     ];
 </script>
 
@@ -50,12 +53,12 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <DashboardCharacter
                 :level="level"
-                title="Productivity Warrior"
+                :title="characterTitle"
                 :streakDays="streakDays"
                 :xpCurrent="xpCurrent"
                 :xpMax="xpMax"
-                :achievementsCount="0"
-                :achievementsTotal="0"
+                :achievementsCount="achievementsCount"
+                :achievementsTotal="achievementsTotal"
             />
             <DashboardCharacterStats :stats="attributeStats" />
         </div>
@@ -69,7 +72,7 @@
 
         <BaseAchievementGrid
             title="🥇 Recent Achievements"
-            :achievements="achievements"
+            :achievements="recentAchievements"
             :columns="5"
         />
     </PageLayout>

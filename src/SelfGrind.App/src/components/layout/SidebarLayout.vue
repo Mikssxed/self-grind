@@ -13,7 +13,6 @@
 
         <AddTaskModal />
         <LogActivityModal />
-        <DailyBoostModal />
     </div>
 </template>
 <script setup lang="ts">
@@ -23,7 +22,6 @@
     import SidebarDrawer from './SidebarDrawer.vue';
     import AddTaskModal from '@/components/tasks/AddTaskModal.vue';
     import LogActivityModal from '@/components/tasks/LogActivityModal.vue';
-    import DailyBoostModal from '@/components/tasks/DailyBoostModal.vue';
 
     const drawerOpen = ref(false);
 </script>

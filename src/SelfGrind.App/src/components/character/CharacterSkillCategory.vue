@@ -28,22 +28,13 @@
 </template>
 <script setup lang="ts">
     import CharacterSkillNode from './CharacterSkillNode.vue';
-    import type { SkillNode } from './CharacterSkillNode.vue';
-
-    export type SkillCategoryVariant = 'error' | 'info' | 'success';
-
-    export interface SkillCategory {
-        name: string;
-        emoji: string;
-        variant: SkillCategoryVariant;
-        skills: SkillNode[];
-    }
+    import type { SkillDto, SkillCategoryVariant } from '@/api/apiClient/models';
 
     interface CharacterSkillCategoryProps {
         name: string;
         emoji: string;
         variant: SkillCategoryVariant;
-        skills: SkillNode[];
+        skills: SkillDto[];
     }
 
     defineProps<CharacterSkillCategoryProps>();
