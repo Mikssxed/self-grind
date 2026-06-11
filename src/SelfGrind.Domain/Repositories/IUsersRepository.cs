@@ -7,6 +7,7 @@ public record LeaderboardRow(string UserId, string DisplayName, int Level, int T
 public interface IUsersRepository
 {
     Task<User?> GetWithStatsAsync(string userId, CancellationToken cancellationToken = default);
+    Task<User?> GetWithStatsReadOnlyAsync(string userId, CancellationToken cancellationToken = default);
     Task SeedStatsAsync(string userId, CancellationToken cancellationToken = default);
     Task<LeaderboardRow[]> GetLeaderboardAsync(int top, DateOnly weekStart, CancellationToken cancellationToken = default);
 }

@@ -12,11 +12,11 @@ public class CreateTaskCommandHandler(ILogger<CreateTaskCommandHandler> logger, 
     public async Task<Guid> Handle(CreateTaskCommand request, CancellationToken cancellationToken)
     {
         var currentUser = userContext.GetCurrentUser();
-        logger.LogInformation("Creating a new task {@Task} for user {@User}", request, currentUser);
+        logger.LogInformation("Creating a new task {TaskTitle} for user {UserId}", request.Title, currentUser.Id);
         var task = mapper.Map<TaskItem>(request);
         task.UserId = currentUser.Id;
         
-        var id = await tasksRepository.Create(task);
+        var id = await tasksRepository.Create(task, cancellationToken);
         return id;
     }
 }

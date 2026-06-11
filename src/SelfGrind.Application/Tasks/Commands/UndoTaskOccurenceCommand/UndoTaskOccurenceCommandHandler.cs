@@ -1,5 +1,6 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
+using SelfGrind.Application.Common;
 using SelfGrind.Application.Stats.Services;
 using SelfGrind.Application.User;
 using SelfGrind.Domain.Constants;
@@ -35,20 +36,9 @@ public class UndoTaskOccurenceCommandHandler(
         taskOccurence.Status = TaskOccurrenceStatus.Pending;
         taskOccurence.CompletedDate = null;
 
-        var user = await usersRepository.GetWithStatsAsync(currentUser.Id, cancellationToken);
-        if (user == null)
-        {
-            throw new NotFoundException("user", currentUser.Id);
-        }
+        var user = await usersRepository.GetWithStatsOrThrowAsync(currentUser.Id, cancellationToken);
 
-        var exp = taskOccurence.TaskItem.Exp;
-        statsService.RevokeUserExp(user, exp);
-
-        var stat = user.Stats.FirstOrDefault(s => s.Attribute == taskOccurence.TaskItem.Attribute);
-        if (stat != null)
-        {
-            statsService.RevokeStatExp(stat, exp);
-        }
+        statsService.RevokeTaskExp(user, taskOccurence.TaskItem.Attribute, taskOccurence.TaskItem.Exp);
 
         await tasksRepository.SaveChangesAsync(cancellationToken);
 

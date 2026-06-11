@@ -1,11 +1,11 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using SelfGrind.Application.Character.Services;
+using SelfGrind.Application.Common;
 using SelfGrind.Application.Stats.Services;
 using SelfGrind.Application.User;
 using SelfGrind.Domain.Constants;
 using SelfGrind.Domain.Entities;
-using SelfGrind.Domain.Exceptions;
 using SelfGrind.Domain.Repositories;
 
 namespace SelfGrind.Application.Tasks.Commands.LogActivity;
@@ -14,9 +14,7 @@ public class LogActivityCommandHandler(
     ILogger<LogActivityCommandHandler> logger,
     ITasksRepository tasksRepository,
     IUsersRepository usersRepository,
-    IItemsRepository itemsRepository,
-    IUserItemsRepository userItemsRepository,
-    IItemGrantingService itemGrantingService,
+    IUserItemGranter userItemGranter,
     IStatsService statsService,
     IUserContext userContext) : IRequestHandler<LogActivityCommand, Guid>
 {
@@ -60,33 +58,17 @@ public class LogActivityCommandHandler(
 
         var taskId = await tasksRepository.AddLoggedActivityAsync(task, cancellationToken);
 
-        var user = await usersRepository.GetWithStatsAsync(currentUser.Id, cancellationToken);
-        if (user is null) throw new NotFoundException("user", currentUser.Id);
+        var user = await usersRepository.GetWithStatsOrThrowAsync(currentUser.Id, cancellationToken);
 
-        var previousLevel = user.Level;
-        statsService.AwardUserExp(user, request.Exp);
-
-        var stat = user.Stats.FirstOrDefault(s => s.Attribute == request.Attribute);
-        if (stat is not null) statsService.AwardStatExp(stat, request.Exp);
+        var levelledUp = statsService.AwardTaskExp(user, request.Attribute, request.Exp);
 
         await tasksRepository.SaveChangesAsync(cancellationToken);
 
-        if (user.Level > previousLevel)
+        if (levelledUp)
         {
-            await GrantUnlockedItemsAsync(user.Id, user.Level, cancellationToken);
+            await userItemGranter.GrantUnlockedItemsAsync(user.Id, user.Level, cancellationToken);
         }
 
         return taskId;
-    }
-
-    private async Task GrantUnlockedItemsAsync(string userId, int userLevel, CancellationToken cancellationToken)
-    {
-        var catalog = await itemsRepository.GetAllAsync(cancellationToken);
-        var owned = await userItemsRepository.GetForUserAsync(userId, cancellationToken);
-        var newGrants = itemGrantingService.CalculateNewlyGranted(userId, catalog, owned, userLevel);
-        if (newGrants.Count > 0)
-        {
-            await userItemsRepository.AddRangeAsync(newGrants, cancellationToken);
-        }
     }
 }

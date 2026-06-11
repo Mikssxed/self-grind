@@ -3,10 +3,10 @@ using Microsoft.Extensions.Logging;
 using SelfGrind.Application.Character.Constants;
 using SelfGrind.Application.Character.Dtos;
 using SelfGrind.Application.Character.Services;
+using SelfGrind.Application.Common;
 using SelfGrind.Application.User;
 using SelfGrind.Domain.Constants;
 using SelfGrind.Domain.Entities;
-using SelfGrind.Domain.Exceptions;
 using SelfGrind.Domain.Repositories;
 
 namespace SelfGrind.Application.Character.Queries.GetSkillTrees;
@@ -22,8 +22,7 @@ public class GetSkillTreesQueryHandler(
         var currentUser = userContext.GetCurrentUser();
         logger.LogInformation("Handling GetSkillTreesQuery for user {userId}", currentUser.Id);
 
-        var user = await usersRepository.GetWithStatsAsync(currentUser.Id, cancellationToken);
-        if (user is null) throw new NotFoundException("user", currentUser.Id);
+        var user = await usersRepository.GetWithStatsReadOnlyOrThrowAsync(currentUser.Id, cancellationToken);
 
         var skills = await skillsRepository.GetAllOrderedAsync(cancellationToken);
         var statsByAttribute = user.Stats.ToDictionary(s => s.Attribute, s => s.Level);

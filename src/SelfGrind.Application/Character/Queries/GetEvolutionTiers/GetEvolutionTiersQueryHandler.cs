@@ -2,8 +2,8 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using SelfGrind.Application.Character.Dtos;
 using SelfGrind.Application.Character.Services;
+using SelfGrind.Application.Common;
 using SelfGrind.Application.User;
-using SelfGrind.Domain.Exceptions;
 using SelfGrind.Domain.Repositories;
 
 namespace SelfGrind.Application.Character.Queries.GetEvolutionTiers;
@@ -20,8 +20,7 @@ public class GetEvolutionTiersQueryHandler(
         var currentUser = userContext.GetCurrentUser();
         logger.LogInformation("Handling GetEvolutionTiersQuery for user {userId}", currentUser.Id);
 
-        var user = await usersRepository.GetWithStatsAsync(currentUser.Id, cancellationToken);
-        if (user is null) throw new NotFoundException("user", currentUser.Id);
+        var user = await usersRepository.GetWithStatsReadOnlyOrThrowAsync(currentUser.Id, cancellationToken);
 
         var tiers = await tiersRepository.GetAllOrderedAsync(cancellationToken);
 

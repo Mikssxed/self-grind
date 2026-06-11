@@ -49,8 +49,23 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-// app.MapGroup("api/identity").WithTags("Identity").MapIdentityApi<User>();
+else
+{
+    app.UseHsts();
+}
+
 app.UseHttpsRedirection();
+
+app.Use(async (context, next) =>
+{
+    context.Response.Headers.XContentTypeOptions = "nosniff";
+    context.Response.Headers.XFrameOptions = "DENY";
+    context.Response.Headers["Referrer-Policy"] = "no-referrer";
+    await next();
+});
+
+app.UseResponseCompression();
+app.UseRateLimiter();
 
 app.UseAuthentication();
 app.UseAuthorization();

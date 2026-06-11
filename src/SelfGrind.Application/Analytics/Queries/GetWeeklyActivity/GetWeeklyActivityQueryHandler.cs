@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using SelfGrind.Application.Analytics.Dtos;
+using SelfGrind.Application.Common;
 using SelfGrind.Application.User;
 using SelfGrind.Domain.Constants;
 using SelfGrind.Domain.Repositories;
@@ -16,8 +17,8 @@ public class GetWeeklyActivityQueryHandler(
     public async Task<WeeklyActivityDto> Handle(GetWeeklyActivityQuery request, CancellationToken cancellationToken)
     {
         var currentUser = userContext.GetCurrentUser();
-        var today = DateOnly.FromDateTime(DateTime.Today);
-        var weekStart = request.WeekStart ?? GetMondayOf(today);
+        var today = DateUtils.LocalToday;
+        var weekStart = request.WeekStart ?? DateUtils.GetMondayOf(today);
         var weekEnd = weekStart.AddDays(6);
 
         logger.LogInformation(
@@ -52,11 +53,5 @@ public class GetWeeklyActivityQueryHandler(
             WeekStart = weekStart,
             Days = days,
         };
-    }
-
-    private static DateOnly GetMondayOf(DateOnly date)
-    {
-        var diff = ((int)date.DayOfWeek + 6) % 7; // Monday = 0
-        return date.AddDays(-diff);
     }
 }

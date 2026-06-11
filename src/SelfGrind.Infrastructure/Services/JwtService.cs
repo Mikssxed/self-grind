@@ -51,6 +51,17 @@ public class JwtService(
         return Task.FromResult(Convert.ToBase64String(randomNumber));
     }
 
+    public string HashRefreshToken(string refreshToken)
+    {
+        var hash = SHA256.HashData(Encoding.UTF8.GetBytes(refreshToken));
+        return Convert.ToBase64String(hash);
+    }
+
+    public DateTime GetRefreshTokenExpiry()
+    {
+        return DateTime.UtcNow.AddDays(_jwtSettings.RefreshTokenExpirationDays);
+    }
+
     private async Task<List<Claim>> GetClaimsAsync(User user)
     {
         var claims = new List<Claim>

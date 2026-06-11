@@ -31,6 +31,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IHeroStatCalculator, HeroStatCalculator>();
         services.AddScoped<IEvolutionTierResolver, EvolutionTierResolver>();
         services.AddScoped<IItemGrantingService, ItemGrantingService>();
+        services.AddScoped<IUserItemGranter, UserItemGranter>();
         services.AddHttpContextAccessor();
     }
 }

@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using SelfGrind.Application.Character.Services;
+using SelfGrind.Application.Common;
 using SelfGrind.Application.Community.Dtos;
 using SelfGrind.Application.Community.Services;
 using SelfGrind.Application.User;
@@ -18,7 +19,7 @@ public class GetLeaderboardQueryHandler(
     public async Task<LeaderboardDto> Handle(GetLeaderboardQuery request, CancellationToken cancellationToken)
     {
         var currentUser = userContext.GetCurrentUser();
-        var weekStart = request.WeekStart ?? CurrentWeekStart();
+        var weekStart = request.WeekStart ?? DateUtils.GetMondayOf(DateUtils.UtcToday);
         logger.LogInformation("Handling GetLeaderboardQuery weekStart={weekStart} top={top}", weekStart, request.Top);
 
         var rows = await usersRepository.GetLeaderboardAsync(request.Top, weekStart, cancellationToken);
@@ -42,12 +43,5 @@ public class GetLeaderboardQueryHandler(
             WeekStart = weekStart.ToString("O"),
             Entries = entries,
         };
-    }
-
-    private static DateOnly CurrentWeekStart()
-    {
-        var today = DateOnly.FromDateTime(DateTime.UtcNow);
-        var daysSinceMonday = ((int)today.DayOfWeek + 6) % 7;
-        return today.AddDays(-daysSinceMonday);
     }
 }

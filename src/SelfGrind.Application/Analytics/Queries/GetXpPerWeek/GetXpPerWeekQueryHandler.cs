@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using SelfGrind.Application.Analytics.Dtos;
+using SelfGrind.Application.Common;
 using SelfGrind.Application.User;
 using SelfGrind.Domain.Repositories;
 
@@ -15,8 +16,8 @@ public class GetXpPerWeekQueryHandler(
     public async Task<XpPerWeekDto> Handle(GetXpPerWeekQuery request, CancellationToken cancellationToken)
     {
         var currentUser = userContext.GetCurrentUser();
-        var today = DateOnly.FromDateTime(DateTime.Today);
-        var currentMonday = GetMondayOf(today);
+        var today = DateUtils.LocalToday;
+        var currentMonday = DateUtils.GetMondayOf(today);
         var earliestMonday = currentMonday.AddDays(-7 * (request.Weeks - 1));
         var windowEnd = currentMonday.AddDays(6);
 
@@ -44,11 +45,5 @@ public class GetXpPerWeekQueryHandler(
         }
 
         return new XpPerWeekDto { Weeks = weeks };
-    }
-
-    private static DateOnly GetMondayOf(DateOnly date)
-    {
-        var diff = ((int)date.DayOfWeek + 6) % 7;
-        return date.AddDays(-diff);
     }
 }

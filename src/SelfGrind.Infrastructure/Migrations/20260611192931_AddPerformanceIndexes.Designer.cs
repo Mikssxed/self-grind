@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SelfGrind.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using SelfGrind.Infrastructure.Persistence;
 namespace SelfGrind.Infrastructure.Migrations
 {
     [DbContext(typeof(SelfGrindDbContext))]
-    partial class SelfGrindDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260611192931_AddPerformanceIndexes")]
+    partial class AddPerformanceIndexes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -440,40 +443,6 @@ namespace SelfGrind.Infrastructure.Migrations
                             UnlockLevel = 2,
                             Variant = "Warning"
                         });
-                });
-
-            modelBuilder.Entity("SelfGrind.Domain.Entities.RefreshToken", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ExpiresAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("RevokedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("TokenHash")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("TokenHash")
-                        .IsUnique();
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("SelfGrind.Domain.Entities.Skill", b =>
@@ -954,17 +923,6 @@ namespace SelfGrind.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Habit");
-                });
-
-            modelBuilder.Entity("SelfGrind.Domain.Entities.RefreshToken", b =>
-                {
-                    b.HasOne("SelfGrind.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SelfGrind.Domain.Entities.TaskItem", b =>

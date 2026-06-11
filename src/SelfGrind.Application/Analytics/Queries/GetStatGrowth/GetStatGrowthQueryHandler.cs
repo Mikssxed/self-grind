@@ -1,6 +1,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using SelfGrind.Application.Analytics.Dtos;
+using SelfGrind.Application.Common;
 using SelfGrind.Application.Stats.Services;
 using SelfGrind.Application.User;
 using SelfGrind.Domain.Constants;
@@ -18,8 +19,8 @@ public class GetStatGrowthQueryHandler(
     public async Task<StatGrowthDto> Handle(GetStatGrowthQuery request, CancellationToken cancellationToken)
     {
         var currentUser = userContext.GetCurrentUser();
-        var today = DateOnly.FromDateTime(DateTime.Today);
-        var currentMonday = GetMondayOf(today);
+        var today = DateUtils.LocalToday;
+        var currentMonday = DateUtils.GetMondayOf(today);
 
         logger.LogInformation(
             "Handling GetStatGrowthQuery for user {UserId}, weeks {Weeks}",
@@ -34,8 +35,13 @@ public class GetStatGrowthQueryHandler(
             weekEnds[i] = weekStart.AddDays(6);
         }
 
+        // Exp earned before the visible window is summed in SQL and awarded as one lump;
+        // ApplyAward levels up in a loop, so this is equivalent to replaying each day individually.
+        var firstWeekStart = weekStarts[0];
+        var preWindowTotals = await tasksRepository.GetCompletedExpByAttributeAsync(
+            currentUser.Id, firstWeekStart, cancellationToken);
         var aggregates = await tasksRepository.GetCompletedAggregatesAsync(
-            currentUser.Id, DateOnly.MinValue, today, cancellationToken);
+            currentUser.Id, firstWeekStart, today, cancellationToken);
 
         var attributes = Enum.GetValues<BaseAttribute>();
         var series = new StatGrowthSeriesDto[attributes.Length];
@@ -49,6 +55,8 @@ public class GetStatGrowthQueryHandler(
                 .ToArray();
 
             var stat = NewBlankStat(currentUser.Id, attribute);
+            var preWindowExp = preWindowTotals.FirstOrDefault(t => t.Attribute == attribute).TotalExp;
+            statsService.AwardStatExp(stat, preWindowExp);
             var levels = new int[request.Weeks];
             var weekIndex = 0;
             var cursor = 0;
@@ -89,11 +97,5 @@ public class GetStatGrowthQueryHandler(
             Attribute = attribute,
             User = placeholderUser,
         };
-    }
-
-    private static DateOnly GetMondayOf(DateOnly date)
-    {
-        var diff = ((int)date.DayOfWeek + 6) % 7;
-        return date.AddDays(-diff);
     }
 }

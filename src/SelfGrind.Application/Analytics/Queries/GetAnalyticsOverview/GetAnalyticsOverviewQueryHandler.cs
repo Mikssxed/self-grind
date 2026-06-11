@@ -25,7 +25,7 @@ public class GetAnalyticsOverviewQueryHandler(
         var totalXp = await tasksRepository.GetTotalEarnedExpAsync(currentUser.Id, cancellationToken);
         var tasksDone = await tasksRepository.GetTotalCompletedCountAsync(currentUser.Id, cancellationToken);
         var completionDates = await tasksRepository.GetAllCompletionDatesAsync(currentUser.Id, cancellationToken);
-        var user = await usersRepository.GetWithStatsAsync(currentUser.Id, cancellationToken);
+        var user = await usersRepository.GetWithStatsReadOnlyAsync(currentUser.Id, cancellationToken);
 
         var bestStreak = StreakUtil.LongestRun(completionDates);
         var currentStreak = StreakUtil.CurrentRunEndingAt(completionDates, today);

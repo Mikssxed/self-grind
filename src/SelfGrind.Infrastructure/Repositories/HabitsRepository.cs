@@ -14,10 +14,14 @@ public class HabitsRepository(SelfGrindDbContext dbContext) : IHabitsRepository
         return habit.Id;
     }
 
-    public async Task<Habit[]> GetAllAsync(string userId, CancellationToken cancellationToken = default)
+    public async Task<Habit[]> GetAllWithEntriesForDayAsync(string userId, DateTime day, CancellationToken cancellationToken = default)
     {
+        var dayStart = day.Date;
+        var dayEnd = dayStart.AddDays(1);
+
         return await dbContext.Habits
-            .Include(t => t.HabitEntries)
+            .AsNoTracking()
+            .Include(t => t.HabitEntries!.Where(e => e.EntryDate >= dayStart && e.EntryDate < dayEnd))
             .Where(t => t.UserId == userId)
             .ToArrayAsync(cancellationToken);
     }

@@ -18,7 +18,14 @@ public static class ServiceCollectionExtensions
     public static void AddInfrastructure(this IServiceCollection services, IConfiguration configuration, IWebHostEnvironment environment)
     {
         var connectionString = configuration.GetConnectionString("SelfGrindDb");
-        services.AddDbContext<SelfGrindDbContext>(options => options.UseSqlServer(connectionString).EnableSensitiveDataLogging());
+        services.AddDbContext<SelfGrindDbContext>(options =>
+        {
+            options.UseSqlServer(connectionString);
+            if (environment.IsDevelopment())
+            {
+                options.EnableSensitiveDataLogging();
+            }
+        });
 
         services.AddIdentityApiEndpoints<User>().AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<SelfGrindDbContext>();
@@ -26,6 +33,9 @@ public static class ServiceCollectionExtensions
         services.Configure<IdentityOptions>(options =>
         {
             options.User.RequireUniqueEmail = true;
+            options.Lockout.AllowedForNewUsers = true;
+            options.Lockout.MaxFailedAccessAttempts = 5;
+            options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
         });
 
         // Configure JWT Settings
@@ -40,12 +50,11 @@ public static class ServiceCollectionExtensions
 
         if (environment.IsDevelopment())
         {
-            // W development nie wysyłamy prawdziwych emaili - tylko zapisujemy do pliku
-            emailBuilder.AddSmtpSender("localhost", 25); // Fake sender - i tak EmailService zapisze do pliku
+            // In development EmailService writes emails to a file, so this sender is never used
+            emailBuilder.AddSmtpSender("localhost", 25);
         }
         else
         {
-            // W production używamy prawdziwego SMTP
             emailBuilder.AddSmtpSender(
                 smtpSettings["Host"] ?? "localhost",
                 int.Parse(smtpSettings["Port"] ?? "25"));
@@ -58,6 +67,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ISkillsRepository, SkillsRepository>();
         services.AddScoped<IItemsRepository, ItemsRepository>();
         services.AddScoped<IUserItemsRepository, UserItemsRepository>();
+        services.AddScoped<IRefreshTokensRepository, RefreshTokensRepository>();
 
         services.AddScoped<ITaskAuthorizationService, TaskAuthorizationService>();
 

@@ -14,9 +14,7 @@ public class RegisterUserCommandHandler(
     UserManager<Domain.Entities.User> userManager,
     IEmailService emailService,
     IUsersRepository usersRepository,
-    IItemsRepository itemsRepository,
-    IUserItemsRepository userItemsRepository,
-    IItemGrantingService itemGrantingService,
+    IUserItemGranter userItemGranter,
     IConfiguration configuration)
     : IRequestHandler<RegisterUserCommand>
 {
@@ -35,12 +33,7 @@ public class RegisterUserCommandHandler(
 
         await usersRepository.SeedStatsAsync(user.Id, cancellationToken);
 
-        var catalog = await itemsRepository.GetAllAsync(cancellationToken);
-        var initialGrants = itemGrantingService.CalculateNewlyGranted(user.Id, catalog, [], user.Level);
-        if (initialGrants.Count > 0)
-        {
-            await userItemsRepository.AddRangeAsync(initialGrants, cancellationToken);
-        }
+        await userItemGranter.GrantUnlockedItemsAsync(user.Id, user.Level, cancellationToken);
 
         var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
         var frontendUrl = configuration["AppSettings:FrontendUrl"] ?? "http://localhost:5173";

@@ -24,7 +24,7 @@ public class GetAchievementsQueryHandler(
 
         var tasksDone = await tasksRepository.GetTotalCompletedCountAsync(currentUser.Id, cancellationToken);
         var completionDates = await tasksRepository.GetAllCompletionDatesAsync(currentUser.Id, cancellationToken);
-        var user = await usersRepository.GetWithStatsAsync(currentUser.Id, cancellationToken);
+        var user = await usersRepository.GetWithStatsReadOnlyAsync(currentUser.Id, cancellationToken);
 
         var currentStreak = StreakUtil.CurrentRunEndingAt(completionDates, today);
         var statLevels = user?.Stats.ToDictionary(s => s.Attribute, s => s.Level)

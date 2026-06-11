@@ -1,15 +1,16 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using SelfGrind.Domain.Exceptions;
 using SelfGrind.Domain.Interfaces;
+using SelfGrind.Domain.Repositories;
 
 namespace SelfGrind.Application.User.Commands.LoginUser;
 
 public class LoginUserCommandHandler(
     ILogger<LoginUserCommandHandler> logger,
     SignInManager<Domain.Entities.User> signInManager,
+    IRefreshTokensRepository refreshTokensRepository,
     IJwtService jwtService
     )
     : IRequestHandler<LoginUserCommand, LoginResponse>
@@ -22,10 +23,11 @@ public class LoginUserCommandHandler(
 
         if (user == null || user.UserName == null)
         {
-            throw new NotFoundException("user", request.Email);
+            // Same exception as a wrong password so responses don't reveal whether the email exists
+            throw new AuthenticationException("Invalid email or password.");
         }
 
-        var result = await signInManager.CheckPasswordSignInAsync(user, request.Password, false);
+        var result = await signInManager.CheckPasswordSignInAsync(user, request.Password, lockoutOnFailure: true);
 
         if (!result.Succeeded)
         {
@@ -34,6 +36,14 @@ public class LoginUserCommandHandler(
 
         // Generate JWT tokens
         var (accessToken, refreshToken, expiresIn) = await jwtService.GenerateTokensAsync(user);
+
+        await refreshTokensRepository.AddAsync(new Domain.Entities.RefreshToken
+        {
+            UserId = user.Id,
+            TokenHash = jwtService.HashRefreshToken(refreshToken),
+            CreatedAt = DateTime.UtcNow,
+            ExpiresAt = jwtService.GetRefreshTokenExpiry(),
+        }, cancellationToken);
 
         return new LoginResponse
         {

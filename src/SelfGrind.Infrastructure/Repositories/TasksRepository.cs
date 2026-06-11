@@ -9,11 +9,11 @@ namespace SelfGrind.Infrastructure.Repositories;
 
 public class TasksRepository(SelfGrindDbContext dbContext) : ITasksRepository
 {
-    public async Task<Guid> Create(TaskItem taskItem)
+    public async Task<Guid> Create(TaskItem taskItem, CancellationToken cancellationToken = default)
     {
         dbContext.Tasks.Add(taskItem);
         CreateOccurrencesRange(taskItem);
-        await dbContext.SaveChangesAsync();
+        await dbContext.SaveChangesAsync(cancellationToken);
         return taskItem.Id;
     }
 
@@ -27,6 +27,7 @@ public class TasksRepository(SelfGrindDbContext dbContext) : ITasksRepository
     public async Task<TaskItem[]> GetAllAsync(string userId, CancellationToken cancellationToken = default)
     {
         return await dbContext.Tasks
+            .AsNoTracking()
             .Include(t => t.Schedule)
             .Where(t => t.UserId == userId && !t.IsArchived)
             .ToArrayAsync(cancellationToken);
@@ -105,7 +106,8 @@ public class TasksRepository(SelfGrindDbContext dbContext) : ITasksRepository
             cancellationToken =
             default)
     {
-        return await dbContext.TaskOccurrences
+        var summary = await dbContext.TaskOccurrences
+            .AsNoTracking()
             .Where(o => o.TaskItem.UserId == userId && o.ScheduledDate < today)
             .GroupBy(o => o.ScheduledDate)
             .Select(g => new
@@ -114,9 +116,9 @@ public class TasksRepository(SelfGrindDbContext dbContext) : ITasksRepository
                 Completed = g.Count(o => o.Status == TaskOccurrenceStatus.Done)
             })
             .OrderByDescending(x => x.Date)
-            .AsAsyncEnumerable()
-            .Select(x => (x.Date, x.Completed))
             .ToArrayAsync(cancellationToken);
+
+        return summary.Select(x => (x.Date, x.Completed)).ToArray();
     }
 
     public async Task<(DateOnly Date, int CompletedCount, int TotalCount)[]> GetYearlyCompletionSummaryAsync(
@@ -125,7 +127,7 @@ public class TasksRepository(SelfGrindDbContext dbContext) : ITasksRepository
         var startDate = new DateOnly(year, 1, 1);
         var endDate = new DateOnly(year, 12, 31);
 
-        return await dbContext.TaskOccurrences
+        var summary = await dbContext.TaskOccurrences
             .AsNoTracking()
             .Where(o => o.TaskItem.UserId == userId
                      && o.ScheduledDate >= startDate
@@ -139,9 +141,9 @@ public class TasksRepository(SelfGrindDbContext dbContext) : ITasksRepository
                 TotalCount = g.Count()
             })
             .OrderBy(x => x.Date)
-            .AsAsyncEnumerable()
-            .Select(x => (x.Date, x.CompletedCount, x.TotalCount))
             .ToArrayAsync(cancellationToken);
+
+        return summary.Select(x => (x.Date, x.CompletedCount, x.TotalCount)).ToArray();
     }
 
     public async Task<TaskOccurrence[]> GetCompletedOccurrencesForDateAsync(
@@ -171,7 +173,7 @@ public class TasksRepository(SelfGrindDbContext dbContext) : ITasksRepository
     public async Task<(DateOnly Date, BaseAttribute Attribute, int CompletedCount, int TotalExp)[]> GetCompletedAggregatesAsync(
         string userId, DateOnly startDate, DateOnly endDate, CancellationToken cancellationToken = default)
     {
-        return await dbContext.TaskOccurrences
+        var aggregates = await dbContext.TaskOccurrences
             .AsNoTracking()
             .Where(o => o.TaskItem.UserId == userId
                      && o.Status == TaskOccurrenceStatus.Done
@@ -187,9 +189,25 @@ public class TasksRepository(SelfGrindDbContext dbContext) : ITasksRepository
                 TotalExp = g.Sum(o => o.TaskItem.Exp)
             })
             .OrderBy(x => x.Date)
-            .AsAsyncEnumerable()
-            .Select(x => (x.Date, x.Attribute, x.CompletedCount, x.TotalExp))
             .ToArrayAsync(cancellationToken);
+
+        return aggregates.Select(x => (x.Date, x.Attribute, x.CompletedCount, x.TotalExp)).ToArray();
+    }
+
+    public async Task<(BaseAttribute Attribute, int TotalExp)[]> GetCompletedExpByAttributeAsync(
+        string userId, DateOnly beforeDate, CancellationToken cancellationToken = default)
+    {
+        var totals = await dbContext.TaskOccurrences
+            .AsNoTracking()
+            .Where(o => o.TaskItem.UserId == userId
+                     && o.Status == TaskOccurrenceStatus.Done
+                     && o.ScheduledDate < beforeDate
+                     && !o.TaskItem.IsArchived)
+            .GroupBy(o => o.TaskItem.Attribute)
+            .Select(g => new { Attribute = g.Key, TotalExp = g.Sum(o => o.TaskItem.Exp) })
+            .ToArrayAsync(cancellationToken);
+
+        return totals.Select(x => (x.Attribute, x.TotalExp)).ToArray();
     }
 
     public async Task<int> GetTotalEarnedExpAsync(string userId, CancellationToken cancellationToken = default)

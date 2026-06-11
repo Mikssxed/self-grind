@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Options;
 using SelfGrind.Application.Settings;
+using SelfGrind.Domain.Constants;
 using SelfGrind.Domain.Entities;
 
 namespace SelfGrind.Application.Stats.Services;
@@ -42,6 +43,31 @@ public class StatsService(IOptions<StatsSettings> options) : IStatsService
         stat.Level = level;
         stat.Exp = exp;
         stat.RequiredExp = required;
+    }
+
+    public bool AwardTaskExp(Domain.Entities.User user, BaseAttribute attribute, int amount)
+    {
+        var previousLevel = user.Level;
+        AwardUserExp(user, amount);
+
+        var stat = user.Stats.FirstOrDefault(s => s.Attribute == attribute);
+        if (stat != null)
+        {
+            AwardStatExp(stat, amount);
+        }
+
+        return user.Level > previousLevel;
+    }
+
+    public void RevokeTaskExp(Domain.Entities.User user, BaseAttribute attribute, int amount)
+    {
+        RevokeUserExp(user, amount);
+
+        var stat = user.Stats.FirstOrDefault(s => s.Attribute == attribute);
+        if (stat != null)
+        {
+            RevokeStatExp(stat, amount);
+        }
     }
 
     private static (int level, int exp, int required) ApplyAward(int level, int exp, int required, int amount, double multiplier)

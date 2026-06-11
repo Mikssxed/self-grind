@@ -15,7 +15,7 @@ public class GetHabitsQueryHandler(ILogger<GetHabitsQueryHandler> logger, IHabit
         logger.LogInformation("Handling GetHabitsQuery");
 
         var today = DateTime.UtcNow.Date;
-        var habits = await habitsRepository.GetAllAsync(userId, cancellationToken);
+        var habits = await habitsRepository.GetAllWithEntriesForDayAsync(userId, today, cancellationToken);
 
         return habits.Select(h => new HabitDto
         {
@@ -23,7 +23,7 @@ public class GetHabitsQueryHandler(ILogger<GetHabitsQueryHandler> logger, IHabit
             Name = h.Name,
             TargetValue = h.TargetValue,
             Unit = h.Unit,
-            TodayValue = h.HabitEntries?.FirstOrDefault(e => e.EntryDate.Date == today)?.Value ?? 0,
+            TodayValue = h.HabitEntries?.FirstOrDefault()?.Value ?? 0,
         }).ToArray();
     }
 }

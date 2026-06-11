@@ -16,6 +16,7 @@ public class SelfGrindDbContext(DbContextOptions<SelfGrindDbContext> options) : 
     public DbSet<Skill> Skills { get; set; }
     public DbSet<Item> Items { get; set; }
     public DbSet<UserItem> UserItems { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
@@ -35,7 +36,15 @@ public class SelfGrindDbContext(DbContextOptions<SelfGrindDbContext> options) : 
                 task.HasOne(t => t.User)
                     .WithMany(u => u.TaskItems)
                     .HasForeignKey(t => t.UserId);
+
+                task.HasIndex(t => new { t.UserId, t.IsArchived });
             });
+
+        modelBuilder.Entity<TaskOccurrence>(occurrence =>
+        {
+            occurrence.HasIndex(o => new { o.Status, o.ScheduledDate });
+            occurrence.HasIndex(o => new { o.Status, o.CompletedDate });
+        });
 
         modelBuilder.Entity<Habit>(habit =>
         {
@@ -47,6 +56,11 @@ public class SelfGrindDbContext(DbContextOptions<SelfGrindDbContext> options) : 
                 .WithOne(e => e.Habit)
                 .HasForeignKey(e => e.HabitId)
                 .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        modelBuilder.Entity<HabitEntry>(entry =>
+        {
+            entry.HasIndex(e => new { e.HabitId, e.EntryDate });
         });
         
         modelBuilder.Entity<UserStat>(userStat =>
@@ -134,5 +148,15 @@ public class SelfGrindDbContext(DbContextOptions<SelfGrindDbContext> options) : 
             userItem.HasIndex(ui => new { ui.UserId, ui.ItemId }).IsUnique();
         });
 
+        modelBuilder.Entity<RefreshToken>(token =>
+        {
+            token.Property(t => t.TokenHash).HasMaxLength(64);
+            token.HasIndex(t => t.TokenHash).IsUnique();
+
+            token.HasOne(t => t.User)
+                .WithMany()
+                .HasForeignKey(t => t.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+        });
     }
 }

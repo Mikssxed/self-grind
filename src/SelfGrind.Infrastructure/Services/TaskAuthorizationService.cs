@@ -11,7 +11,7 @@ public class TaskAuthorizationService(ILogger<TaskAuthorizationService> logger, 
     public bool Authorize(TaskItem task, ResourceOperation operation)
     {
         var user = userContext.GetCurrentUser();
-        logger.LogInformation("Authorizing user: {@UserId} for {@Operation} on task: {@TaskId}", user?.Id, operation, task.Id);
+        logger.LogInformation("Authorizing user: {UserId} for {Operation} on task: {TaskId}", user.Id, operation, task.Id);
         
         if (operation == ResourceOperation.Read || operation == ResourceOperation.Create)
         {
@@ -25,7 +25,7 @@ public class TaskAuthorizationService(ILogger<TaskAuthorizationService> logger, 
             return true;
         }
 
-        if (operation == ResourceOperation.Delete || (operation == ResourceOperation.Update && user.Id == task.UserId))
+        if ((operation == ResourceOperation.Delete || operation == ResourceOperation.Update) && user.Id == task.UserId)
         {
             logger.LogInformation("Owner user, update/delete operation - authorization granted");
             return true;

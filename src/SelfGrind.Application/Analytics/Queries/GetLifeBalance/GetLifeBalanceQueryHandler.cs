@@ -1,9 +1,9 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using SelfGrind.Application.Analytics.Dtos;
+using SelfGrind.Application.Common;
 using SelfGrind.Application.User;
 using SelfGrind.Domain.Constants;
-using SelfGrind.Domain.Exceptions;
 using SelfGrind.Domain.Repositories;
 
 namespace SelfGrind.Application.Analytics.Queries.GetLifeBalance;
@@ -20,8 +20,7 @@ public class GetLifeBalanceQueryHandler(
 
         logger.LogInformation("Handling GetLifeBalanceQuery for user {UserId}", currentUser.Id);
 
-        var user = await usersRepository.GetWithStatsAsync(currentUser.Id, cancellationToken);
-        if (user == null) throw new NotFoundException("user", currentUser.Id);
+        var user = await usersRepository.GetWithStatsReadOnlyOrThrowAsync(currentUser.Id, cancellationToken);
 
         var statsByAttribute = user.Stats.ToDictionary(s => s.Attribute);
 

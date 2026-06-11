@@ -5,7 +5,7 @@ namespace SelfGrind.Domain.Repositories;
 
 public interface ITasksRepository
 {
-    Task<Guid> Create(TaskItem taskItem);
+    Task<Guid> Create(TaskItem taskItem, CancellationToken cancellationToken = default);
     Task<Guid> AddLoggedActivityAsync(TaskItem taskItem, CancellationToken cancellationToken = default);
     Task<TaskItem[]> GetAllAsync(string userId, CancellationToken cancellationToken = default);
     Task<TaskItem?> GetByIdAsync(string userId, Guid taskItemId, CancellationToken cancellationToken = default);
@@ -21,6 +21,7 @@ public interface ITasksRepository
     Task<TaskOccurrence[]> GetCompletedOccurrencesForDateAsync(string userId, DateOnly date, CancellationToken cancellationToken = default);
     Task<int[]> GetActiveYearsAsync(string userId, CancellationToken cancellationToken = default);
     Task<(DateOnly Date, BaseAttribute Attribute, int CompletedCount, int TotalExp)[]> GetCompletedAggregatesAsync(string userId, DateOnly startDate, DateOnly endDate, CancellationToken cancellationToken = default);
+    Task<(BaseAttribute Attribute, int TotalExp)[]> GetCompletedExpByAttributeAsync(string userId, DateOnly beforeDate, CancellationToken cancellationToken = default);
     Task<int> GetTotalEarnedExpAsync(string userId, CancellationToken cancellationToken = default);
     Task<DateOnly[]> GetAllCompletionDatesAsync(string userId, CancellationToken cancellationToken = default);
 }

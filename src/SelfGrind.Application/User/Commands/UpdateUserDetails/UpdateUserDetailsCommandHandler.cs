@@ -11,11 +11,11 @@ public class UpdateUserDetailsCommandHandler(ILogger<UpdateUserDetailsCommandHan
     public async Task Handle(UpdateUserDetailsCommand request, CancellationToken cancellationToken)
     {
         var user = userContext.GetCurrentUser();
-        logger.LogInformation("Updating user: {@UserId} with {@UserDetails}", user!.Id, request);
+        logger.LogInformation("Updating details of user: {UserId}", user.Id);
 
-        var dbUser = await userStore.FindByIdAsync(user!.Id, cancellationToken);
+        var dbUser = await userStore.FindByIdAsync(user.Id, cancellationToken);
 
-        if (dbUser == null) throw new NotFoundException(nameof(Domain.Entities.User), user!.Id);
+        if (dbUser == null) throw new NotFoundException(nameof(Domain.Entities.User), user.Id);
 
         dbUser.UserName = request.Username;
 

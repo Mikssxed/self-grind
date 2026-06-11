@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using SelfGrind.Application.Behaviors;
-using SelfGrind.Domain.Exceptions;
 
 namespace SelfGrind.Application.User.Commands.ConfirmUser;
 
@@ -13,13 +12,15 @@ public class ConfirmEmailCommandHandler(
 {
     public async Task Handle(ConfirmEmailCommand request, CancellationToken cancellationToken)
     {
-        logger.LogInformation("Confirming email for user: {@UserId}", request.UserId);
-        
+        logger.LogInformation("Confirming email for user: {UserId}", request.UserId);
+
         var user = await userManager.FindByIdAsync(request.UserId);
 
         if (user == null)
         {
-            throw new NotFoundException("User", request.UserId);
+            // Fail the same way as an invalid token so responses don't reveal whether the user id exists
+            IdentityResult.Failed(new IdentityError { Code = "InvalidToken", Description = "Invalid token." }).ThrowIfFailed();
+            return;
         }
 
         var code = request.ConfirmationCode;
