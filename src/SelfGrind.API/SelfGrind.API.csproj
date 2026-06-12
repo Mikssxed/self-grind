@@ -28,9 +28,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="EmailTemplates\**\*.cshtml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <!-- FluentEmail reads these templates as plain files at runtime (UsingTemplateFromFile), so they
+         must NOT be Razor-compiled into the assembly. Remove them from the default Content/Razor
+         items and copy them to the (publish) output so ContentRootPath/EmailTemplates resolves in
+         the container the same way it does locally. -->
+    <Content Remove="EmailTemplates\**\*.cshtml" />
+    <None Include="EmailTemplates\**\*.cshtml" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>
