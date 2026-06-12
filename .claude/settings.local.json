@@ -35,7 +35,18 @@
       "Bash(where swagger *)",
       "Bash(dotnet tool *)",
       "Bash(where kiota *)",
-      "Bash(echo \"EXIT=$?\")"
+      "Bash(echo \"EXIT=$?\")",
+      "PowerShell(dotnet build *)",
+      "PowerShell(npm run *)",
+      "PowerShell(npx vue-tsc -b)",
+      "PowerShell(Remove-Item *)",
+      "PowerShell(dotnet run *)",
+      "PowerShell($deadline = \\(Get-Date\\).AddSeconds\\(40\\); do { Start-Sleep -Milliseconds 800; try { $r = Invoke-WebRequest -Uri 'http://localhost:5081/api/identity/login' -Method Post -ContentType 'application/json' -Body '{}' -UseBasicParsing -ErrorAction Stop; $up = $true } catch { if \\($_.Exception.Response\\) { $up = $true } else { $up = $false } } } until \\($up -or \\(Get-Date\\) -gt $deadline\\); if \\($up\\) { 'API is up' } else { 'API did not start' })",
+      "PowerShell($pids = \\(Get-NetTCPConnection -LocalPort 5081 -State Listen -ErrorAction SilentlyContinue\\).OwningProcess | Select-Object -Unique; if \\($pids\\) { Stop-Process -Id $pids -Force -Confirm:$false; \"Stopped: $pids\" } else { \"Nothing listening\" })",
+      "PowerShell($deadline = \\(Get-Date\\).AddSeconds\\(40\\); do { Start-Sleep -Milliseconds 800; try { Invoke-WebRequest -Uri 'http://localhost:5081/' -UseBasicParsing -ErrorAction Stop | Out-Null; $up = $true } catch { if \\($_.Exception.Response\\) { $up = $true } else { $up = $false } } } until \\($up -or \\(Get-Date\\) -gt $deadline\\); if \\($up\\) { 'API is up' } else { 'API did not start' })",
+      "PowerShell($env:ASPNETCORE_ENVIRONMENT='Production'; $env:JwtSettings__Secret=''; Set-Location C:\\\\projects\\\\SelfGrind\\\\SelfGrind\\\\src\\\\SelfGrind.API\\\\bin\\\\Debug\\\\net10.0; dotnet SelfGrind.API.dll --urls http://localhost:5999)",
+      "PowerShell($env:ASPNETCORE_ENVIRONMENT='Production'; $env:JwtSettings__Secret='ProdVerificationSecretAtLeast32CharsLong!!'; Set-Location C:\\\\projects\\\\SelfGrind\\\\SelfGrind\\\\src\\\\SelfGrind.API\\\\bin\\\\Debug\\\\net10.0; dotnet SelfGrind.API.dll --urls http://localhost:5999)",
+      "PowerShell(git *)"
     ]
   }
 }

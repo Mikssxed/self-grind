@@ -65,12 +65,20 @@ app.Use(async (context, next) =>
 });
 
 app.UseResponseCompression();
+
+// Serve the built SPA from wwwroot (vite build outputs there)
+app.UseDefaultFiles();
+app.UseStaticFiles();
+
 app.UseRateLimiter();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+// Client-side routes (e.g. /dashboard) fall back to the SPA entry point
+app.MapFallbackToFile("index.html");
 
 app.Run();
 

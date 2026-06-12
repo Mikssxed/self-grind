@@ -6,6 +6,7 @@ using SelfGrind.Application.Habits.Commands.DeleteHabit;
 using SelfGrind.Application.Habits.Commands.LogHabitEntry;
 using SelfGrind.Application.Habits.Commands.UpdateHabit;
 using SelfGrind.Application.Habits.Queries.GetHabits;
+using SelfGrind.Application.Common;
 using SelfGrind.Application.Tasks.Dtos;
 
 namespace SelfGrind.Controllers;
@@ -25,9 +26,9 @@ public class HabitsController(IMediator mediator) : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<HabitDto[]>> GetAllAsync()
+    public async Task<ActionResult<PagedResult<HabitDto>>> GetAllAsync([FromQuery] GetHabitsQuery query)
     {
-        var habits = await mediator.Send(new GetHabitsQuery());
+        var habits = await mediator.Send(query);
         return Ok(habits);
     }
 

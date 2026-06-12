@@ -9,7 +9,7 @@
     import { TaskOccurrenceStatusObject } from '@/api/apiClient/models';
 
     const { todayTasks, dailySummary, toggleOccurrence } = useDailyTasks();
-    const { habits } = useHabits();
+    const { habits, page: habitsPage, totalPages: habitsTotalPages } = useHabits();
 
     const stats = computed(() => [
         { emoji: '✅', value: String(dailySummary.value?.completedCount ?? 0), label: 'Completed Today' },
@@ -35,6 +35,10 @@
             @toggle="handleToggle"
         />
 
-        <DailyTasksHabitTracker :habits="habits" />
+        <DailyTasksHabitTracker
+            v-model:page="habitsPage"
+            :habits="habits"
+            :total-pages="habitsTotalPages"
+        />
     </PageLayout>
 </template>

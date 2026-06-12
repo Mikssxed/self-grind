@@ -40,7 +40,7 @@ export function useLoginMutation() {
             }
 
             const returnUrl = route.query.returnUrl as string | undefined;
-            router.push(returnUrl || { name: 'home' });
+            router.push(returnUrl || { name: 'dashboard' });
         },
     });
 }

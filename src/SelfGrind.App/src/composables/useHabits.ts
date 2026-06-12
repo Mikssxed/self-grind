@@ -1,15 +1,23 @@
-import type { CreateHabitCommand, HabitDto, UpdateHabitCommand } from '@/api/apiClient/models';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
-import { computed } from 'vue';
+import type { CreateHabitCommand, HabitDtoPagedResult, UpdateHabitCommand } from '@/api/apiClient/models';
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/vue-query';
+import { computed, ref } from 'vue';
 import { useApiClient } from './useApiClient';
+
+const HABITS_PAGE_SIZE = 12;
 
 export function useHabits() {
     const apiClient = useApiClient();
     const queryClient = useQueryClient();
 
+    const page = ref(1);
+
     const habitsQuery = useQuery({
-        queryKey: ['habits'],
-        queryFn: (): Promise<HabitDto[] | undefined> => apiClient.api.habits.get(),
+        queryKey: ['habits', page],
+        queryFn: (): Promise<HabitDtoPagedResult | undefined> =>
+            apiClient.api.habits.get({
+                queryParameters: { page: page.value, pageSize: HABITS_PAGE_SIZE },
+            }),
+        placeholderData: keepPreviousData,
     });
 
     const createMutation = useMutation({
@@ -34,12 +42,15 @@ export function useHabits() {
         onSuccess: () => queryClient.invalidateQueries({ queryKey: ['habits'] }),
     });
 
-    const habits = computed(() => habitsQuery.data.value ?? []);
-    
+    const habits = computed(() => habitsQuery.data.value?.items ?? []);
+    const totalPages = computed(() => habitsQuery.data.value?.totalPages ?? 1);
+
     const isLoading = computed(() => habitsQuery.isLoading.value);
 
     return {
         habits,
+        page,
+        totalPages,
         isLoading,
         createMutation,
         updateMutation,

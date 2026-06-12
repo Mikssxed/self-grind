@@ -7,7 +7,7 @@ public interface ITasksRepository
 {
     Task<Guid> Create(TaskItem taskItem, CancellationToken cancellationToken = default);
     Task<Guid> AddLoggedActivityAsync(TaskItem taskItem, CancellationToken cancellationToken = default);
-    Task<TaskItem[]> GetAllAsync(string userId, CancellationToken cancellationToken = default);
+    Task<(TaskItem[] Items, int TotalCount)> GetAllAsync(string userId, int page, int pageSize, CancellationToken cancellationToken = default);
     Task<TaskItem?> GetByIdAsync(string userId, Guid taskItemId, CancellationToken cancellationToken = default);
     Task<TaskOccurrence[]> GetTodayTasksAsync(string userId, DateOnly today, CancellationToken cancellationToken = default);
     Task UpdateAsync(TaskItem taskItem, CancellationToken cancellationToken = default);

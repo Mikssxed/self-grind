@@ -13,7 +13,24 @@ export default defineConfig({
         },
     },
     build: {
-        outDir: 'wwwroot',
+        outDir: '../SelfGrind.API/wwwroot',
+        emptyOutDir: true,
+        rollupOptions: {
+            output: {
+                // Split heavy vendor libraries into separate, independently-cacheable chunks
+                manualChunks(id) {
+                    if (!id.includes('node_modules')) return;
+                    if (id.includes('@microsoft/kiota')) return 'kiota';
+                    if (/[\\/]node_modules[\\/](vue|vue-router|pinia|@vue)[\\/]/.test(id))
+                        return 'vue-vendor';
+                    if (id.includes('@tanstack')) return 'query';
+                    if (id.includes('primevue') || id.includes('@primeuix')) return 'primevue';
+                    if (id.includes('chart.js')) return 'charts';
+                    if (id.includes('vee-validate') || id.includes('zod')) return 'forms';
+                    return 'vendor';
+                },
+            },
+        },
     },
     server: {
         proxy: {

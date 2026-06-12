@@ -1,12 +1,17 @@
+import { refreshTokensOnce } from '@/api/tokenRefresh';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { LayoutType } from '@/types';
 import { createRouter, createWebHistory } from 'vue-router';
+
+// Refresh the access token proactively when it expires within this window
+const REFRESH_BUFFER_MS = 60_000;
 
 export type AppRouteNames = keyof typeof AppViews;
 
 export const AppViews = {
     dashboard: () => import('@/views/DashboardView.vue'),
     dailyTasks: () => import('@/views/DailyTasksView.vue'),
+    tasks: () => import('@/views/AllTasksView.vue'),
     contributionGrid: () => import('@/views/ContributionGridView.vue'),
     character: () => import('@/views/CharacterView.vue'),
     analytics: () => import('@/views/AnalyticsView.vue'),
@@ -40,6 +45,7 @@ const router = createRouter({
         { path: '/', redirect: { name: 'dashboard' } },
         createRoute('/dashboard', 'dashboard', LayoutType.WITH_SIDEBAR, true),
         createRoute('/daily-tasks', 'dailyTasks', LayoutType.WITH_SIDEBAR, true),
+        createRoute('/tasks', 'tasks', LayoutType.WITH_SIDEBAR, true),
         createRoute('/contribution-grid', 'contributionGrid', LayoutType.WITH_SIDEBAR, true),
         createRoute('/character', 'character', LayoutType.WITH_SIDEBAR, true),
         createRoute('/analytics', 'analytics', LayoutType.WITH_SIDEBAR, true),
@@ -49,7 +55,7 @@ const router = createRouter({
     ],
 });
 
-router.beforeEach((to, _from, next) => {
+router.beforeEach(async (to, _from, next) => {
     const authStore = useAuthStore();
     const requiresAuth =
         import.meta.env.VITE_DISABLE_AUTH !== 'true' && to.meta.requiresAuth !== false;
@@ -59,6 +65,11 @@ router.beforeEach((to, _from, next) => {
     if (requiresAuth) {
         // needs authentication - if not authenticated, redirect to login
         if (isAuthenticated) {
+            // Refresh ahead of expiry so the first request already carries a fresh token.
+            // On failure refreshTokensOnce resolves null and the reactive 401 path takes over.
+            if (authStore.tokenData?.refreshToken && !authStore.isAccessTokenFresh(REFRESH_BUFFER_MS)) {
+                await refreshTokensOnce();
+            }
             next();
         } else {
             next({ name: 'login', query: { returnUrl: to.fullPath } });

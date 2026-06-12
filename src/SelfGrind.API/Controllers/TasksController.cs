@@ -5,6 +5,7 @@ using SelfGrind.Application.Tasks.Commands.CreateTask;
 using SelfGrind.Application.Tasks.Commands.DeleteTask;
 using SelfGrind.Application.Tasks.Commands.LogActivity;
 using SelfGrind.Application.Tasks.Commands.UpdateTask;
+using SelfGrind.Application.Common;
 using SelfGrind.Application.Tasks.Dtos;
 using SelfGrind.Application.Tasks.Queries.GetAllTaskItems;
 using SelfGrind.Application.Tasks.Queries.GetTaskItemById;
@@ -37,9 +38,9 @@ public class TasksController(IMediator mediator) : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public async Task<ActionResult<TaskItemDto[]>> GetAllTasks()
+    public async Task<ActionResult<PagedResult<TaskItemDto>>> GetAllTasks([FromQuery] GetAllTaskItemsQuery query)
     {
-        var tasks = await mediator.Send(new GetAllTaskItemsQuery());
+        var tasks = await mediator.Send(query);
         return Ok(tasks);
     }
 

@@ -14,16 +14,26 @@ public class HabitsRepository(SelfGrindDbContext dbContext) : IHabitsRepository
         return habit.Id;
     }
 
-    public async Task<Habit[]> GetAllWithEntriesForDayAsync(string userId, DateTime day, CancellationToken cancellationToken = default)
+    public async Task<(Habit[] Items, int TotalCount)> GetAllWithEntriesForDayAsync(string userId, DateTime day, int page, int pageSize, CancellationToken cancellationToken = default)
     {
         var dayStart = day.Date;
         var dayEnd = dayStart.AddDays(1);
 
-        return await dbContext.Habits
+        var query = dbContext.Habits
             .AsNoTracking()
+            .Where(t => t.UserId == userId);
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var items = await query
             .Include(t => t.HabitEntries!.Where(e => e.EntryDate >= dayStart && e.EntryDate < dayEnd))
-            .Where(t => t.UserId == userId)
+            .OrderBy(t => t.CreatedAt)
+            .ThenBy(t => t.Id)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToArrayAsync(cancellationToken);
+
+        return (items, totalCount);
     }
 
     public async Task<Habit?> GetByIdAsync(string userId, Guid id, CancellationToken cancellationToken = default)

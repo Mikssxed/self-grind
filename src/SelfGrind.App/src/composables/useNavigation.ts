@@ -22,6 +22,11 @@ const navigationItems: Omit<NavigationItem, 'isActive'>[] = [
         icon: 'dailyTasks',
     },
     {
+        name: 'tasks',
+        label: 'All Tasks',
+        icon: 'dailyTasks',
+    },
+    {
         name: 'contributionGrid',
         label: 'Contribution Grid',
         icon: 'contributionGrid',

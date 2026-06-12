@@ -2,17 +2,25 @@
     import type { HabitDto } from '@/api/apiClient/models';
     import BaseBox from '@/components/base/BaseBox.vue';
     import BaseHeader from '@/components/base/BaseHeader.vue';
+    import BasePaginator from '@/components/base/BasePaginator.vue';
     import DailyTasksHabitCard from './DailyTasksHabitCard.vue';
     import DailyTasksHabitModal from './DailyTasksHabitModal.vue';
     import { useHabitModal } from '@/composables/useHabitModal';
 
     interface Props {
         habits: HabitDto[];
+        page: number;
+        totalPages: number;
     }
 
     defineProps<Props>();
+    const emit = defineEmits<{ 'update:page': [page: number] }>();
 
     const { openAdd, openEdit } = useHabitModal();
+
+    function handlePageChange(newPage: number) {
+        emit('update:page', newPage);
+    }
 </script>
 
 <template>
@@ -33,6 +41,11 @@
                 <span class="text-sm">Add Habit</span>
             </button>
         </div>
+        <BasePaginator
+            :page="page"
+            :total-pages="totalPages"
+            @update:page="handlePageChange"
+        />
     </BaseBox>
     <DailyTasksHabitModal />
 </template>

@@ -371,6 +371,15 @@ export function createHabitDtoFromDiscriminatorValue(parseNode: ParseNode | unde
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {HabitDtoPagedResult}
+ */
+// @ts-ignore
+export function createHabitDtoPagedResultFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoHabitDtoPagedResult;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {HeroStatDto}
  */
 // @ts-ignore
@@ -488,6 +497,15 @@ export function createProblemDetailsFromDiscriminatorValue(parseNode: ParseNode 
 /**
  * Creates a new instance of the appropriate class based on discriminator value
  * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {RefreshTokenCommand}
+ */
+// @ts-ignore
+export function createRefreshTokenCommandFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoRefreshTokenCommand;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
  * @returns {RegisterUserCommand}
  */
 // @ts-ignore
@@ -576,6 +594,15 @@ export interface CreateTaskCommand extends Parsable {
 // @ts-ignore
 export function createTaskItemDtoFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
     return deserializeIntoTaskItemDto;
+}
+/**
+ * Creates a new instance of the appropriate class based on discriminator value
+ * @param parseNode The parse node to use to read the discriminator value and create the object
+ * @returns {TaskItemDtoPagedResult}
+ */
+// @ts-ignore
+export function createTaskItemDtoPagedResultFromDiscriminatorValue(parseNode: ParseNode | undefined) : ((instance?: Parsable) => Record<string, (node: ParseNode) => void>) {
+    return deserializeIntoTaskItemDtoPagedResult;
 }
 /**
  * Creates a new instance of the appropriate class based on discriminator value
@@ -968,6 +995,21 @@ export function deserializeIntoHabitDto(habitDto: Partial<HabitDto> | undefined 
 }
 /**
  * The deserialization information for the current model
+ * @param HabitDtoPagedResult The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoHabitDtoPagedResult(habitDtoPagedResult: Partial<HabitDtoPagedResult> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "items": n => { habitDtoPagedResult.items = n.getCollectionOfObjectValues<HabitDto>(createHabitDtoFromDiscriminatorValue); },
+        "page": n => { habitDtoPagedResult.page = n.getNumberValue(); },
+        "pageSize": n => { habitDtoPagedResult.pageSize = n.getNumberValue(); },
+        "totalCount": n => { habitDtoPagedResult.totalCount = n.getNumberValue(); },
+        "totalPages": n => { habitDtoPagedResult.totalPages = n.getNumberValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
  * @param HeroStatDto The instance to deserialize into.
  * @returns {Record<string, (node: ParseNode) => void>}
  */
@@ -1143,6 +1185,17 @@ export function deserializeIntoProblemDetails(problemDetails: Partial<ProblemDet
 }
 /**
  * The deserialization information for the current model
+ * @param RefreshTokenCommand The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoRefreshTokenCommand(refreshTokenCommand: Partial<RefreshTokenCommand> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "refreshToken": n => { refreshTokenCommand.refreshToken = n.getStringValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
  * @param RegisterUserCommand The instance to deserialize into.
  * @returns {Record<string, (node: ParseNode) => void>}
  */
@@ -1230,6 +1283,21 @@ export function deserializeIntoTaskItemDto(taskItemDto: Partial<TaskItemDto> | u
         "startDate": n => { taskItemDto.startDate = n.getDateOnlyValue(); },
         "title": n => { taskItemDto.title = n.getStringValue(); },
         "updatedAt": n => { taskItemDto.updatedAt = n.getDateValue(); },
+    }
+}
+/**
+ * The deserialization information for the current model
+ * @param TaskItemDtoPagedResult The instance to deserialize into.
+ * @returns {Record<string, (node: ParseNode) => void>}
+ */
+// @ts-ignore
+export function deserializeIntoTaskItemDtoPagedResult(taskItemDtoPagedResult: Partial<TaskItemDtoPagedResult> | undefined = {}) : Record<string, (node: ParseNode) => void> {
+    return {
+        "items": n => { taskItemDtoPagedResult.items = n.getCollectionOfObjectValues<TaskItemDto>(createTaskItemDtoFromDiscriminatorValue); },
+        "page": n => { taskItemDtoPagedResult.page = n.getNumberValue(); },
+        "pageSize": n => { taskItemDtoPagedResult.pageSize = n.getNumberValue(); },
+        "totalCount": n => { taskItemDtoPagedResult.totalCount = n.getNumberValue(); },
+        "totalPages": n => { taskItemDtoPagedResult.totalPages = n.getNumberValue(); },
     }
 }
 /**
@@ -1430,6 +1498,28 @@ export interface HabitDto extends Parsable {
      * The unit property
      */
     unit?: string | null;
+}
+export interface HabitDtoPagedResult extends Parsable {
+    /**
+     * The items property
+     */
+    items: HabitDto[];
+    /**
+     * The page property
+     */
+    page: number;
+    /**
+     * The pageSize property
+     */
+    pageSize: number;
+    /**
+     * The totalCount property
+     */
+    totalCount: number;
+    /**
+     * The totalPages property
+     */
+    totalPages: number;
 }
 export interface HeroStatDto extends Parsable {
     /**
@@ -1639,6 +1729,12 @@ export interface ProblemDetails extends AdditionalDataHolder, ApiError, Parsable
      * The type property
      */
     type?: string | null;
+}
+export interface RefreshTokenCommand extends Parsable {
+    /**
+     * The refreshToken property
+     */
+    refreshToken?: string | null;
 }
 export interface RegisterUserCommand extends Parsable {
     /**
@@ -1923,6 +2019,20 @@ export function serializeHabitDto(writer: SerializationWriter, habitDto: Partial
 }
 /**
  * Serializes information the current object
+ * @param HabitDtoPagedResult The instance to serialize from.
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeHabitDtoPagedResult(writer: SerializationWriter, habitDtoPagedResult: Partial<HabitDtoPagedResult> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!habitDtoPagedResult || isSerializingDerivedType) { return; }
+    writer.writeCollectionOfObjectValues<HabitDto>("items", habitDtoPagedResult.items, serializeHabitDto);
+    writer.writeNumberValue("page", habitDtoPagedResult.page);
+    writer.writeNumberValue("pageSize", habitDtoPagedResult.pageSize);
+    writer.writeNumberValue("totalCount", habitDtoPagedResult.totalCount);
+}
+/**
+ * Serializes information the current object
  * @param HeroStatDto The instance to serialize from.
  * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
  * @param writer Serialization writer to use to serialize this model
@@ -2101,6 +2211,17 @@ export function serializeProblemDetails(writer: SerializationWriter, problemDeta
 /**
  * Serializes information the current object
  * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param RefreshTokenCommand The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeRefreshTokenCommand(writer: SerializationWriter, refreshTokenCommand: Partial<RefreshTokenCommand> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!refreshTokenCommand || isSerializingDerivedType) { return; }
+    writer.writeStringValue("refreshToken", refreshTokenCommand.refreshToken);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
  * @param RegisterUserCommand The instance to serialize from.
  * @param writer Serialization writer to use to serialize this model
  */
@@ -2189,6 +2310,20 @@ export function serializeTaskItemDto(writer: SerializationWriter, taskItemDto: P
     writer.writeDateOnlyValue("startDate", taskItemDto.startDate);
     writer.writeStringValue("title", taskItemDto.title);
     writer.writeDateValue("updatedAt", taskItemDto.updatedAt);
+}
+/**
+ * Serializes information the current object
+ * @param isSerializingDerivedType A boolean indicating whether the serialization is for a derived type.
+ * @param TaskItemDtoPagedResult The instance to serialize from.
+ * @param writer Serialization writer to use to serialize this model
+ */
+// @ts-ignore
+export function serializeTaskItemDtoPagedResult(writer: SerializationWriter, taskItemDtoPagedResult: Partial<TaskItemDtoPagedResult> | undefined | null = {}, isSerializingDerivedType: boolean = false) : void {
+    if (!taskItemDtoPagedResult || isSerializingDerivedType) { return; }
+    writer.writeCollectionOfObjectValues<TaskItemDto>("items", taskItemDtoPagedResult.items, serializeTaskItemDto);
+    writer.writeNumberValue("page", taskItemDtoPagedResult.page);
+    writer.writeNumberValue("pageSize", taskItemDtoPagedResult.pageSize);
+    writer.writeNumberValue("totalCount", taskItemDtoPagedResult.totalCount);
 }
 /**
  * Serializes information the current object
@@ -2447,6 +2582,28 @@ export interface TaskItemDto extends Parsable {
      * The updatedAt property
      */
     updatedAt: Date;
+}
+export interface TaskItemDtoPagedResult extends Parsable {
+    /**
+     * The items property
+     */
+    items: TaskItemDto[];
+    /**
+     * The page property
+     */
+    page: number;
+    /**
+     * The pageSize property
+     */
+    pageSize: number;
+    /**
+     * The totalCount property
+     */
+    totalCount: number;
+    /**
+     * The totalPages property
+     */
+    totalPages: number;
 }
 export type TaskOccurrenceStatus = (typeof TaskOccurrenceStatusObject)[keyof typeof TaskOccurrenceStatusObject];
 export type TaskRepetitionType = (typeof TaskRepetitionTypeObject)[keyof typeof TaskRepetitionTypeObject];

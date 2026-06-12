@@ -24,13 +24,23 @@ public class TasksRepository(SelfGrindDbContext dbContext) : ITasksRepository
         return taskItem.Id;
     }
 
-    public async Task<TaskItem[]> GetAllAsync(string userId, CancellationToken cancellationToken = default)
+    public async Task<(TaskItem[] Items, int TotalCount)> GetAllAsync(string userId, int page, int pageSize, CancellationToken cancellationToken = default)
     {
-        return await dbContext.Tasks
+        var query = dbContext.Tasks
             .AsNoTracking()
+            .Where(t => t.UserId == userId && !t.IsArchived);
+
+        var totalCount = await query.CountAsync(cancellationToken);
+
+        var items = await query
             .Include(t => t.Schedule)
-            .Where(t => t.UserId == userId && !t.IsArchived)
+            .OrderByDescending(t => t.CreatedAt)
+            .ThenBy(t => t.Id)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
             .ToArrayAsync(cancellationToken);
+
+        return (items, totalCount);
     }
 
     public async Task<TaskItem?> GetByIdAsync(string userId, Guid taskItemId, CancellationToken cancellationToken = default)

@@ -6,6 +6,8 @@ import { ConfirmEmailRequestBuilderRequestsMetadata, type ConfirmEmailRequestBui
 // @ts-ignore
 import { LoginRequestBuilderRequestsMetadata, type LoginRequestBuilder } from './login/index.js';
 // @ts-ignore
+import { RefreshRequestBuilderRequestsMetadata, type RefreshRequestBuilder } from './refresh/index.js';
+// @ts-ignore
 import { RegisterRequestBuilderRequestsMetadata, type RegisterRequestBuilder } from './register/index.js';
 // @ts-ignore
 import { type UserRequestBuilder, UserRequestBuilderRequestsMetadata } from './user/index.js';
@@ -24,6 +26,10 @@ export interface IdentityRequestBuilder extends BaseRequestBuilder<IdentityReque
      * The login property
      */
     get login(): LoginRequestBuilder;
+    /**
+     * The refresh property
+     */
+    get refresh(): RefreshRequestBuilder;
     /**
      * The register property
      */
@@ -46,6 +52,9 @@ export const IdentityRequestBuilderNavigationMetadata: Record<Exclude<keyof Iden
     },
     login: {
         requestsMetadata: LoginRequestBuilderRequestsMetadata,
+    },
+    refresh: {
+        requestsMetadata: RefreshRequestBuilderRequestsMetadata,
     },
     register: {
         requestsMetadata: RegisterRequestBuilderRequestsMetadata,
