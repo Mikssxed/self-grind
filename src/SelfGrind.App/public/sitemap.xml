@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Replace selfgrind.example.com with the deployed domain (same placeholder as in index.html). -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://selfgrind.example.com/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://selfgrind.example.com/register</loc>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://selfgrind.example.com/login</loc>
+    <priority>0.3</priority>
+  </url>
+</urlset>

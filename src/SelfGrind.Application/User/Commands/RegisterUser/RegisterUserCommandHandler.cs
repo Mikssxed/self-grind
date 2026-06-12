@@ -39,8 +39,16 @@ public class RegisterUserCommandHandler(
         var frontendUrl = configuration["AppSettings:FrontendUrl"] ?? "http://localhost:5173";
         var confirmationLink = $"{frontendUrl}/confirm-email?userId={user.Id}&token={Uri.EscapeDataString(token)}";
 
-        await emailService.SendConfirmationEmailAsync(user.Email!, user.UserName!, confirmationLink);
-
-        logger.LogInformation("User {username} registered successfully and confirmation email sent", request.Username);
+        // A failed confirmation email must not fail registration: the account is already created and
+        // login does not require a confirmed email. Log and continue so a transient SMTP outage is non-fatal.
+        try
+        {
+            await emailService.SendConfirmationEmailAsync(user.Email!, user.UserName!, confirmationLink);
+            logger.LogInformation("User {username} registered successfully and confirmation email sent", request.Username);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "User {username} registered but the confirmation email could not be sent", request.Username);
+        }
     }
 }

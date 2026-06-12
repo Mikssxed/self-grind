@@ -1,0 +1,63 @@
+# Build the single SelfGrind image (API + SPA), push to GitHub Container Registry, and roll it out
+# to Azure Container Apps. Optional convenience — provisioning is still a one-time manual step (see
+# the deployment plan). Triggers on pushes to main and manual runs.
+#
+# Required repo configuration (Settings -> Secrets and variables -> Actions):
+#   Variables:
+#     GA_MEASUREMENT_ID      e.g. G-XXXXXXX  (baked into the frontend bundle; not secret)
+#     ACA_RESOURCE_GROUP     e.g. selfgrind-rg
+#     ACA_APP_NAME           e.g. selfgrind
+#   Secrets:
+#     AZURE_CREDENTIALS      output of: az ad sp create-for-rbac --sdk-auth --role contributor \
+#                              --scopes /subscriptions/<sub>/resourceGroups/<rg>
+name: deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  IMAGE: ghcr.io/${{ github.repository }}
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          build-args: |
+            VITE_GA_MEASUREMENT_ID=${{ vars.GA_MEASUREMENT_ID }}
+          tags: |
+            ${{ env.IMAGE }}:latest
+            ${{ env.IMAGE }}:${{ github.sha }}
+
+      - name: Azure login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Update Container App
+        uses: azure/cli@v2
+        with:
+          azcliversion: latest
+          inlineScript: |
+            az containerapp update \
+              --name ${{ vars.ACA_APP_NAME }} \
+              --resource-group ${{ vars.ACA_RESOURCE_GROUP }} \
+              --image ${{ env.IMAGE }}:${{ github.sha }}

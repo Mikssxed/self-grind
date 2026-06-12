@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using System.Net;
+using System.Net.Mail;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -55,9 +57,17 @@ public static class ServiceCollectionExtensions
         }
         else
         {
-            emailBuilder.AddSmtpSender(
+            // Production SMTP requires authentication + TLS (e.g. Brevo). Credentials come from
+            // environment variables (SmtpSettings__Username / SmtpSettings__Password), never committed config.
+            emailBuilder.AddSmtpSender(() => new SmtpClient(
                 smtpSettings["Host"] ?? "localhost",
-                int.Parse(smtpSettings["Port"] ?? "25"));
+                int.Parse(smtpSettings["Port"] ?? "587"))
+            {
+                EnableSsl = bool.Parse(smtpSettings["EnableSsl"] ?? "true"),
+                Credentials = new NetworkCredential(
+                    smtpSettings["Username"],
+                    smtpSettings["Password"]),
+            });
         }
 
         services.AddScoped<ITasksRepository, TasksRepository>();

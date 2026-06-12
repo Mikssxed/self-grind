@@ -1,0 +1,27 @@
+# Build outputs & dependencies (restored/installed inside the image)
+**/bin
+**/obj
+**/node_modules
+**/wwwroot
+
+# Local secrets & dev artifacts — never ship these into the image
+**/.env
+**/.env.*
+**/appsettings.Development.json
+**/Logs
+**/DevelopmentEmails
+**/Emails
+
+# VCS / IDE / misc
+.git
+.gitignore
+.github
+.vs
+.vscode
+.idea
+**/*.user
+Dockerfile
+.dockerignore
+README.md
+.claude
+scratch-*.html

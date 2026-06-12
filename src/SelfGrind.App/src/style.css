@@ -67,6 +67,7 @@
 
 html {
     font-family: var(--font-sans);
+    scroll-behavior: smooth;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -94,6 +95,10 @@ body {
 
 .bg-gradient-purple {
     background: var(--gradient-purple);
+}
+
+.bg-gradient-accent {
+    background: var(--gradient-accent);
 }
 
 .text-gradient-purple {
