@@ -10,9 +10,9 @@
                     tag="h6"
                     class="text-sm truncate"
                 >
-                    Alex Chen
+                    {{ displayName }}
                 </BaseHeader>
-                <BaseText class="text-xs">Level 42 Warrior</BaseText>
+                <BaseText class="text-xs">{{ levelLabel }}</BaseText>
             </div>
         </div>
         <button
@@ -33,8 +33,10 @@
     import BaseIcon from '../base/BaseIcon.vue';
     import BaseText from '../base/BaseText.vue';
     import { useLogout } from '@/composables/useAuth';
+    import { useUserProfileDisplay } from '@/composables/useUserProfileDisplay';
 
     const logout = useLogout();
+    const { displayName, levelLabel } = useUserProfileDisplay();
 
     function handleLogout() {
         logout();

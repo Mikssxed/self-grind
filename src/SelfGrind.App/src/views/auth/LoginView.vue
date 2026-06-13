@@ -27,10 +27,18 @@
                 </BaseButton>
             </BaseForm>
         </BaseBox>
+        <template #footer>
+            <AuthFooterLink
+                prompt="Don't have an account?"
+                linkText="Create one"
+                to="register"
+            />
+        </template>
     </AuthLayout>
 </template>
 <script setup lang="ts">
     import AuthLayout from '@/components/layout/AuthLayout.vue';
+    import AuthFooterLink from '@/components/layout/AuthFooterLink.vue';
     import BaseBox from '@/components/base/BaseBox.vue';
     import BaseButton from '@/components/base/BaseButton.vue';
     import BaseForm from '@/components/base/BaseForm.vue';

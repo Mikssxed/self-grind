@@ -13,9 +13,9 @@
                     tag="h6"
                     class="text-sm truncate"
                 >
-                    Alex Chen
+                    {{ displayName }}
                 </BaseHeader>
-                <BaseText class="text-xs">Level 42 Warrior</BaseText>
+                <BaseText class="text-xs">{{ levelLabel }}</BaseText>
             </div>
         </div>
         <BasePopoverMenu
@@ -26,6 +26,7 @@
 </template>
 <script setup lang="ts">
     import { useLogout } from '@/composables/useAuth';
+    import { useUserProfileDisplay } from '@/composables/useUserProfileDisplay';
     import { ref } from 'vue';
     import BaseAvatar from '../base/BaseAvatar.vue';
     import BaseHeader from '../base/BaseHeader.vue';
@@ -35,6 +36,7 @@
 
     const logout = useLogout();
     const menuRef = ref<InstanceType<typeof BasePopoverMenu> | null>(null);
+    const { displayName, levelLabel } = useUserProfileDisplay();
 
     const menuItems: PopoverMenuItem[] = [
         {

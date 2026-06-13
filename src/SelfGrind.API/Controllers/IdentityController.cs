@@ -8,6 +8,8 @@ using SelfGrind.Application.User.Commands.RegisterUser;
 using SelfGrind.Application.User.Commands.ConfirmUser;
 using SelfGrind.Application.User.Commands.LoginUser;
 using SelfGrind.Application.User.Commands.RefreshToken;
+using SelfGrind.Application.User.Dtos;
+using SelfGrind.Application.User.Queries.GetCurrentUser;
 using SelfGrind.Models;
 
 namespace SelfGrind.Controllers;
@@ -16,6 +18,16 @@ namespace SelfGrind.Controllers;
 [Route("api/identity")]
 public class IdentityController(IMediator mediator) : ControllerBase
 {
+    [HttpGet("user")]
+    [Authorize]
+    [ProducesResponseType(typeof(CurrentUserDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    public async Task<ActionResult<CurrentUserDto>> GetCurrentUser()
+    {
+        var currentUser = await mediator.Send(new GetCurrentUserQuery());
+        return Ok(currentUser);
+    }
+
     [HttpPatch("user")]
     [Authorize]
     public async Task<IActionResult> UpdateUserDetails([FromBody] UpdateUserDetailsCommand command)
