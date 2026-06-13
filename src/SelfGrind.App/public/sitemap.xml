@@ -2,16 +2,16 @@
 <!-- Replace selfgrind.example.com with the deployed domain (same placeholder as in index.html). -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://selfgrind.example.com/</loc>
+    <loc>https://selfgrind.ambitiousforest-bc72b9a7.westeurope.azurecontainerapps.io/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://selfgrind.example.com/register</loc>
+    <loc>https://selfgrind.ambitiousforest-bc72b9a7.westeurope.azurecontainerapps.io/register</loc>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://selfgrind.example.com/login</loc>
+    <loc>https://selfgrind.ambitiousforest-bc72b9a7.westeurope.azurecontainerapps.io/login</loc>
     <priority>0.3</priority>
   </url>
 </urlset>

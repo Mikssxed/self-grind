@@ -2,7 +2,7 @@ User-agent: *
 Allow: /
 
 # Replace selfgrind.example.com with the deployed domain (same placeholder as in index.html)
-Sitemap: https://selfgrind.example.com/sitemap.xml
+Sitemap: https://selfgrind.ambitiousforest-bc72b9a7.westeurope.azurecontainerapps.io/sitemap.xml
 
 # Keep auth-gated app routes out of search results; the public landing page (/) stays indexable.
 Disallow: /dashboard
