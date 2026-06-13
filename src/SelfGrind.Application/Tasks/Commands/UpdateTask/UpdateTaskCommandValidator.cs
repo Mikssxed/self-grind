@@ -34,13 +34,13 @@ public class UpdateTaskCommandValidator : AbstractValidator<UpdateTaskCommand>
             .Must((c, days) =>
             {
                 if (c.RepetitionType == TaskRepetitionType.Weekly)
-                    return days != null && days.All(d => d >= 0 && d <= (DayOfWeek)6);
+                    return days != null && days.Count > 0 && days.All(d => d >= 0 && d <= (DayOfWeek)6);
 
-                return days == null || days == new List<DayOfWeek>();
+                return days == null || days.Count == 0;
             })
             .WithMessage(c =>
                 c.RepetitionType == TaskRepetitionType.Weekly
-                    ? "Days of week must be between 0 (Sunday) and 6 (Saturday)."
+                    ? "Weekly tasks require at least one day of week, each between 0 (Sunday) and 6 (Saturday)."
                     : "Days of week should be null for non-weekly repetition types."
             );
 
