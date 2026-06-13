@@ -6,8 +6,18 @@
     import BaseHeader from '@/components/base/BaseHeader.vue';
     import TasksListItem from './TasksListItem.vue';
     import { getAttributeDisplay } from '@/composables/useAttributeDisplay';
+    import { useTaskDetailModal } from '@/composables/useTaskDetailModal';
 
     const props = defineProps<{ tasks: TaskItemDto[] }>();
+
+    const { open: openTaskDetail } = useTaskDetailModal();
+
+    function onSelect(id: string) {
+        const task = props.tasks.find((t) => t.id === id);
+        if (task) {
+            openTaskDetail(task);
+        }
+    }
 
     const displayItems = computed(() =>
         props.tasks
@@ -36,12 +46,14 @@
             <TasksListItem
                 v-for="item in displayItems"
                 :key="item.id"
+                :id="item.id"
                 :title="item.title"
                 :description="item.description"
                 :xp="item.xp"
                 :attribute="item.attribute"
                 :attributeEmoji="item.attributeEmoji"
                 :variant="item.variant"
+                @select="onSelect"
             />
         </div>
         <BaseEmptyState

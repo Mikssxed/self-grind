@@ -4,6 +4,7 @@
     import type { QuestItemVariant } from '@/components/daily-tasks/DailyTasksQuestItem.vue';
 
     interface Props {
+        id: string;
         title: string;
         description: string;
         xp: number;
@@ -13,6 +14,14 @@
     }
 
     const props = defineProps<Props>();
+
+    const emit = defineEmits<{
+        select: [id: string];
+    }>();
+
+    function onSelect() {
+        emit('select', props.id);
+    }
 
     const bgClasses: Record<QuestItemVariant, string> = {
         error: 'bg-error-900/40',
@@ -48,7 +57,7 @@
 
     const containerClasses = computed(() =>
         twMerge(
-            'flex items-center gap-4 p-4 rounded-xl border',
+            'flex items-center gap-4 p-4 rounded-xl border cursor-pointer transition-opacity duration-200 hover:opacity-80',
             bgClasses[props.variant],
             borderClasses[props.variant]
         )
@@ -65,7 +74,10 @@
 </script>
 
 <template>
-    <div :class="containerClasses">
+    <div
+        :class="containerClasses"
+        @click="onSelect"
+    >
         <div class="flex flex-col gap-0.5 flex-1">
             <span class="font-bold text-white">{{ title }}</span>
             <span class="text-sm text-primary-400">{{ description }}</span>

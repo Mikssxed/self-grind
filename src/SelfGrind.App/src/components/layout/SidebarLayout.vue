@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-col md:flex-row w-screen h-screen overflow-auto">
+    <div class="flex flex-col md:flex-row w-screen h-screen overflow-hidden">
         <SideBar class="hidden md:flex" />
         <MobileHeader
             class="md:hidden"
@@ -13,6 +13,7 @@
 
         <AddTaskModal />
         <LogActivityModal />
+        <TaskDetailModal />
     </div>
 </template>
 <script setup lang="ts">
@@ -22,6 +23,7 @@
     import SidebarDrawer from './SidebarDrawer.vue';
     import AddTaskModal from '@/components/tasks/AddTaskModal.vue';
     import LogActivityModal from '@/components/tasks/LogActivityModal.vue';
+    import TaskDetailModal from '@/components/tasks/TaskDetailModal.vue';
 
     const drawerOpen = ref(false);
 </script>

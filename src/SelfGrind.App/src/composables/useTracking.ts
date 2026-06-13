@@ -101,7 +101,10 @@ export function initTracking(): void {
     document.head.appendChild(script);
 
     window.gtag('js', new Date());
-    window.gtag('config', measurementId, { send_page_view: false });
+    // Matches Google's canonical snippet: config fires the initial page_view automatically, so a
+    // /g/collect hit is guaranteed on load. SPA route changes are tracked via trackPageView, which
+    // skips this first (already-counted) navigation to avoid double counting.
+    window.gtag('config', measurementId);
 }
 
 /**
@@ -115,9 +118,16 @@ export function updateAnalyticsConsent(granted: boolean): void {
     window.gtag('consent', 'update', { analytics_storage: choice });
 }
 
+// The gtag('config') call already counts the initial page; skip the router's first afterEach.
+let initialPageViewSkipped = false;
+
 /** Reports a single-page-app navigation as a page_view event. */
 export function trackPageView(path: string): void {
     if (!measurementId || typeof window === 'undefined' || !window.gtag) return;
+    if (!initialPageViewSkipped) {
+        initialPageViewSkipped = true;
+        return;
+    }
     window.gtag('event', 'page_view', {
         page_path: path,
         page_location: window.location.origin + path,
